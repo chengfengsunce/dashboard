@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>售后研发控制台</title>
     <style>
-        /* --- 核心：Git IDE 深色主题配色 --- */
+        /* --- 核心：GitHub 原生深色蓝调主题 --- */
         :root {
-            --bg-color: #1e222d;      
-            --text-main: #d7dae0;     
-            --text-dim: #636d83;      
-            --accent-line: #3b404e;   
-            --hover-bg: #282c34;      
-            --default-dot: #abb2bf;
+            --bg-color: #0d1117;      /* GitHub 官方深色背景 (带蓝调的黑) */
+            --text-main: #c9d1d9;     /* GitHub 主文字色 */
+            --text-dim: #8b949e;      /* GitHub 次要文字色 */
+            --accent-line: #30363d;   /* GitHub 分割线颜色 */
+            --hover-bg: #161b22;      /* GitHub 悬停高亮色 */
+            --default-dot: #8b949e;   /* 默认圆点颜色 */
         }
 
         body { 
             background-color: var(--bg-color); 
             color: var(--text-main); 
-            font-family: "Microsoft YaHei", "Consolas", "Monaco", monospace; 
+            /* 字体回归最简洁的系统字体，配合代码字体 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             margin: 0; 
             padding: 20px 40px;
         }
         
-        /* --- 头部区域 --- */
+        /* --- 头部区域 (极简版) --- */
         .header { 
             display: flex; 
             justify-content: space-between; 
@@ -35,39 +36,26 @@
         
         .header h1 { 
             margin: 0; 
-            font-size: 20px; 
-            color: #d7dae0; 
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        .header h1::before {
-            content: '📂 '; 
-            margin-right: 8px;
-            font-size: 18px;
-        }
-        .header h1::after {
-            content: ' (origin/main)';
-            color: var(--text-dim);
-            font-size: 14px;
-            font-weight: normal;
-            margin-left: 10px;
-            font-family: "Consolas", monospace;
+            font-size: 24px; /* 稍微加大一点，更清晰 */
+            color: var(--text-main); 
+            font-weight: 600; /* 半加粗 */
+            /* 已移除 ::before 图标和 ::after 分支信息 */
         }
 
-        /* --- 按钮组 --- */
+        /* --- 按钮组 (保持原样，微调颜色适配新背景) --- */
         .header-actions { display: flex; gap: 10px; }
-        .btn { text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; border: 1px solid transparent; transition: 0.2s;}
-        .btn-refresh { background-color: #2c313a; color: #abb2bf; border: 1px solid #181a1f; }
-        .btn-refresh:hover { background-color: #3e4451; }
+        .btn { text-decoration: none; padding: 5px 12px; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; border: 1px solid transparent; transition: 0.2s; font-weight: 500;}
+        .btn-refresh { background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+        .btn-refresh:hover { background-color: #30363d; border-color: #8b949e; }
         .btn-add { background-color: #238636; color: #fff; }
+        .btn-add:hover { background-color: #2ea043; }
 
-        /* --- 核心：时间轴列表样式 --- */
+        /* --- 核心：时间轴列表样式 (Git Log 风格) --- */
         .issue-list { 
             list-style: none; 
             padding: 0; 
             margin: 0; 
-            margin-left: 10px; 
+            margin-left: 12px; 
             border-left: 2px solid var(--accent-line); 
             padding-top: 10px;
             padding-bottom: 10px;
@@ -75,7 +63,7 @@
 
         .issue-item { 
             position: relative;
-            padding: 10px 0 10px 25px; 
+            padding: 12px 0 12px 30px; /* 增加一点呼吸感 */
             display: flex; 
             justify-content: space-between;
             align-items: center;
@@ -88,20 +76,19 @@
         .issue-item::before {
             content: '';
             position: absolute;
-            left: -6px; 
+            left: -7px; /* 重新计算偏移以对齐 */
             top: 50%;
             transform: translateY(-50%);
-            width: 10px;
-            height: 10px;
+            width: 12px; /* 稍微大一点点 */
+            height: 12px;
             border-radius: 50%;
             background-color: var(--dot-color, var(--default-dot)); 
-            border: 2px solid var(--bg-color); 
+            border: 3px solid var(--bg-color); /* 加粗边框让空心感更强 */
             z-index: 2;
         }
         
         .issue-item.closed::before {
             background-color: var(--text-dim) !important;
-            box-shadow: none !important;
         }
         .issue-item.closed .issue-title a {
             color: var(--text-dim);
@@ -116,51 +103,49 @@
             flex: 1;
         }
 
-        /* 项目徽章：颜色完全动态化 */
+        /* 项目徽章 */
         .project-badge {
-            font-size: 11px;
-            padding: 1px 6px;
-            border-radius: 3px;
-            /* 文字颜色继承圆点颜色 */
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 2em; /* 变成圆角胶囊，更现代 */
             color: var(--dot-color); 
             border: 1px solid var(--dot-color);
-            opacity: 0.9;
-            font-family: "Consolas", monospace;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             min-width: 60px;
             text-align: center;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .issue-title a { 
             text-decoration: none; 
             color: var(--text-main); 
-            font-size: 14px;
+            font-size: 16px; /* 字体稍大，更清晰 */
+            font-weight: 600;
         }
-        .issue-title a:hover { text-decoration: underline; color: #61afef; }
+        .issue-title a:hover { color: #58a6ff; }
 
         /* --- 右侧信息 --- */
         .meta { 
-            font-size: 12px; 
+            font-size: 14px; 
             color: var(--text-dim); 
             min-width: 180px;
             text-align: right;
-            font-family: "Consolas", monospace;
             display: flex;
             justify-content: flex-end;
             gap: 15px;
         }
 
-        #status-bar { text-align: center; font-size: 12px; margin-bottom: 10px; padding: 5px; border-radius: 4px; display: none; background: #21252b; color: #98c379; border: 1px solid #282c34;}
+        #status-bar { text-align: center; font-size: 14px; margin-bottom: 20px; padding: 8px; border-radius: 6px; display: none; background: #161b22; color: #79c0ff; border: 1px solid #30363d;}
         
         .labels { display: flex; gap: 5px; }
-        /* 普通标签颜色变淡一点，避免抢戏 */
-        .label-tag { font-size: 10px; padding: 0 5px; border: 1px solid #3b404e; color: #5c6370; border-radius: 3px; }
+        .label-tag { font-size: 12px; padding: 2px 8px; border: 1px solid #30363d; color: #8b949e; border-radius: 2em; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>售后工具开发看板</h1>
+        
         <div class="header-actions">
             <a href="https://docs.dingtalk.com/i/nodes/vy20BglGWOeEwPNvTYvLj2brJA7depqY?iframeQuery=entrance%3Ddata%26sheetId%3DhERWDMS%26viewId%3DqvGDAH2" target="_blank" class="btn btn-add">
                 ➕ 提需求
@@ -172,7 +157,7 @@
     </div>
 
     <div id="status-bar"></div>
-    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px; font-size: 12px;">正在连接代码库...</div>
+    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 40px; font-size: 14px;">正在载入数据...</div>
     
     <ul class="issue-list" id="container"></ul>
 
@@ -184,12 +169,12 @@
         const CACHE_TIME_KEY = 'dashboard_time';
         const CACHE_DURATION = 60 * 1000; 
 
-        // ✅ Token (分割保护)
+        // ✅ Token
         const t_part1 = 'ghp_Hd1MwqMYrdK';
         const t_part2 = 'wYEu8UCqNYVbwQsxolP1xoRSG';
         const MY_TOKEN = t_part1 + t_part2;
 
-        // ❌ PROJECT_CONFIG 已经被删除！代码完全动态化！
+        // ❌ PROJECT_CONFIG 已删除，全动态识别
 
         async function loadIssues(force = false) {
             const container = document.getElementById('container');
@@ -201,7 +186,7 @@
 
             if (!force && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
                 renderList(JSON.parse(cachedData));
-                showStatus('✔ 已加载本地缓存');
+                showStatus('✔ 已加载缓存数据');
                 loading.style.display = 'none';
                 return;
             }
@@ -229,7 +214,7 @@
 
                 renderList(data);
                 loading.style.display = 'none';
-                showStatus('✔ 最新数据同步完成');
+                showStatus('✔ 数据已同步更新');
 
             } catch (e) { 
                 if (cachedData) renderList(JSON.parse(cachedData));
@@ -242,7 +227,7 @@
             container.innerHTML = '';
             
             if (!Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div style="padding:20px; color:#5c6370; font-size:12px;">暂无开发任务</div>';
+                container.innerHTML = '<div style="padding:40px; text-align:center; color:#8b949e; font-size:14px;">暂无开发任务</div>';
                 return;
             }
 
@@ -252,41 +237,33 @@
                 const li = document.createElement('li');
                 li.className = issue.state === 'open' ? 'issue-item' : 'issue-item closed';
                 
-                // --- 🤖 智能动态识别逻辑 开始 ---
+                // --- 🤖 智能动态识别逻辑 ---
                 let projectInfo = null;
                 let otherLabelsHtml = '';
 
-                // 遍历所有标签
                 issue.labels.forEach(lbl => {
-                    // 规则：只要标签名字以 "项目:" 开头
                     if (lbl.name.startsWith('项目:')) {
-                        // 1. 提取颜色：直接用 GitHub API 返回的颜色 (lbl.color 是不带#的hex)
-                        // 2. 提取名字：把 "项目:" 删掉，剩下的就是名字
                         projectInfo = {
                             color: '#' + lbl.color,
                             name: lbl.name.replace('项目:', '') 
                         };
                     } else {
-                        // 其他普通标签
                         otherLabelsHtml += `<span class="label-tag">${lbl.name}</span>`; 
                     }
                 });
-                // --- 🤖 智能动态识别逻辑 结束 ---
 
-                // 设置颜色变量
                 if (projectInfo) {
                     li.style.setProperty('--dot-color', projectInfo.color);
                 } else {
-                    li.style.setProperty('--dot-color', '#abb2bf'); // 默认灰
+                    li.style.setProperty('--dot-color', '#8b949e');
                 }
 
-                // 生成项目徽章 (使用提取出来的动态颜色和名字)
                 const badgeHtml = projectInfo 
                     ? `<span class="project-badge">${projectInfo.name}</span>` 
-                    : `<span class="project-badge" style="border-color:#5c6370; color:#5c6370">Task</span>`;
+                    : ``; // 如果没有项目标签，就不显示徽章，更极简
 
                 const date = new Date(issue.updated_at);
-                const timeStr = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()}`;
+                const timeStr = `${date.getMonth()+1}月${date.getDate()}日 ${date.getHours()}:${date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()}`;
 
                 li.innerHTML = `
                     <div class="issue-content">
