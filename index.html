@@ -5,44 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>售后研发控制台</title>
     <style>
-        /* --- 全局深色黑客风样式 --- */
-        body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; margin: 0; padding: 20px; }
+        /* --- 核心：Git IDE 深色主题配色 --- */
+        :root {
+            --bg-color: #1e222d;      /* 这种深蓝灰是 Git 客户端的经典背景 */
+            --text-main: #d7dae0;     /* 代码高亮白 */
+            --text-dim: #636d83;      /* 注释灰 */
+            --accent-line: #3b404e;   /* 时间轴线条颜色 */
+            --accent-dot: #c678dd;    /* 那个标志性的紫色圆点 */
+            --hover-bg: #282c34;      /* 鼠标悬停的高亮色 */
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: "Consolas", "Monaco", "Courier New", monospace; /* 换成代码字体 */
+            margin: 0; 
+            padding: 20px 40px; /* 两边留白多一点，像编辑器中间 */
+        }
         
         /* --- 头部区域 --- */
-        .header { border-bottom: 1px solid #30363d; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { margin: 0; font-size: 18px; color: #58a6ff; }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--accent-line);
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 20px; 
+            color: #61afef; /* 像是当前分支名的蓝色 */
+            font-weight: normal;
+        }
+        .header h1::before {
+            content: 'origin/main '; /* 模拟 Git 分支前缀，增加极客感 */
+            color: var(--text-dim);
+            font-size: 14px;
+        }
 
-        /* --- 按钮组样式 --- */
+        /* --- 按钮组 (保持原样，微调颜色适配) --- */
         .header-actions { display: flex; gap: 10px; }
-        .btn { text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; line-height: 20px; }
-        .btn-refresh { background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
-        .btn-refresh:hover { border-color: #8b949e; background-color: #30363d; }
-        .btn-add { background-color: #238636; color: #ffffff; border: 1px solid rgba(240,246,252,0.1); }
-        .btn-add:hover { background-color: #2ea043; }
+        .btn { text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; border: 1px solid transparent; transition: 0.2s;}
+        .btn-refresh { background-color: #2c313a; color: #abb2bf; border: 1px solid #181a1f; }
+        .btn-refresh:hover { background-color: #3e4451; }
+        .btn-add { background-color: #238636; color: #fff; }
 
-        /* --- 列表区域 --- */
-        .issue-list { list-style: none; padding: 0; margin: 0; }
-        .issue-item { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; margin-bottom: 12px; transition: 0.2s; }
-        .issue-item:hover { border-color: #8b949e; }
-        .issue-title { font-size: 16px; font-weight: 600; color: #e6edf3; margin-bottom: 8px; display: flex; align-items: center; }
-        
-        /* --- 标签系统 --- */
-        .labels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-        .label { font-size: 12px; padding: 2px 8px; border-radius: 2em; border: 1px solid transparent; color: #fff; font-weight: 500; text-shadow: 0 0 1px rgba(0,0,0,0.5); }
+        /* --- 核心：时间轴列表样式 --- */
+        .issue-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            margin-left: 10px; /* 给圆点留位置 */
+            border-left: 2px solid var(--accent-line); /* 左侧贯穿竖线 */
+        }
 
-        /* --- 底部元数据 --- */
-        .meta { margin-top: 12px; font-size: 12px; color: #8b949e; display: flex; justify-content: space-between; }
+        .issue-item { 
+            position: relative; /* 为了定位圆点 */
+            padding: 12px 0 12px 25px; /* 左侧留空给圆点 */
+            display: flex; 
+            justify-content: space-between; /* 左右分布 */
+            align-items: center;
+            transition: 0.2s;
+            border-bottom: 1px solid transparent; /* 占位 */
+        }
+
+        .issue-item:hover {
+            background-color: var(--hover-bg); /* 悬停整行变色 */
+        }
+
+        /* --- 那个紫色的小圆点 --- */
+        .issue-item::before {
+            content: '';
+            position: absolute;
+            left: -6px; /* 正好压在竖线上 (竖线宽2px，圆点宽10px，偏移 -4px - 1px) */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent-dot);
+            border: 2px solid var(--bg-color); /* 给圆点加个背景色描边，看起来是空的 */
+            box-shadow: 0 0 5px rgba(198, 120, 221, 0.4); /* 微弱发光 */
+        }
         
+        /* 针对已完成任务（紫色变成灰色圆点） */
+        .issue-item.closed::before {
+            background-color: var(--text-dim);
+            box-shadow: none;
+        }
+
+        /* --- 标题和文字 --- */
+        .issue-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .issue-title a { 
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-size: 14px;
+            font-weight: normal;
+        }
+        .issue-title a:hover { text-decoration: underline; color: #61afef; }
+
+        /* --- 标签 (变成小胶囊) --- */
+        .labels { display: flex; gap: 5px; }
+        .label { 
+            font-size: 10px; 
+            padding: 1px 6px; 
+            border-radius: 4px; 
+            color: #fff; 
+            opacity: 0.8;
+        }
+
+        /* --- 右侧时间和作者 --- */
+        .meta { 
+            font-size: 12px; 
+            color: var(--text-dim); 
+            min-width: 150px;
+            text-align: right;
+            font-family: "Consolas", monospace;
+        }
+
         /* --- 状态提示条 --- */
-        #status-bar { text-align: center; font-size: 12px; margin-bottom: 10px; padding: 5px; border-radius: 4px; display: none; }
-        .status-warn { background: rgba(210, 153, 34, 0.2); color: #d29922; border: 1px solid rgba(210, 153, 34, 0.4); }
-        .status-cache { background: rgba(56, 139, 253, 0.1); color: #79c0ff; border: 1px solid rgba(56, 139, 253, 0.4); }
+        #status-bar { text-align: center; font-size: 12px; margin-bottom: 10px; padding: 5px; border-radius: 4px; display: none; background: #21252b; color: #98c379; border: 1px solid #282c34;}
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>🚀 研发实时看板</h1>
+        <h1>Dashboard / 售后研发</h1>
         <div class="header-actions">
             <a href="https://docs.dingtalk.com/i/nodes/vy20BglGWOeEwPNvTYvLj2brJA7depqY?iframeQuery=entrance%3Ddata%26sheetId%3DhERWDMS%26viewId%3DqvGDAH2" target="_blank" class="btn btn-add">
                 ➕ 提需求
@@ -54,7 +149,8 @@
     </div>
 
     <div id="status-bar"></div>
-    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px;">📡 正在连接 GitHub...</div>
+    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px; font-size: 12px;">git fetch origin...</div>
+    
     <ul class="issue-list" id="container"></ul>
 
     <script>
@@ -67,8 +163,7 @@
         const CACHE_TIME_KEY = 'dashboard_time';
         const CACHE_DURATION = 60 * 1000; 
 
-        // 🔑 你的 Token (已做防检测切割处理)
-        // 这里的 part1 和 part2 会自动拼起来，千万别把它们手动合在一起写，否则上传会被GitHub作废
+        // 🔑 你的 Token (已分割保护)
         const t_part1 = 'ghp_Hd1MwqMYrdK';
         const t_part2 = 'wYEu8UCqNYVbwQsxolP1xoRSG';
         const MY_TOKEN = t_part1 + t_part2;
@@ -76,17 +171,15 @@
         async function loadIssues(force = false) {
             const container = document.getElementById('container');
             const loading = document.getElementById('loading');
-            const statusBar = document.getElementById('status-bar');
-
+            
             // 1. 检查缓存
             const cachedData = localStorage.getItem(CACHE_KEY);
             const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
             const now = new Date().getTime();
 
             if (!force && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
-                console.log('🚀 命中缓存');
                 renderList(JSON.parse(cachedData));
-                showStatus('⚡️ 数据来自缓存', 'status-cache');
+                showStatus('✔ 已加载本地缓存 (Local Cache)');
                 loading.style.display = 'none';
                 return;
             }
@@ -94,91 +187,85 @@
             // 2. 准备请求
             container.innerHTML = ''; 
             loading.style.display = 'block';
-            statusBar.style.display = 'none';
 
-            // 直接把 Token 塞进请求头里
             const headers = { 'Authorization': `token ${MY_TOKEN}` };
             
             try {
-                const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&sort=updated&direction=desc&per_page=20`;
+                const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&sort=updated&direction=desc&per_page=30`;
                 const response = await fetch(url, { headers: headers }); 
                 
                 if (response.status === 403) {
                     if (cachedData) {
                         renderList(JSON.parse(cachedData));
-                        showStatus('⚠️ 依然限流，显示历史缓存', 'status-warn');
+                        showStatus('⚠ 限流保护中，展示历史数据');
                     } else {
-                        loading.innerHTML = '⚠️ Token 可能已过期或无效';
+                        loading.innerHTML = '⚠ API Rate Limit Exceeded';
                     }
                     return;
                 }
 
                 const data = await response.json();
                 
-                // 写入缓存
                 localStorage.setItem(CACHE_KEY, JSON.stringify(data));
                 localStorage.setItem(CACHE_TIME_KEY, now);
 
                 renderList(data);
                 loading.style.display = 'none';
-                // 提示 Token 生效
-                showStatus('🔓 尊贵VIP模式已激活 (Token生效中)', 'status-cache');
+                showStatus('✔ 远程数据同步完成 (Fetched)');
 
             } catch (e) { 
-                if (cachedData) {
-                    renderList(JSON.parse(cachedData));
-                    showStatus('❌ 网络失败，显示历史缓存', 'status-warn');
-                } else {
-                    loading.innerText = '❌ 加载失败'; 
-                }
+                if (cachedData) renderList(JSON.parse(cachedData));
                 console.error(e); 
             }
         }
 
-        // 渲染列表函数
+        // 渲染列表函数 (适配新样式)
         function renderList(data) {
             const container = document.getElementById('container');
             container.innerHTML = '';
             
             if (!Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 GitHub Issues 新建任务</div>';
+                container.innerHTML = '<div style="padding:20px; color:#5c6370; font-size:12px;">No commits/issues found.</div>';
                 return;
             }
 
             data.forEach(issue => {
                 if (issue.pull_request) return;
                 const li = document.createElement('li');
-                li.className = 'issue-item';
+                // 如果关掉了，加个 closed 类名变灰
+                li.className = issue.state === 'open' ? 'issue-item' : 'issue-item closed';
                 
                 let labelHtml = '';
                 issue.labels.forEach(lbl => { 
                     const color = '#' + lbl.color;
-                    labelHtml += `<span class="label" style="background-color:${color}; border-color:${color}">${lbl.name}</span>`; 
+                    labelHtml += `<span class="label" style="background-color:${color};">${lbl.name}</span>`; 
                 });
 
-                const stateIcon = issue.state === 'open' ? '🟢' : '🟣';
-                
+                // 格式化时间 2026/1/20 20:02
+                const date = new Date(issue.updated_at);
+                const timeStr = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()}`;
+
+                // 模拟 Git Log 结构
                 li.innerHTML = `
-                    <div class="issue-title">
-                        <a href="${issue.html_url}" target="_blank" style="text-decoration:none; color:inherit; display:flex; align-items:center; width:100%">
-                            ${stateIcon} <span style="margin-left:8px">${issue.title}</span>
-                        </a>
+                    <div class="issue-content">
+                        <div class="issue-title">
+                            <a href="${issue.html_url}" target="_blank">${issue.title}</a>
+                        </div>
+                        <div class="labels">${labelHtml}</div>
                     </div>
-                    <div class="labels">${labelHtml}</div>
                     <div class="meta">
-                        <span>#${issue.number}</span>
-                        <span>🕒 ${new Date(issue.updated_at).toLocaleDateString()}</span>
+                        <span>qiao</span> <span style="margin-left: 10px;">${timeStr}</span>
                     </div>
                 `;
                 container.appendChild(li);
             });
         }
 
-        function showStatus(msg, className) {
+        function showStatus(msg) {
             const bar = document.getElementById('status-bar');
             bar.innerText = msg;
-            bar.className = className;
             bar.style.display = 'block';
+            setTimeout(() => { bar.style.display = 'none'; }, 3000);
         }
 
         function forceRefresh() {
