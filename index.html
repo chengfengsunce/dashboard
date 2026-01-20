@@ -7,20 +7,18 @@
     <style>
         /* --- 核心：Git IDE 深色主题配色 --- */
         :root {
-            --bg-color: #1e222d;
-            --text-main: #d7dae0;
-            --text-dim: #636d83;
-            --accent-line: #3b404e;
-            --hover-bg: #282c34;
-            
-            /* 默认颜色 (如果没有匹配到项目) */
+            --bg-color: #1e222d;      
+            --text-main: #d7dae0;     
+            --text-dim: #636d83;      
+            --accent-line: #3b404e;   
+            --hover-bg: #282c34;      
             --default-dot: #abb2bf;
         }
 
         body { 
             background-color: var(--bg-color); 
             color: var(--text-main); 
-            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-family: "Microsoft YaHei", "Consolas", "Monaco", monospace; 
             margin: 0; 
             padding: 20px 40px;
         }
@@ -34,16 +32,27 @@
             padding-bottom: 15px;
             border-bottom: 1px solid var(--accent-line);
         }
+        
         .header h1 { 
             margin: 0; 
             font-size: 20px; 
-            color: #e06c75; /* 换个像 cherry-pick 的红色 */
-            font-weight: normal;
+            color: #d7dae0; 
+            font-weight: bold;
+            display: flex;
+            align-items: center;
         }
         .header h1::before {
-            content: 'root@dev:~/projects $ '; /* 模拟终端提示符 */
-            color: #98c379;
+            content: '📂 '; 
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        .header h1::after {
+            content: ' (origin/main)';
+            color: var(--text-dim);
             font-size: 14px;
+            font-weight: normal;
+            margin-left: 10px;
+            font-family: "Consolas", monospace;
         }
 
         /* --- 按钮组 --- */
@@ -58,39 +67,45 @@
             list-style: none; 
             padding: 0; 
             margin: 0; 
-            margin-left: 10px;
-            border-left: 2px solid var(--accent-line);
+            margin-left: 10px; 
+            border-left: 2px solid var(--accent-line); 
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
 
         .issue-item { 
             position: relative;
-            padding: 12px 0 12px 25px;
+            padding: 10px 0 10px 25px; 
             display: flex; 
             justify-content: space-between;
             align-items: center;
             transition: 0.2s;
-            border-bottom: 1px solid transparent;
+            border-bottom: 1px solid transparent; 
         }
         .issue-item:hover { background-color: var(--hover-bg); }
 
-        /* --- 动态变色圆点 --- */
+        /* --- 动态圆点 --- */
         .issue-item::before {
             content: '';
             position: absolute;
-            left: -6px;
+            left: -6px; 
             top: 50%;
             transform: translateY(-50%);
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: var(--dot-color, var(--default-dot)); /* 使用动态变量 */
-            border: 2px solid var(--bg-color);
-            box-shadow: 0 0 8px var(--dot-color, transparent); /* 让它发光 */
+            background-color: var(--dot-color, var(--default-dot)); 
+            border: 2px solid var(--bg-color); 
+            z-index: 2;
         }
         
         .issue-item.closed::before {
             background-color: var(--text-dim) !important;
             box-shadow: none !important;
+        }
+        .issue-item.closed .issue-title a {
+            color: var(--text-dim);
+            text-decoration: line-through;
         }
 
         /* --- 内容区域 --- */
@@ -101,57 +116,51 @@
             flex: 1;
         }
 
-        /* 项目徽章 (Project Badge) */
+        /* 项目徽章：颜色完全动态化 */
         .project-badge {
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: #1e222d; /*由于背景色亮，文字用深色*/
-            background-color: var(--dot-color, var(--default-dot));
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 3px;
+            /* 文字颜色继承圆点颜色 */
+            color: var(--dot-color); 
+            border: 1px solid var(--dot-color);
+            opacity: 0.9;
+            font-family: "Consolas", monospace;
             min-width: 60px;
             text-align: center;
+            font-weight: bold;
         }
 
         .issue-title a { 
             text-decoration: none; 
             color: var(--text-main); 
             font-size: 14px;
-            font-weight: normal;
         }
         .issue-title a:hover { text-decoration: underline; color: #61afef; }
 
-        .issue-title .closed-del {
-            text-decoration: line-through;
-            color: var(--text-dim);
-        }
-
-        /* --- 其他标签 --- */
-        .labels { display: flex; gap: 5px; }
-        .label { 
-            font-size: 10px; 
-            padding: 1px 6px; 
-            border-radius: 4px; 
-            border: 1px solid #3b404e;
-            color: #abb2bf; 
-        }
-
+        /* --- 右侧信息 --- */
         .meta { 
             font-size: 12px; 
             color: var(--text-dim); 
-            min-width: 150px;
+            min-width: 180px;
             text-align: right;
             font-family: "Consolas", monospace;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
         }
 
-        /* --- 状态栏 --- */
         #status-bar { text-align: center; font-size: 12px; margin-bottom: 10px; padding: 5px; border-radius: 4px; display: none; background: #21252b; color: #98c379; border: 1px solid #282c34;}
+        
+        .labels { display: flex; gap: 5px; }
+        /* 普通标签颜色变淡一点，避免抢戏 */
+        .label-tag { font-size: 10px; padding: 0 5px; border: 1px solid #3b404e; color: #5c6370; border-radius: 3px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>Overview</h1>
+        <h1>售后工具开发看板</h1>
         <div class="header-actions">
             <a href="https://docs.dingtalk.com/i/nodes/vy20BglGWOeEwPNvTYvLj2brJA7depqY?iframeQuery=entrance%3Ddata%26sheetId%3DhERWDMS%26viewId%3DqvGDAH2" target="_blank" class="btn btn-add">
                 ➕ 提需求
@@ -163,29 +172,24 @@
     </div>
 
     <div id="status-bar"></div>
-    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px; font-size: 12px;">scanning repository...</div>
+    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px; font-size: 12px;">正在连接代码库...</div>
+    
     <ul class="issue-list" id="container"></ul>
 
     <script>
-        // ✅ 配置区
+        // ✅ 基础配置
         const owner = 'chengfengsunce'; 
         const repo = 'dashboard'; 
         const CACHE_KEY = 'dashboard_data';
         const CACHE_TIME_KEY = 'dashboard_time';
         const CACHE_DURATION = 60 * 1000; 
 
-        // 🔑 Token (自动拼合)
+        // ✅ Token (分割保护)
         const t_part1 = 'ghp_Hd1MwqMYrdK';
         const t_part2 = 'wYEu8UCqNYVbwQsxolP1xoRSG';
         const MY_TOKEN = t_part1 + t_part2;
 
-        // 🎨 项目配色定义 (在这里配置你的工具颜色!)
-        const PROJECT_CONFIG = {
-            '项目:大屏': { color: '#c678dd', name: '大屏' },     // 紫色
-            '项目:DeepScan': { color: '#61afef', name: 'DeepScan' }, // 蓝色
-            '项目:PinPoint': { color: '#98c379', name: 'PinPoint' }, // 绿色
-            '项目:轨迹': { color: '#e5c07b', name: '轨迹' }       // 黄色
-        };
+        // ❌ PROJECT_CONFIG 已经被删除！代码完全动态化！
 
         async function loadIssues(force = false) {
             const container = document.getElementById('container');
@@ -197,7 +201,7 @@
 
             if (!force && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
                 renderList(JSON.parse(cachedData));
-                showStatus('✔ Cache Loaded');
+                showStatus('✔ 已加载本地缓存');
                 loading.style.display = 'none';
                 return;
             }
@@ -214,7 +218,7 @@
                 if (response.status === 403) {
                     if (cachedData) {
                         renderList(JSON.parse(cachedData));
-                        showStatus('⚠ Rate Limit / Showing Cache');
+                        showStatus('⚠ 触发限流，已展示历史数据');
                     }
                     return;
                 }
@@ -222,9 +226,10 @@
                 const data = await response.json();
                 localStorage.setItem(CACHE_KEY, JSON.stringify(data));
                 localStorage.setItem(CACHE_TIME_KEY, now);
+
                 renderList(data);
                 loading.style.display = 'none';
-                showStatus('✔ Live Data Fetched');
+                showStatus('✔ 最新数据同步完成');
 
             } catch (e) { 
                 if (cachedData) renderList(JSON.parse(cachedData));
@@ -237,7 +242,7 @@
             container.innerHTML = '';
             
             if (!Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div style="padding:20px; color:#5c6370; font-size:12px;">No tasks found.</div>';
+                container.innerHTML = '<div style="padding:20px; color:#5c6370; font-size:12px;">暂无开发任务</div>';
                 return;
             }
 
@@ -247,47 +252,53 @@
                 const li = document.createElement('li');
                 li.className = issue.state === 'open' ? 'issue-item' : 'issue-item closed';
                 
-                // 1. 寻找项目标签
-                let projectStyle = null;
+                // --- 🤖 智能动态识别逻辑 开始 ---
+                let projectInfo = null;
                 let otherLabelsHtml = '';
 
+                // 遍历所有标签
                 issue.labels.forEach(lbl => {
-                    // 如果标签在我们的配置里，就把它当做项目标签
-                    if (PROJECT_CONFIG[lbl.name]) {
-                        projectStyle = PROJECT_CONFIG[lbl.name];
+                    // 规则：只要标签名字以 "项目:" 开头
+                    if (lbl.name.startsWith('项目:')) {
+                        // 1. 提取颜色：直接用 GitHub API 返回的颜色 (lbl.color 是不带#的hex)
+                        // 2. 提取名字：把 "项目:" 删掉，剩下的就是名字
+                        projectInfo = {
+                            color: '#' + lbl.color,
+                            name: lbl.name.replace('项目:', '') 
+                        };
                     } else {
-                        // 其他普通标签 (如 bug, feature) 正常显示
-                        otherLabelsHtml += `<span class="label">${lbl.name}</span>`; 
+                        // 其他普通标签
+                        otherLabelsHtml += `<span class="label-tag">${lbl.name}</span>`; 
                     }
                 });
+                // --- 🤖 智能动态识别逻辑 结束 ---
 
-                // 2. 注入颜色变量
-                if (projectStyle) {
-                    li.style.setProperty('--dot-color', projectStyle.color);
+                // 设置颜色变量
+                if (projectInfo) {
+                    li.style.setProperty('--dot-color', projectInfo.color);
+                } else {
+                    li.style.setProperty('--dot-color', '#abb2bf'); // 默认灰
                 }
 
-                // 3. 构造项目徽章 HTML
-                const badgeHtml = projectStyle 
-                    ? `<span class="project-badge">${projectStyle.name}</span>` 
-                    : `<span class="project-badge" style="background:#5c6370; color:#fff">Task</span>`;
+                // 生成项目徽章 (使用提取出来的动态颜色和名字)
+                const badgeHtml = projectInfo 
+                    ? `<span class="project-badge">${projectInfo.name}</span>` 
+                    : `<span class="project-badge" style="border-color:#5c6370; color:#5c6370">Task</span>`;
 
                 const date = new Date(issue.updated_at);
-                const timeStr = `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()}`;
-                
-                // 标题样式：如果是关闭的，加删除线
-                const titleHtml = issue.state === 'open' 
-                    ? `<a href="${issue.html_url}" target="_blank">${issue.title}</a>`
-                    : `<span class="closed-del">${issue.title} (Done)</span>`;
+                const timeStr = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()}`;
 
                 li.innerHTML = `
                     <div class="issue-content">
                         ${badgeHtml}
-                        <div class="issue-title">${titleHtml}</div>
+                        <div class="issue-title">
+                            <a href="${issue.html_url}" target="_blank">${issue.title}</a>
+                        </div>
                         <div class="labels">${otherLabelsHtml}</div>
                     </div>
                     <div class="meta">
                         <span>qiao</span>
-                        <span style="margin-left: 10px;">${timeStr}</span>
+                        <span>${timeStr}</span>
                     </div>
                 `;
                 container.appendChild(li);
