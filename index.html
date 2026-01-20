@@ -5,71 +5,215 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>售后研发控制台</title>
     <style>
-        /* 深色黑客风样式 */
-        body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; margin: 0; padding: 20px; }
-        .header { border-bottom: 1px solid #30363d; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { margin: 0; font-size: 18px; color: #58a6ff; }
-        .issue-list { list-style: none; padding: 0; margin: 0; }
-        .issue-item { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; margin-bottom: 12px; }
-        .issue-title { font-size: 16px; font-weight: 600; color: #e6edf3; margin-bottom: 8px; display: flex; align-items: center; }
-        .labels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-        .label { font-size: 12px; padding: 2px 8px; border-radius: 2em; border: 1px solid #30363d; color: #8b949e; }
-        .label[data-name*="进行中"] { color: #58a6ff; border-color: rgba(56,139,253,0.4); background: rgba(56,139,253,0.1); }
-        .label[data-name*="已发布"] { color: #3fb950; border-color: rgba(63,185,80,0.4); background: rgba(63,185,80,0.1); }
-        .meta { margin-top: 12px; font-size: 12px; color: #8b949e; display: flex; justify-content: space-between; }
+        /* --- 全局深色黑客风样式 --- */
+        body { 
+            background-color: #0d1117; 
+            color: #c9d1d9; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+        }
+
+        /* --- 头部区域 --- */
+        .header { 
+            border-bottom: 1px solid #30363d; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 18px; 
+            color: #58a6ff; /* GitHub 蓝 */
+        }
+
+        /* --- 按钮组样式 --- */
+        .header-actions { 
+            display: flex; 
+            gap: 10px; 
+        }
+        .btn { 
+            text-decoration: none; 
+            padding: 6px 12px; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            display: flex; 
+            align-items: center;
+            line-height: 20px;
+        }
+        /* 刷新按钮 - 灰色 */
+        .btn-refresh { 
+            background-color: #21262d; 
+            color: #c9d1d9; 
+            border: 1px solid #30363d; 
+        }
+        .btn-refresh:hover { 
+            border-color: #8b949e; 
+            background-color: #30363d; 
+        }
+        /* 提需求按钮 - 绿色 */
+        .btn-add { 
+            background-color: #238636; 
+            color: #ffffff; 
+            border: 1px solid rgba(240,246,252,0.1); 
+        }
+        .btn-add:hover { 
+            background-color: #2ea043; 
+        }
+
+        /* --- 列表区域 --- */
+        .issue-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+        .issue-item { 
+            background-color: #161b22; 
+            border: 1px solid #30363d; 
+            border-radius: 6px; 
+            padding: 16px; 
+            margin-bottom: 12px; 
+            transition: 0.2s; 
+        }
+        .issue-item:hover { 
+            border-color: #8b949e; 
+        }
+        .issue-title { 
+            font-size: 16px; 
+            font-weight: 600; 
+            color: #e6edf3; 
+            margin-bottom: 8px; 
+            display: flex; 
+            align-items: center; 
+        }
+        
+        /* --- 标签系统 --- */
+        .labels { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 6px; 
+            margin-top: 8px; 
+        }
+        .label { 
+            font-size: 12px; 
+            padding: 2px 8px; 
+            border-radius: 2em; 
+            border: 1px solid transparent; 
+            color: #fff; 
+            font-weight: 500; 
+            /* 让标签文字稍微亮一点 */
+            text-shadow: 0 0 1px rgba(0,0,0,0.5); 
+        }
+
+        /* --- 底部元数据 --- */
+        .meta { 
+            margin-top: 12px; 
+            font-size: 12px; 
+            color: #8b949e; 
+            display: flex; 
+            justify-content: space-between; 
+        }
     </style>
 </head>
 <body>
-    <div class="header"><h1>🚀 研发实时看板</h1><span onclick="loadIssues()" style="cursor:pointer">🔄 刷新</span></div>
-    <div id="loading" style="text-align:center; color:#58a6ff;">📡 正在连接 GitHub 卫星数据...</div>
+
+    <div class="header">
+        <h1>🚀 研发实时看板</h1>
+        <div class="header-actions">
+            <a href="https://docs.dingtalk.com/" target="_blank" class="btn btn-add">
+                ➕ 提需求
+            </a>
+            
+            <span onclick="loadIssues()" class="btn btn-refresh">
+                🔄 刷新
+            </span>
+        </div>
+    </div>
+
+    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px;">
+        📡 正在连接 GitHub 卫星数据...
+    </div>
+    
     <ul class="issue-list" id="container"></ul>
 
     <script>
-        // ✅ 这里的配置已经改为你的 GitHub 账号
+        // ✅ 配置区：你的 GitHub 账号和仓库
         const owner = 'chengfengsunce'; 
         const repo = 'dashboard'; 
 
         async function loadIssues() {
             const container = document.getElementById('container');
             const loading = document.getElementById('loading');
-            container.innerHTML = ''; loading.style.display = 'block';
+            
+            // 清空列表并显示加载中
+            container.innerHTML = ''; 
+            loading.style.display = 'block';
+            
             try {
-                // ⚡️ 改为读取 GitHub API，不受 Gitee 限制
+                // 请求 GitHub API
                 const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&sort=updated&direction=desc&per_page=20`;
                 const response = await fetch(url);
                 
+                // 处理 403 限流
                 if (response.status === 403) {
-                     loading.innerHTML = '⚠️ 刷新太快了，请喝口水再试';
-                     return;
+                    loading.innerHTML = '⚠️ 访问太快了，触发 GitHub 限流，请稍后再试';
+                    return;
                 }
 
                 const data = await response.json();
                 loading.style.display = 'none';
 
-                if(data.length === 0) { 
-                    container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 GitHub "Issues" 栏新建任务</div>'; 
-                    return; 
+                // 处理空数据
+                if (!Array.isArray(data) || data.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 GitHub Issues 新建任务</div>';
+                    return;
                 }
 
+                // 渲染列表
                 data.forEach(issue => {
-                    // 过滤掉 Pull Requests，只显示任务
+                    // 排除 Pull Request
                     if (issue.pull_request) return;
 
                     const li = document.createElement('li');
                     li.className = 'issue-item';
+                    
+                    // 处理彩色标签
                     let labelHtml = '';
-                    issue.labels.forEach(lbl => { labelHtml += `<span class="label" data-name="${lbl.name}" style="border-color:#${lbl.color};color:#${lbl.color}">${lbl.name}</span>`; });
+                    issue.labels.forEach(lbl => { 
+                        const color = '#' + lbl.color;
+                        labelHtml += `<span class="label" style="background-color:${color}; border-color:${color}">${lbl.name}</span>`; 
+                    });
+
+                    // 状态图标 (Open=绿, Closed=紫)
                     const stateIcon = issue.state === 'open' ? '🟢' : '🟣';
                     
                     li.innerHTML = `
-                        <div class="issue-title">${stateIcon} ${issue.title}</div>
+                        <div class="issue-title">
+                            <a href="${issue.html_url}" target="_blank" style="text-decoration:none; color:inherit; display:flex; align-items:center; width:100%">
+                                ${stateIcon} <span style="margin-left:8px">${issue.title}</span>
+                            </a>
+                        </div>
                         <div class="labels">${labelHtml}</div>
-                        <div class="meta"><span>#${issue.number}</span><span>🕒 ${new Date(issue.updated_at).toLocaleDateString()}</span></div>
+                        <div class="meta">
+                            <span>#${issue.number}</span>
+                            <span>🕒 ${new Date(issue.updated_at).toLocaleDateString()}</span>
+                        </div>
                     `;
                     container.appendChild(li);
                 });
-            } catch (e) { loading.innerText = '❌ 加载失败'; console.error(e); }
+
+            } catch (e) { 
+                loading.innerText = '❌ 加载失败，请检查网络或配置'; 
+                console.error(e); 
+            }
         }
+        
+        // 页面加载自动运行
         loadIssues();
     </script>
 </body>
