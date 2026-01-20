@@ -25,9 +25,9 @@
     <ul class="issue-list" id="container"></ul>
 
     <script>
-        // ✅ 已根据你的截图自动配置好: 用户 qiao, 仓库 dashboard
-        const owner = 'beilushouhou';
-        const repo = 'control-panel';
+        // ✅ 这里是关键！必须和你的 Gitee 浏览器地址栏一致
+        const owner = 'beilushouhou'; 
+        const repo = 'control-panel'; 
 
         async function loadIssues() {
             const container = document.getElementById('container');
@@ -40,9 +40,9 @@
                 const data = await response.json();
                 loading.style.display = 'none';
 
-                if(data.length === 0) {
-                    container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去上方 "Issues" 栏新建任务</div>';
-                    return;
+                if(data.length === 0) { 
+                    container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 Gitee "Issues" 栏新建任务</div>'; 
+                    return; 
                 }
 
                 data.forEach(issue => {
@@ -51,7 +51,7 @@
                     let labelHtml = '';
                     issue.labels.forEach(lbl => { labelHtml += `<span class="label" data-name="${lbl.name}">${lbl.name}</span>`; });
                     const stateIcon = issue.state === 'open' ? '🟢' : '🟣';
-
+                    
                     li.innerHTML = `
                         <div class="issue-title">${stateIcon} ${issue.title}</div>
                         <div class="labels">${labelHtml}</div>
@@ -59,11 +59,9 @@
                     `;
                     container.appendChild(li);
                 });
-            } catch (e) { loading.innerText = '❌ 加载失败，请检查仓库是否开源'; }
+            } catch (e) { loading.innerText = '❌ 加载失败，请检查仓库是否开源'; console.error(e); }
         }
         loadIssues();
     </script>
 </body>
-
 </html>
-
