@@ -6,7 +6,7 @@
     <title>售后研发控制台</title>
     <style>
         /* 深色黑客风样式 */
-        body { background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; margin: 0; padding: 20px; }
+        body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; margin: 0; padding: 20px; }
         .header { border-bottom: 1px solid #30363d; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
         .header h1 { margin: 0; font-size: 18px; color: #58a6ff; }
         .issue-list { list-style: none; padding: 0; margin: 0; }
@@ -21,35 +21,44 @@
 </head>
 <body>
     <div class="header"><h1>🚀 研发实时看板</h1><span onclick="loadIssues()" style="cursor:pointer">🔄 刷新</span></div>
-    <div id="loading" style="text-align:center; color:#58a6ff;">📡 正在连接 Gitee 卫星数据...</div>
+    <div id="loading" style="text-align:center; color:#58a6ff;">📡 正在连接 GitHub 卫星数据...</div>
     <ul class="issue-list" id="container"></ul>
 
     <script>
-        // ✅ 这里是关键！必须和你的 Gitee 浏览器地址栏一致
-        const owner = 'beilushouhou'; 
-        const repo = 'control-panel'; 
+        // ✅ 这里的配置已经改为你的 GitHub 账号
+        const owner = 'chengfengsunce'; 
+        const repo = 'dashboard'; 
 
         async function loadIssues() {
             const container = document.getElementById('container');
             const loading = document.getElementById('loading');
             container.innerHTML = ''; loading.style.display = 'block';
             try {
-                // 读取 Gitee Issue 接口
-                const url = `https://gitee.com/api/v5/repos/${owner}/${repo}/issues?state=all&sort=updated&direction=desc&per_page=20`;
+                // ⚡️ 改为读取 GitHub API，不受 Gitee 限制
+                const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&sort=updated&direction=desc&per_page=20`;
                 const response = await fetch(url);
+                
+                if (response.status === 403) {
+                     loading.innerHTML = '⚠️ 刷新太快了，请喝口水再试';
+                     return;
+                }
+
                 const data = await response.json();
                 loading.style.display = 'none';
 
                 if(data.length === 0) { 
-                    container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 Gitee "Issues" 栏新建任务</div>'; 
+                    container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 GitHub "Issues" 栏新建任务</div>'; 
                     return; 
                 }
 
                 data.forEach(issue => {
+                    // 过滤掉 Pull Requests，只显示任务
+                    if (issue.pull_request) return;
+
                     const li = document.createElement('li');
                     li.className = 'issue-item';
                     let labelHtml = '';
-                    issue.labels.forEach(lbl => { labelHtml += `<span class="label" data-name="${lbl.name}">${lbl.name}</span>`; });
+                    issue.labels.forEach(lbl => { labelHtml += `<span class="label" data-name="${lbl.name}" style="border-color:#${lbl.color};color:#${lbl.color}">${lbl.name}</span>`; });
                     const stateIcon = issue.state === 'open' ? '🟢' : '🟣';
                     
                     li.innerHTML = `
@@ -59,7 +68,7 @@
                     `;
                     container.appendChild(li);
                 });
-            } catch (e) { loading.innerText = '❌ 加载失败，请检查仓库是否开源'; console.error(e); }
+            } catch (e) { loading.innerText = '❌ 加载失败'; console.error(e); }
         }
         loadIssues();
     </script>
