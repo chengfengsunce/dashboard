@@ -6,118 +6,37 @@
     <title>售后研发控制台</title>
     <style>
         /* --- 全局深色黑客风样式 --- */
-        body { 
-            background-color: #0d1117; 
-            color: #c9d1d9; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-        }
-
+        body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; margin: 0; padding: 20px; }
+        
         /* --- 头部区域 --- */
-        .header { 
-            border-bottom: 1px solid #30363d; 
-            padding-bottom: 15px; 
-            margin-bottom: 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        .header h1 { 
-            margin: 0; 
-            font-size: 18px; 
-            color: #58a6ff; /* GitHub 蓝 */
-        }
+        .header { border-bottom: 1px solid #30363d; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; font-size: 18px; color: #58a6ff; }
 
         /* --- 按钮组样式 --- */
-        .header-actions { 
-            display: flex; 
-            gap: 10px; 
-        }
-        .btn { 
-            text-decoration: none; 
-            padding: 6px 12px; 
-            border-radius: 6px; 
-            font-size: 13px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            display: flex; 
-            align-items: center;
-            line-height: 20px;
-        }
-        /* 刷新按钮 - 灰色 */
-        .btn-refresh { 
-            background-color: #21262d; 
-            color: #c9d1d9; 
-            border: 1px solid #30363d; 
-        }
-        .btn-refresh:hover { 
-            border-color: #8b949e; 
-            background-color: #30363d; 
-        }
-        /* 提需求按钮 - 绿色 */
-        .btn-add { 
-            background-color: #238636; 
-            color: #ffffff; 
-            border: 1px solid rgba(240,246,252,0.1); 
-        }
-        .btn-add:hover { 
-            background-color: #2ea043; 
-        }
+        .header-actions { display: flex; gap: 10px; }
+        .btn { text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; line-height: 20px; }
+        .btn-refresh { background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+        .btn-refresh:hover { border-color: #8b949e; background-color: #30363d; }
+        .btn-add { background-color: #238636; color: #ffffff; border: 1px solid rgba(240,246,252,0.1); }
+        .btn-add:hover { background-color: #2ea043; }
 
         /* --- 列表区域 --- */
-        .issue-list { 
-            list-style: none; 
-            padding: 0; 
-            margin: 0; 
-        }
-        .issue-item { 
-            background-color: #161b22; 
-            border: 1px solid #30363d; 
-            border-radius: 6px; 
-            padding: 16px; 
-            margin-bottom: 12px; 
-            transition: 0.2s; 
-        }
-        .issue-item:hover { 
-            border-color: #8b949e; 
-        }
-        .issue-title { 
-            font-size: 16px; 
-            font-weight: 600; 
-            color: #e6edf3; 
-            margin-bottom: 8px; 
-            display: flex; 
-            align-items: center; 
-        }
+        .issue-list { list-style: none; padding: 0; margin: 0; }
+        .issue-item { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; margin-bottom: 12px; transition: 0.2s; }
+        .issue-item:hover { border-color: #8b949e; }
+        .issue-title { font-size: 16px; font-weight: 600; color: #e6edf3; margin-bottom: 8px; display: flex; align-items: center; }
         
         /* --- 标签系统 --- */
-        .labels { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 6px; 
-            margin-top: 8px; 
-        }
-        .label { 
-            font-size: 12px; 
-            padding: 2px 8px; 
-            border-radius: 2em; 
-            border: 1px solid transparent; 
-            color: #fff; 
-            font-weight: 500; 
-            /* 让标签文字稍微亮一点 */
-            text-shadow: 0 0 1px rgba(0,0,0,0.5); 
-        }
+        .labels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .label { font-size: 12px; padding: 2px 8px; border-radius: 2em; border: 1px solid transparent; color: #fff; font-weight: 500; text-shadow: 0 0 1px rgba(0,0,0,0.5); }
 
         /* --- 底部元数据 --- */
-        .meta { 
-            margin-top: 12px; 
-            font-size: 12px; 
-            color: #8b949e; 
-            display: flex; 
-            justify-content: space-between; 
-        }
+        .meta { margin-top: 12px; font-size: 12px; color: #8b949e; display: flex; justify-content: space-between; }
+        
+        /* --- 状态提示条 --- */
+        #status-bar { text-align: center; font-size: 12px; margin-bottom: 10px; padding: 5px; border-radius: 4px; display: none; }
+        .status-warn { background: rgba(210, 153, 34, 0.2); color: #d29922; border: 1px solid rgba(210, 153, 34, 0.4); }
+        .status-cache { background: rgba(56, 139, 253, 0.1); color: #79c0ff; border: 1px solid rgba(56, 139, 253, 0.4); }
     </style>
 </head>
 <body>
@@ -128,93 +47,146 @@
             <a href="https://docs.dingtalk.com/i/nodes/vy20BglGWOeEwPNvTYvLj2brJA7depqY?iframeQuery=entrance%3Ddata%26sheetId%3DhERWDMS%26viewId%3DqvGDAH2" target="_blank" class="btn btn-add">
                 ➕ 提需求
             </a>
-            
-            <span onclick="loadIssues()" class="btn btn-refresh">
+            <span onclick="forceRefresh()" class="btn btn-refresh">
                 🔄 刷新
             </span>
         </div>
     </div>
 
-    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px;">
-        📡 正在连接 GitHub 卫星数据...
-    </div>
-    
+    <div id="status-bar"></div>
+    <div id="loading" style="text-align:center; color:#58a6ff; margin-top: 20px;">📡 正在连接 GitHub...</div>
     <ul class="issue-list" id="container"></ul>
 
     <script>
-        // ✅ 配置区：GitHub 账号和仓库
+        // ✅ 配置区
         const owner = 'chengfengsunce'; 
         const repo = 'dashboard'; 
+        
+        // ⚙️ 缓存配置 (60秒内不重复请求，保护额度)
+        const CACHE_KEY = 'dashboard_data';
+        const CACHE_TIME_KEY = 'dashboard_time';
+        const CACHE_DURATION = 60 * 1000; 
 
-        async function loadIssues() {
+        // ⚙️ Token配置 (从本地读取，绝对安全)
+        const TOKEN_KEY = 'github_token';
+
+        async function loadIssues(force = false) {
             const container = document.getElementById('container');
             const loading = document.getElementById('loading');
-            
-            // 清空列表并显示加载中
+            const statusBar = document.getElementById('status-bar');
+
+            // 1. 检查缓存 (如果是强制刷新，则跳过此步)
+            const cachedData = localStorage.getItem(CACHE_KEY);
+            const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+            const now = new Date().getTime();
+
+            if (!force && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+                console.log('🚀 命中缓存，节省一次请求');
+                renderList(JSON.parse(cachedData));
+                showStatus('⚡️ 数据来自缓存 (实时性 < 1分钟)', 'status-cache');
+                loading.style.display = 'none';
+                return;
+            }
+
+            // 2. 准备请求 (检查有没有Token)
             container.innerHTML = ''; 
             loading.style.display = 'block';
+            statusBar.style.display = 'none';
+
+            const localToken = localStorage.getItem(TOKEN_KEY);
+            const headers = localToken ? { 'Authorization': `token ${localToken}` } : {};
             
             try {
-                // 请求 GitHub API
                 const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&sort=updated&direction=desc&per_page=20`;
-                const response = await fetch(url);
+                const response = await fetch(url, { headers: headers }); // 带上Token(如果有)
                 
-                // 处理 403 限流
+                // 3. 处理限流 (403)
                 if (response.status === 403) {
-                    loading.innerHTML = '⚠️ 访问太快了，触发 GitHub 限流，请稍后再试';
+                    if (cachedData) {
+                        renderList(JSON.parse(cachedData));
+                        showStatus('⚠️ 访问太快触发限流，已展示历史数据', 'status-warn');
+                    } else {
+                        loading.innerHTML = '⚠️ 触发 GitHub 限流且无缓存，请休息一会再试';
+                    }
                     return;
                 }
 
+                // 4. 请求成功
                 const data = await response.json();
+                
+                // 写入缓存
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+                localStorage.setItem(CACHE_TIME_KEY, now);
+
+                renderList(data);
                 loading.style.display = 'none';
-
-                // 处理空数据
-                if (!Array.isArray(data) || data.length === 0) {
-                    container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 GitHub Issues 新建任务</div>';
-                    return;
-                }
-
-                // 渲染列表
-                data.forEach(issue => {
-                    // 排除 Pull Request
-                    if (issue.pull_request) return;
-
-                    const li = document.createElement('li');
-                    li.className = 'issue-item';
-                    
-                    // 处理彩色标签
-                    let labelHtml = '';
-                    issue.labels.forEach(lbl => { 
-                        const color = '#' + lbl.color;
-                        labelHtml += `<span class="label" style="background-color:${color}; border-color:${color}">${lbl.name}</span>`; 
-                    });
-
-                    // 状态图标 (Open=绿, Closed=紫)
-                    const stateIcon = issue.state === 'open' ? '🟢' : '🟣';
-                    
-                    li.innerHTML = `
-                        <div class="issue-title">
-                            <a href="${issue.html_url}" target="_blank" style="text-decoration:none; color:inherit; display:flex; align-items:center; width:100%">
-                                ${stateIcon} <span style="margin-left:8px">${issue.title}</span>
-                            </a>
-                        </div>
-                        <div class="labels">${labelHtml}</div>
-                        <div class="meta">
-                            <span>🕒 ${new Date(issue.updated_at).toLocaleDateString()}</span>
-                        </div>
-                    `;
-                    container.appendChild(li);
-                });
+                if(localToken) showStatus('🔓 已启用 Token 加速模式', 'status-cache');
 
             } catch (e) { 
-                loading.innerText = '❌ 加载失败，请检查网络或配置'; 
+                // 网络错误时也尝试读取缓存
+                if (cachedData) {
+                    renderList(JSON.parse(cachedData));
+                    showStatus('❌ 网络连接失败，已展示历史数据', 'status-warn');
+                } else {
+                    loading.innerText = '❌ 加载失败，请检查网络'; 
+                }
                 console.error(e); 
             }
         }
+
+        // 渲染列表函数
+        function renderList(data) {
+            const container = document.getElementById('container');
+            container.innerHTML = '';
+            
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b949e">暂无任务<br>请去 GitHub Issues 新建任务</div>';
+                return;
+            }
+
+            data.forEach(issue => {
+                if (issue.pull_request) return;
+                const li = document.createElement('li');
+                li.className = 'issue-item';
+                
+                let labelHtml = '';
+                issue.labels.forEach(lbl => { 
+                    const color = '#' + lbl.color;
+                    labelHtml += `<span class="label" style="background-color:${color}; border-color:${color}">${lbl.name}</span>`; 
+                });
+
+                const stateIcon = issue.state === 'open' ? '🟢' : '🟣';
+                
+                li.innerHTML = `
+                    <div class="issue-title">
+                        <a href="${issue.html_url}" target="_blank" style="text-decoration:none; color:inherit; display:flex; align-items:center; width:100%">
+                            ${stateIcon} <span style="margin-left:8px">${issue.title}</span>
+                        </a>
+                    </div>
+                    <div class="labels">${labelHtml}</div>
+                    <div class="meta">
+                        <span>#${issue.number}</span>
+                        <span>🕒 ${new Date(issue.updated_at).toLocaleDateString()}</span>
+                    </div>
+                `;
+                container.appendChild(li);
+            });
+        }
+
+        function showStatus(msg, className) {
+            const bar = document.getElementById('status-bar');
+            bar.innerText = msg;
+            bar.className = className;
+            bar.style.display = 'block';
+        }
+
+        // 强制刷新 (忽略缓存)
+        function forceRefresh() {
+            loadIssues(true);
+        }
         
-        // 页面加载自动运行
+        // 首次加载
         loadIssues();
     </script>
 </body>
 </html>
-
