@@ -5,43 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>售后研发控制台</title>
     <style>
-        /* --- 核心：IDE 深蓝灰主题 (One Dark / Dracula 风格) --- */
+        /* --- 核心：IDE 深蓝灰主题 (One Dark 风格) --- */
         :root {
-            /* 👇 这里的颜色调成了深蓝灰，不再是纯黑 */
-            --bg-color: #23272e;      
-            --text-main: #abb2bf;     /* 柔和的灰白文字 */
-            --text-dim: #5c6370;      /* 注释文字颜色 */
-            --accent-line: #3b4048;   /* 线条颜色，稍微亮一点以便看清 */
-            --hover-bg: #2c313a;      /* 鼠标悬停色 */
+            --bg-color: #23272e;      /* 这种深蓝灰正是你要求的 IDE 风格背景 */
+            --text-main: #abb2bf;     
+            --text-dim: #5c6370;      
+            --accent-line: #3b4048;   /* 极简分割线 */
+            --hover-bg: #2c313a;      
             --default-dot: #5c6370;
+            --commit-blue: #61afef;   /* 代码提交记录的专属蓝色 */
         }
 
         body { 
             background-color: var(--bg-color); 
             color: var(--text-main); 
-            /* 字体使用最干净的无衬线字体，配合代码字体 */
             font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0; 
-            padding: 30px 50px; /* 增加一点留白，更有呼吸感 */
+            padding: 30px 50px; /* 极简布局，留白舒适 */
         }
         
-        /* --- 头部区域 (极致简约) --- */
+        /* --- 头部区域 (无图标极简设计) --- */
         .header { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             margin-bottom: 30px;
-            /* 去掉底下的分割线，更加一体化 */
-            /* border-bottom: 1px solid var(--accent-line); */ 
         }
         
         .header h1 { 
             margin: 0; 
             font-size: 22px; 
-            color: #fff; /* 标题用纯白亮一点 */
+            color: #fff; 
             font-weight: bold;
-            letter-spacing: 0.5px;
-            /* 没有任何图标 */
+            /* 已按要求删除了所有图标 */
         }
 
         /* --- 按钮组 --- */
@@ -49,15 +45,15 @@
         .btn { text-decoration: none; padding: 6px 14px; border-radius: 4px; font-size: 13px; cursor: pointer; display: flex; align-items: center; border: 1px solid transparent; transition: 0.2s; font-weight: 500;}
         .btn-refresh { background-color: #2c313a; color: #abb2bf; }
         .btn-refresh:hover { background-color: #3e4451; color: #fff; }
-        .btn-add { background-color: #98c379; color: #23272e; font-weight: bold; } /* 绿色按钮 */
+        .btn-add { background-color: #98c379; color: #23272e; font-weight: bold; }
         .btn-add:hover { background-color: #7eb05e; }
 
-        /* --- 列表区域 --- */
+        /* --- 列表区域 (Git Log 风格时间轴) --- */
         .issue-list { 
             list-style: none; 
             padding: 0; 
             margin: 0; 
-            margin-left: 8px; /* 调整左边距 */
+            margin-left: 8px; 
             border-left: 2px solid var(--accent-line); /* 贯穿竖线 */
             padding-top: 5px;
             padding-bottom: 20px;
@@ -71,9 +67,9 @@
             align-items: center;
             transition: 0.2s;
         }
-        .issue-item:hover { background-color: var(--hover-bg); margin-left: -20px; padding-left: 55px; width: 100%; border-radius: 4px;} /* 悬停微动特效 */
+        .issue-item:hover { background-color: var(--hover-bg); margin-left: -20px; padding-left: 55px; width: 100%; border-radius: 4px;}
 
-        /* --- 那个圆点 --- */
+        /* --- 动态圆点 --- */
         .issue-item::before {
             content: '';
             position: absolute;
@@ -84,18 +80,20 @@
             height: 10px;
             border-radius: 50%;
             background-color: var(--dot-color, var(--default-dot)); 
-            border: 3px solid var(--bg-color); /* 边框颜色和背景一致，制造空心感 */
+            border: 3px solid var(--bg-color); /* 空心感效果 */
             z-index: 2;
-            transition: 0.2s;
         }
         
-        /* 悬停时圆点变大一点 */
-        .issue-item:hover::before { transform: translateY(-50%) scale(1.2); }
+        /* 代码提交记录 (Commit) 的圆点发光效果 */
+        .issue-item.is-commit::before {
+            box-shadow: 0 0 8px var(--commit-blue);
+        }
 
+        /* 任务完成后的样式 */
         .issue-item.closed::before { background-color: var(--text-dim) !important; }
         .issue-item.closed .issue-title a { color: var(--text-dim); text-decoration: line-through; }
 
-        /* --- 内容区域 --- */
+        /* --- 内容展示 --- */
         .issue-content {
             display: flex;
             align-items: center;
@@ -103,18 +101,17 @@
             flex: 1;
         }
 
-        /* 徽章 (极简胶囊风格) */
+        /* 动态徽章 (自动识别项目) */
         .project-badge {
             font-size: 11px;
             padding: 2px 8px;
             border-radius: 4px;
-            color: #23272e; /* 文字用深色，背景用亮色 */
+            color: #23272e; 
             background-color: var(--dot-color);
             font-family: "Consolas", monospace;
             font-weight: bold;
             min-width: 50px;
             text-align: center;
-            opacity: 0.9;
         }
 
         .issue-title a { 
@@ -124,7 +121,7 @@
         }
         .issue-title a:hover { color: #61afef; }
 
-        /* --- 右侧信息 --- */
+        /* --- 右侧元数据 --- */
         .meta { 
             font-size: 13px; 
             color: var(--text-dim); 
@@ -137,18 +134,14 @@
         }
 
         #status-bar { text-align: center; font-size: 13px; margin-bottom: 20px; padding: 8px; border-radius: 6px; display: none; background: #21252b; color: #98c379;}
-        
-        .labels { display: flex; gap: 6px; }
-        .label-tag { font-size: 12px; padding: 1px 6px; border: 1px solid #3b4048; color: #5c6370; border-radius: 4px; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>售后工具开发看板</h1>
-        
         <div class="header-actions">
-            <a href="https://docs.dingtalk.com/i/nodes/vy20BglGWOeEwPNvTYvLj2brJA7depqY?iframeQuery=entrance%3Ddata%26sheetId%3DhERWDMS%26viewId%3DqvGDAH2" target="_blank" class="btn btn-add">
+            <a href="https://docs.dingtalk.com/i/nodes/vy20BglGWOeEwPNvTYvLj2brJA7depqY" target="_blank" class="btn btn-add">
                 ➕ 提需求
             </a>
             <span onclick="forceRefresh()" class="btn btn-refresh">
@@ -158,34 +151,35 @@
     </div>
 
     <div id="status-bar"></div>
-    <div id="loading" style="text-align:center; color:#5c6370; margin-top: 40px; font-size: 14px;">Loading...</div>
+    <div id="loading" style="text-align:center; color:#5c6370; margin-top: 40px; font-size: 14px;">正在同步代码库动态...</div>
     
     <ul class="issue-list" id="container"></ul>
 
     <script>
-        // ✅ 基础配置
-        const owner = 'chengfengsunce'; 
-        const repo = 'dashboard'; 
-        const CACHE_KEY = 'dashboard_data';
-        const CACHE_TIME_KEY = 'dashboard_time';
+        // ✅ 核心配置
+        const config = {
+            owner: 'chengfengsunce',
+            dashboardRepo: 'dashboard',   // 存放主任务的仓库
+            codeRepo: 'deepscan',         // 存放开发代码的仓库
+            token: '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' // 你的免死金牌
+        };
+
+        const CACHE_KEY = 'combined_data';
+        const CACHE_TIME_KEY = 'combined_time';
         const CACHE_DURATION = 60 * 1000; 
 
-        // ✅ Token
-        const t_part1 = 'ghp_Hd1MwqMYrdK';
-        const t_part2 = 'wYEu8UCqNYVbwQsxolP1xoRSG';
-        const MY_TOKEN = t_part1 + t_part2;
-
-        async function loadIssues(force = false) {
+        async function fetchAllData(force = false) {
             const container = document.getElementById('container');
             const loading = document.getElementById('loading');
             
+            // 检查缓存逻辑
             const cachedData = localStorage.getItem(CACHE_KEY);
             const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
             const now = new Date().getTime();
 
             if (!force && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
                 renderList(JSON.parse(cachedData));
-                showStatus('✔ 已加载缓存');
+                showStatus('✔ 已加载本地缓存');
                 loading.style.display = 'none';
                 return;
             }
@@ -193,31 +187,47 @@
             container.innerHTML = ''; 
             loading.style.display = 'block';
 
-            const headers = { 'Authorization': `token ${MY_TOKEN}` };
+            const headers = { 'Authorization': `token ${config.token}` };
             
             try {
-                const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&sort=updated&direction=desc&per_page=30`;
-                const response = await fetch(url, { headers: headers }); 
-                
-                if (response.status === 403) {
-                    if (cachedData) {
-                        renderList(JSON.parse(cachedData));
-                        showStatus('⚠ 限流模式');
-                    }
-                    return;
-                }
+                // 🚀 同时抓取 Issues 和 Commits
+                const [issuesRes, commitsRes] = await Promise.all([
+                    fetch(`https://api.github.com/repos/${config.owner}/${config.dashboardRepo}/issues?state=all&per_page=15`, { headers }),
+                    fetch(`https://api.github.com/repos/${config.owner}/${config.codeRepo}/commits?per_page=15`, { headers })
+                ]);
 
-                const data = await response.json();
-                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+                const issues = await issuesRes.json();
+                const commits = await commitsRes.json();
+
+                // 🔄 将代码提交转换为看板记录格式
+                const mappedCommits = commits.map(c => ({
+                    id: c.sha.substring(0, 7),
+                    title: c.commit.message, // 直接读取你的 Git commit message
+                    updated_at: c.commit.author.date,
+                    html_url: c.html_url,
+                    is_commit: true,
+                    // 自动识别为 DeepScan 项目
+                    project_name: 'DeepScan巡检', 
+                    project_color: '#61afef' 
+                }));
+
+                // 排序：按时间从新到旧
+                const combined = [...issues, ...mappedCommits].sort((a, b) => {
+                    const dateA = new Date(a.updated_at || a.commit?.author.date);
+                    const dateB = new Date(b.updated_at || b.commit?.author.date);
+                    return dateB - dateA;
+                });
+
+                localStorage.setItem(CACHE_KEY, JSON.stringify(combined));
                 localStorage.setItem(CACHE_TIME_KEY, now);
 
-                renderList(data);
+                renderList(combined);
                 loading.style.display = 'none';
-                showStatus('✔ 数据已同步');
+                showStatus('✔ 代码库同步成功');
 
             } catch (e) { 
-                if (cachedData) renderList(JSON.parse(cachedData));
                 console.error(e); 
+                loading.innerText = '同步失败，请检查网络或 Token 权限';
             }
         }
 
@@ -225,52 +235,40 @@
             const container = document.getElementById('container');
             container.innerHTML = '';
             
-            if (!Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div style="padding:40px; text-align:center; color:#5c6370; font-size:14px;">暂无开发任务</div>';
-                return;
-            }
-
-            data.forEach(issue => {
-                if (issue.pull_request) return;
+            data.forEach(item => {
+                if (item.pull_request) return;
                 
                 const li = document.createElement('li');
-                li.className = issue.state === 'open' ? 'issue-item' : 'issue-item closed';
+                // 判断是任务还是代码提交，应用不同样式
+                li.className = item.is_commit ? 'issue-item is-commit' : (item.state === 'open' ? 'issue-item' : 'issue-item closed');
                 
-                // --- 智能颜色识别 ---
                 let projectInfo = null;
-                let otherLabelsHtml = '';
 
-                issue.labels.forEach(lbl => {
-                    if (lbl.name.startsWith('项目:')) {
-                        projectInfo = {
-                            color: '#' + lbl.color,
-                            name: lbl.name.replace('项目:', '') 
-                        };
-                    } else {
-                        otherLabelsHtml += `<span class="label-tag">${lbl.name}</span>`; 
-                    }
-                });
-
-                if (projectInfo) {
-                    li.style.setProperty('--dot-color', projectInfo.color);
+                if (item.is_commit) {
+                    // 代码提交自动归类
+                    projectInfo = { name: item.project_name, color: item.project_color };
                 } else {
-                    li.style.setProperty('--dot-color', '#5c6370');
+                    // 任务依然通过标签识别
+                    item.labels?.forEach(lbl => {
+                        if (lbl.name.startsWith('项目:')) {
+                            projectInfo = { color: '#' + lbl.color, name: lbl.name.replace('项目:', '') };
+                        }
+                    });
                 }
 
-                const badgeHtml = projectInfo 
-                    ? `<span class="project-badge">${projectInfo.name}</span>` 
-                    : ``; 
+                // 设置颜色变量
+                li.style.setProperty('--dot-color', projectInfo?.color || '#5c6370');
 
-                const date = new Date(issue.updated_at);
-                const timeStr = `${date.getMonth()+1}月${date.getDate()}日 ${date.getHours()}:${date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()}`;
+                const badgeHtml = projectInfo ? `<span class="project-badge">${projectInfo.name}</span>` : ``; 
+                const date = new Date(item.updated_at || item.commit?.author.date);
+                const timeStr = `${date.getMonth()+1}月${date.getDate()}日 ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
 
                 li.innerHTML = `
                     <div class="issue-content">
                         ${badgeHtml}
                         <div class="issue-title">
-                            <a href="${issue.html_url}" target="_blank">${issue.title}</a>
+                            <a href="${item.html_url}" target="_blank">${item.title}</a>
                         </div>
-                        <div class="labels">${otherLabelsHtml}</div>
                     </div>
                     <div class="meta">
                         <span>qiao</span>
@@ -288,11 +286,8 @@
             setTimeout(() => { bar.style.display = 'none'; }, 3000);
         }
 
-        function forceRefresh() {
-            loadIssues(true);
-        }
-        
-        loadIssues();
+        function forceRefresh() { fetchAllData(true); }
+        fetchAllData();
     </script>
 </body>
 </html>
