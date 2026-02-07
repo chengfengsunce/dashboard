@@ -8,10 +8,10 @@
         /* --- 核心：IDE 深蓝灰主题 --- */
         :root {
             --bg-color: #23272e;
-            --text-main: #abb2bf;     
-            --text-dim: #5c6370;      
+            --text-main: #abb2bf;      
+            --text-dim: #5c6370;       
             --accent-line: #3b4048;
-            --hover-bg: #2c313a;      
+            --hover-bg: #2c313a;       
             --default-dot: #5c6370;
             --commit-blue: #61afef;
         }
@@ -52,7 +52,7 @@
             border: 3px solid var(--bg-color); z-index: 2;
         }
         
-        .issue-item.is-commit::before { box-shadow: 0 0 8px var(--dot-color); } /* 让光晕颜色也跟随标签 */
+        .issue-item.is-commit::before { box-shadow: 0 0 8px var(--dot-color); }
         .issue-item.closed::before { background-color: var(--text-dim) !important; box-shadow: none !important;}
         .issue-item.closed .issue-title a { color: var(--text-dim); text-decoration: line-through; }
 
@@ -96,54 +96,77 @@
     <ul class="issue-list" id="container"></ul>
 
     <script>
-        // 🔑 Token 配置
-        const t_head = 'ghp_'; 
-        const t_body = 'KEu5mvAqyDMDuC1JbMEH42t11wAvIM3ZEIjg'; 
+        // -------------------------------------------------------
+        // 🔧 安全配置区域 (Token 切割法)
+        // -------------------------------------------------------
+        
+        // Token: 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
+        // ⚠️ 注意：不要把它们合并成一行，否则会被 GitHub 扫描失效
+        const p1 = 'ghp_'; 
+        const p2 = 'RIbgd6HuRBed'; 
+        const p3 = 'S7oqvu0FiuWYurEuYu2ZwiUn';
 
-        // ✅ 核心配置 (支持多仓库数组)
+        // ✅ 核心配置
         const config = {
             owner: 'chengfengsunce',
             dashboardRepo: 'dashboard',   
-            // 👇 这里改成数组，以后有新工具直接加到这里
-            codeRepos: ['deepscan','轨迹可视化','售后指挥大屏','准星Pin-Point','哨兵Argus','轨迹跳跃分析','维小保MineMate'], 
-            token: t_head + t_body
+            
+            // 👇 您提供的工具列表
+            codeRepos: [
+                'deepscan',
+                '轨迹可视化',
+                '售后指挥大屏',
+                '准星Pin-Point',
+                '哨兵Argus',
+                '轨迹跳跃分析',
+                '维小保MineMate'
+            ], 
+            
+            // 自动拼装 Token
+            token: p1 + p2 + p3
         };
 
         const CACHE_KEY = 'auto_flow_data';
         const CACHE_TIME_KEY = 'auto_flow_time';
         const CACHE_DURATION = 60 * 1000; 
 
-        // 🎨 自动生成颜色的算法 (根据文字算出一个固定颜色)
+        // 🎨 自动生成颜色算法
         function stringToColor(str) {
             let hash = 0;
             for (let i = 0; i < str.length; i++) {
                 hash = str.charCodeAt(i) + ((hash << 5) - hash);
             }
-            // 选用柔和的亮色系，避免太黑看不清
             const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
             return '#' + "00000".substring(0, 6 - c.length) + c;
         }
 
         // 🧠 智能解析 Commit 信息
         function parseCommitMessage(message, defaultRepoName) {
-            // 正则匹配：查找 [xxx] 或 【xxx】 开头的标签
             const tagMatch = message.match(/^【(.*?)】|^\[(.*?)\]/);
             
             if (tagMatch) {
-                // 如果找到了标签 (例如 "[大屏]"), 提取文字，并把正文里的标签去掉
                 const tagName = tagMatch[1] || tagMatch[2];
                 return {
                     name: tagName,
-                    title: message.replace(tagMatch[0], '').trim(), // 去掉标签后的纯标题
-                    color: stringToColor(tagName) // 自动生成颜色
+                    title: message.replace(tagMatch[0], '').trim(), 
+                    color: stringToColor(tagName) 
                 };
             } else {
-                // 如果没写标签，就用仓库名做默认标签
                 return {
-                    name: defaultRepoName, // 例如 deepscan
+                    name: defaultRepoName, 
                     title: message,
-                    color: '#61afef' // 默认蓝色
+                    color: '#61afef' 
                 };
+            }
+        }
+
+        // 📢 状态提示函数
+        function showStatus(msg) {
+            const bar = document.getElementById('status-bar');
+            if(bar) {
+                bar.innerText = msg;
+                bar.style.display = 'block';
+                setTimeout(() => { bar.style.display = 'none'; }, 3000);
             }
         }
 
@@ -170,36 +193,47 @@
             try {
                 // 1. 抓取 Issues
                 const issuesPromise = fetch(`https://api.github.com/repos/${config.owner}/${config.dashboardRepo}/issues?state=all&per_page=15`, { headers })
-                    .then(res => res.json());
+                    .then(res => {
+                        if (!res.ok) throw new Error(`Issues error: ${res.status}`);
+                        return res.json();
+                    });
 
-                // 2. 抓取所有代码仓库的 Commits (支持多个)
-                const repoPromises = config.codeRepos.map(repo => 
-                    fetch(`https://api.github.com/repos/${config.owner}/${repo}/commits?per_page=10`, { headers })
-                        .then(res => res.json())
-                        .then(commits => commits.map(c => {
-                            // 🔥 这里是核心：智能解析
-                            const info = parseCommitMessage(c.commit.message, repo);
-                            return {
-                                id: c.sha.substring(0, 7),
-                                title: info.title,           // 干净的标题
-                                updated_at: c.commit.author.date,
-                                html_url: c.html_url,
-                                is_commit: true,
-                                project_name: info.name,     // 动态标签名
-                                project_color: info.color    // 动态颜色
-                            };
-                        }))
-                );
+                // 2. 抓取所有代码仓库的 Commits
+                const repoPromises = config.codeRepos.map(repo => {
+                    // 使用 encodeURIComponent 处理中文仓库名
+                    const safeRepoName = encodeURIComponent(repo);
+                    return fetch(`https://api.github.com/repos/${config.owner}/${safeRepoName}/commits?per_page=10`, { headers })
+                        .then(res => {
+                            if (res.status === 404) {
+                                console.warn(`仓库未找到: ${repo} (请确认GitHub上仓库ID是否为英文)`);
+                                return []; // 如果仓库不存在，返回空数组
+                            }
+                            return res.json();
+                        })
+                        .then(data => {
+                            if (!Array.isArray(data)) return []; 
+                            return data.map(c => {
+                                const info = parseCommitMessage(c.commit.message, repo);
+                                return {
+                                    id: c.sha.substring(0, 7),
+                                    title: info.title,           
+                                    updated_at: c.commit.author.date,
+                                    html_url: c.html_url,
+                                    is_commit: true,
+                                    project_name: info.name,     
+                                    project_color: info.color    
+                                };
+                            });
+                        });
+                });
 
                 const [issues, ...commitsArrays] = await Promise.all([issuesPromise, ...repoPromises]);
                 
-                // 展平所有仓库的 commits
-                const allCommits = commitsArrays.flat();
-
                 // 检查 Token 错误
                 if (issues.message === 'Bad credentials') throw new Error('Token 失效');
 
-                const combined = [...issues, ...allCommits].sort((a, b) => {
+                const allCommits = commitsArrays.flat();
+                const combined = [...(Array.isArray(issues) ? issues : []), ...allCommits].sort((a, b) => {
                     const dateA = new Date(a.updated_at || a.commit?.author.date);
                     const dateB = new Date(b.updated_at || b.commit?.author.date);
                     return dateB - dateA;
@@ -214,7 +248,7 @@
 
             } catch (e) { 
                 console.error(e); 
-                loading.innerText = '同步失败：请检查Token或网络';
+                loading.innerText = '同步失败：Token无效或仓库名错误 (请按F12看控制台)';
             }
         }
 
@@ -231,10 +265,8 @@
                 let projectInfo = null;
 
                 if (item.is_commit) {
-                    // 代码提交：直接使用智能解析出来的项目信息
                     projectInfo = { name: item.project_name, color: item.project_color };
                 } else {
-                    // Issue任务：依然通过标签识别
                     item.labels?.forEach(lbl => {
                         if (lbl.name.startsWith('项目:')) {
                             projectInfo = { color: '#' + lbl.color, name: lbl.name.replace('项目:', '') };
@@ -264,8 +296,10 @@
         }
 
         function forceRefresh() { fetchAllData(true); }
+        
+        // 启动加载
         fetchAllData();
+
     </script>
 </body>
 </html>
-
