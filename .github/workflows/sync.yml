@@ -23,11 +23,17 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Fetch public repository activity
+      - name: Fetch all account-visible repository activity
         env:
           GITHUB_OWNER: chengfengsunce
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/sync_github.py
+          GITHUB_ACCOUNT_TOKEN: ${{ secrets.GITHUB_ACCOUNT_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$GITHUB_ACCOUNT_TOKEN" ]; then
+            echo "GITHUB_ACCOUNT_TOKEN is required to sync private repositories."
+            exit 1
+          fi
+          python scripts/sync_github.py
 
       - name: Publish refreshed data
         run: |
