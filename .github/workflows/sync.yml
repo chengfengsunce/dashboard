@@ -1,0 +1,42 @@
+name: Sync GitHub activity
+
+on:
+  push:
+    paths-ignore:
+      - data.json
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out dashboard
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Fetch public repository activity
+        env:
+          GITHUB_OWNER: chengfengsunce
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/sync_github.py
+
+      - name: Publish refreshed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          if git diff --cached --quiet; then
+            echo "No activity changes"
+            exit 0
+          fi
+          git commit -m "chore: sync GitHub activity"
+          git push
