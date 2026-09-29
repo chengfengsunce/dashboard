@@ -1,0 +1,334 @@
+{
+  "generated_at": "2026-09-29T08:26:31Z",
+  "owner": "chengfengsunce",
+  "repositories": [
+    {
+      "name": "dashboard",
+      "full_name": "chengfengsunce/dashboard",
+      "html_url": "https://github.com/chengfengsunce/dashboard",
+      "description": null,
+      "language": "HTML",
+      "stargazers_count": 0,
+      "updated_at": "2026-09-29T08:26:19Z"
+    },
+    {
+      "name": "clashbox",
+      "full_name": "chengfengsunce/clashbox",
+      "html_url": "https://github.com/chengfengsunce/clashbox",
+      "description": "clashbox",
+      "language": null,
+      "stargazers_count": 0,
+      "updated_at": "2026-07-17T16:46:15Z"
+    },
+    {
+      "name": "free_time",
+      "full_name": "chengfengsunce/free_time",
+      "html_url": "https://github.com/chengfengsunce/free_time",
+      "description": "homework",
+      "language": null,
+      "stargazers_count": 0,
+      "updated_at": "2022-03-23T12:08:44Z"
+    }
+  ],
+  "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:60d55fb4ae6b",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "fix: handle empty repositories during sync",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/60d55fb4ae6b6614759b470038053698f856468f",
+      "updated_at": "2026-09-29T08:25:45Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:2099a246108a",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "feat: sync all public GitHub activity",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/2099a246108a84c822c03cf9ffef12fdf1223ded",
+      "updated_at": "2026-09-29T08:05:23Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:157ab5163bef",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/157ab5163beffb63555a4a972a1e15127a13c08d",
+      "updated_at": "2026-02-09T05:45:47Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:5209ae90dff4",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/5209ae90dff4fb11c8e95826a6797f7b7892827f",
+      "updated_at": "2026-02-09T05:25:16Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:1d343d2b5604",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/1d343d2b5604d82e41e093e49df6c16ddee5b497",
+      "updated_at": "2026-02-09T02:57:10Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:1de5c22e5228",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/1de5c22e52288a5bedecce3dbf1b23d0238f3efd",
+      "updated_at": "2026-02-07T16:30:39Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:169e1f04e161",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/169e1f04e161d1f60af180139868e30ab5b7f7ca",
+      "updated_at": "2026-02-07T16:08:18Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:b56d25ce6984",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/b56d25ce6984ff3c77ed0f4a69ac52de4b100a52",
+      "updated_at": "2026-02-07T16:03:40Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:2ac19306de3d",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/2ac19306de3d3ee366e2063593c6e2a403099ec1",
+      "updated_at": "2026-02-07T16:02:38Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:25042715faf1",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/25042715faf1f9d4ac041219c944e54e18e7442d",
+      "updated_at": "2026-02-07T15:44:05Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:18268c10e1e2",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/18268c10e1e203a29e88e5f08bda6bd6c2d19ff0",
+      "updated_at": "2026-01-21T04:05:06Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:e49908e1c59f",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/e49908e1c59fe5a05b37124dfc979635c9c9dfb1",
+      "updated_at": "2026-01-21T03:58:03Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:f02caf1901f3",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/f02caf1901f33e88c8f0075e175f3572b73547b4",
+      "updated_at": "2026-01-21T03:55:19Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:f0b40a59af6a",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/f0b40a59af6a4d523e1e29cc6d9df12c59abe362",
+      "updated_at": "2026-01-21T03:51:13Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:5d2ba3341660",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/5d2ba3341660c72dba5f200742977121fab1b62d",
+      "updated_at": "2026-01-21T03:45:23Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:16585cb8400b",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/16585cb8400b21962a36bb1f7726c6cf2d217263",
+      "updated_at": "2026-01-21T03:38:10Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:0c1cea3994d2",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/0c1cea3994d296c16e714bc1345b86e3062c520b",
+      "updated_at": "2026-01-21T03:26:10Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:005922f93ea5",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/005922f93ea53ea5d642821b49e03d7949e8eea7",
+      "updated_at": "2026-01-20T10:38:17Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:470761afc14b",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/470761afc14b93c6e34118d493de9139e338f85f",
+      "updated_at": "2026-01-20T10:34:33Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "commit:chengfengsunce/dashboard:652bb90b54dd",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "Update index.html",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/652bb90b54dd397101cf81a52e8c39821320f1e7",
+      "updated_at": "2026-01-20T10:30:45Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:4",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "客户的签约服务，鼠标放在客户位置上，悬停展示服务列表",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/4",
+      "updated_at": "2026-01-20T10:24:38Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ]
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:3",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务站和客户之间的服务范围关系连线",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/3",
+      "updated_at": "2026-01-20T10:24:38Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ]
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:2",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "全国客户位置分布显示",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/2",
+      "updated_at": "2026-01-20T10:24:37Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ]
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:1",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务站位置分布显示",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/1",
+      "updated_at": "2026-01-20T10:24:37Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ]
+    },
+    {
+      "id": "commit:chengfengsunce/free_time:5379c72be6b6",
+      "kind": "commit",
+      "repo": "free_time",
+      "repo_full_name": "chengfengsunce/free_time",
+      "repo_url": "https://github.com/chengfengsunce/free_time",
+      "title": "Initial commit",
+      "html_url": "https://github.com/chengfengsunce/free_time/commit/5379c72be6b60bad448c5dee426425fce0931b99",
+      "updated_at": "2022-03-23T12:08:44Z",
+      "actor": "chengfengsunce"
+    }
+  ],
+  "stats": {
+    "repositories": 3,
+    "items": 25,
+    "commits": 21,
+    "issues": 4,
+    "pull_requests": 0,
+    "releases": 0
+  }
+}
