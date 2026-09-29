@@ -36,6 +36,8 @@ def api_get(path: str, params: dict[str, str | int] | None = None):
             return json.load(response)
     except HTTPError as error:
         detail = error.read().decode("utf-8", errors="replace")
+        if error.code == 409 and path.endswith("/commits"):
+            return []
         try:
             detail = json.loads(detail).get("message", detail)
         except json.JSONDecodeError:
