@@ -26,11 +26,11 @@ jobs:
       - name: Fetch all account-visible repository activity
         env:
           GITHUB_OWNER: chengfengsunce
-          GITHUB_ACCOUNT_TOKEN: ${{ secrets.GITHUB_ACCOUNT_TOKEN }}
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          if [ -z "$GITHUB_ACCOUNT_TOKEN" ]; then
-            echo "GITHUB_ACCOUNT_TOKEN is required to sync private repositories."
+          if [ -z "$PRIVATE_REPO_TOKEN" ]; then
+            echo "PRIVATE_REPO_TOKEN is required to sync private repositories."
             exit 1
           fi
           python scripts/sync_github.py

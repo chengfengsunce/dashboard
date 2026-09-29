@@ -15,9 +15,9 @@ OWNER = os.environ.get("GITHUB_OWNER", "chengfengsunce")
 OUTPUT = Path(os.environ.get("GITHUB_OUTPUT_FILE", "data.json"))
 PER_REPO = max(1, min(int(os.environ.get("GITHUB_ITEMS_PER_REPO", "20")), 100))
 TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
-ACCOUNT_TOKEN = os.environ.get("GITHUB_ACCOUNT_TOKEN", "").strip()
-if ACCOUNT_TOKEN:
-    TOKEN = ACCOUNT_TOKEN
+PRIVATE_REPO_TOKEN = os.environ.get("PRIVATE_REPO_TOKEN", "").strip()
+if PRIVATE_REPO_TOKEN:
+    TOKEN = PRIVATE_REPO_TOKEN
 
 
 def api_get(path: str, params: dict[str, str | int] | None = None):
@@ -150,7 +150,7 @@ def repo_activity(repo: dict) -> list[dict]:
 
 
 def repositories_for_sync() -> list[dict]:
-    if ACCOUNT_TOKEN:
+    if PRIVATE_REPO_TOKEN:
         repositories = get_all_pages(
             "/user/repos",
             {
@@ -185,7 +185,7 @@ def main() -> int:
     payload = {
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "owner": OWNER,
-        "sync_scope": "account-visible" if ACCOUNT_TOKEN else "public-only",
+        "sync_scope": "account-visible" if PRIVATE_REPO_TOKEN else "public-only",
         "repositories": [
             {
                 "name": repo["name"],
