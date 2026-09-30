@@ -23,17 +23,17 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Fetch all account-visible repository activity
+      - name: Fetch repository activity and source trees
         env:
           GITHUB_OWNER: chengfengsunce
           PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$PRIVATE_REPO_TOKEN" ]; then
-            echo "::error title=Missing repository secret::PRIVATE_REPO_TOKEN is empty. Add this exact repository secret before rerunning."
-            exit 1
+            echo "No private repository token; syncing public repositories and public source trees."
+          else
+            echo "Private repository token detected; syncing account-visible activity."
           fi
-          echo "Private repository token detected; starting account-visible repository sync."
           python scripts/sync_github.py
 
       - name: Publish refreshed data

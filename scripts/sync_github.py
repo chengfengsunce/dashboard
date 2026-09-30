@@ -149,6 +149,40 @@ def repo_activity(repo: dict) -> list[dict]:
     return items
 
 
+def repo_source(repo: dict) -> dict:
+    if repo.get("private"):
+        return {"available": False, "reason": "private repository", "branches": []}
+
+    owner = repo["owner"]["login"]
+    name = repo["name"]
+    branch_data = api_get(f"/repos/{owner}/{name}/branches", {"per_page": 50})
+    branches: list[dict] = []
+    for branch in branch_data if isinstance(branch_data, list) else []:
+        branch_name = branch.get("name")
+        branch_sha = (branch.get("commit") or {}).get("sha")
+        if not branch_name or not branch_sha:
+            continue
+        tree_data = api_get(f"/repos/{owner}/{name}/git/trees/{branch_sha}", {"recursive": 1})
+        entries = []
+        for entry in tree_data.get("tree", []) if isinstance(tree_data, dict) else []:
+            if entry.get("type") != "blob":
+                continue
+            entries.append({
+                "path": entry.get("path", ""),
+                "size": entry.get("size", 0),
+                "sha": entry.get("sha", ""),
+                "raw_url": f"https://raw.githubusercontent.com/{owner}/{name}/{branch_name}/{entry.get('path', '')}",
+            })
+        branches.append({
+            "name": branch_name,
+            "sha": branch_sha,
+            "protected": bool(branch.get("protected")),
+            "truncated": bool(tree_data.get("truncated")) if isinstance(tree_data, dict) else False,
+            "entries": entries,
+        })
+    return {"available": True, "default_branch": repo.get("default_branch") or "main", "branches": branches}
+
+
 def repositories_for_sync() -> list[dict]:
     if PRIVATE_REPO_TOKEN:
         repositories = get_all_pages(
@@ -169,22 +203,24 @@ def repositories_for_sync() -> list[dict]:
     return [repo for repo in repositories if not repo.get("private")]
 
 
-def sync_repository(repo: dict) -> tuple[str, list[dict], str | None]:
+def sync_repository(repo: dict) -> tuple[str, list[dict], dict, str | None]:
     try:
-        return repo["full_name"], repo_activity(repo), None
+        return repo["full_name"], repo_activity(repo), repo_source(repo), None
     except RuntimeError as error:
-        return repo["full_name"], [], str(error)
+        return repo["full_name"], [], {"available": False, "reason": str(error), "branches": []}, str(error)
 
 
 def main() -> int:
     repositories = repositories_for_sync()
     items: list[dict] = []
     skipped: list[dict[str, str]] = []
+    source_by_repo: dict[str, dict] = {}
 
     with ThreadPoolExecutor(max_workers=min(8, max(1, len(repositories)))) as executor:
         jobs = {executor.submit(sync_repository, repo): repo["full_name"] for repo in repositories}
         for job in as_completed(jobs):
-            full_name, repo_items, error = job.result()
+            full_name, repo_items, source, error = job.result()
+            source_by_repo[full_name] = source
             if error:
                 skipped.append({"repository": full_name, "error": error})
                 print(f"Skipped {full_name}: {error}", file=sys.stderr)
@@ -206,6 +242,9 @@ def main() -> int:
                 "language": repo.get("language"),
                 "stargazers_count": repo.get("stargazers_count", 0),
                 "updated_at": repo.get("pushed_at") or repo.get("updated_at"),
+                "private": bool(repo.get("private")),
+                "default_branch": repo.get("default_branch") or "main",
+                "source": source_by_repo.get(repo["full_name"], {"available": False, "branches": []}),
             }
             for repo in sorted(repositories, key=lambda value: value.get("pushed_at") or "", reverse=True)
         ],
