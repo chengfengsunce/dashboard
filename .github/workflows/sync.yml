@@ -30,9 +30,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$PRIVATE_REPO_TOKEN" ]; then
-            echo "PRIVATE_REPO_TOKEN is required to sync private repositories."
+            echo "::error title=Missing repository secret::PRIVATE_REPO_TOKEN is empty. Add this exact repository secret before rerunning."
             exit 1
           fi
+          echo "Private repository token detected; starting account-visible repository sync."
           python scripts/sync_github.py
 
       - name: Publish refreshed data

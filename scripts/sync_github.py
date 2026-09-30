@@ -169,23 +169,34 @@ def repositories_for_sync() -> list[dict]:
     return [repo for repo in repositories if not repo.get("private")]
 
 
+def sync_repository(repo: dict) -> tuple[str, list[dict], str | None]:
+    try:
+        return repo["full_name"], repo_activity(repo), None
+    except RuntimeError as error:
+        return repo["full_name"], [], str(error)
+
+
 def main() -> int:
     repositories = repositories_for_sync()
     items: list[dict] = []
+    skipped: list[dict[str, str]] = []
 
     with ThreadPoolExecutor(max_workers=min(8, max(1, len(repositories)))) as executor:
-        jobs = {executor.submit(repo_activity, repo): repo["full_name"] for repo in repositories}
+        jobs = {executor.submit(sync_repository, repo): repo["full_name"] for repo in repositories}
         for job in as_completed(jobs):
-            try:
-                items.extend(job.result())
-            except RuntimeError as error:
-                raise RuntimeError(f"{jobs[job]}: {error}") from error
+            full_name, repo_items, error = job.result()
+            if error:
+                skipped.append({"repository": full_name, "error": error})
+                print(f"Skipped {full_name}: {error}", file=sys.stderr)
+            else:
+                items.extend(repo_items)
 
     items.sort(key=lambda item: item.get("updated_at") or "", reverse=True)
     payload = {
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "owner": OWNER,
         "sync_scope": "account-visible" if PRIVATE_REPO_TOKEN else "public-only",
+        "skipped_repositories": skipped,
         "repositories": [
             {
                 "name": repo["name"],
