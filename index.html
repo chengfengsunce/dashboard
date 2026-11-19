@@ -20,6 +20,7 @@
     .list-actions .filters{display:flex;gap:5px}
     .compose-dialog{width:min(640px,calc(100vw - 28px));max-height:calc(100vh - 28px);overflow:auto;padding:0;border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 80px #17213a38}
     .compose-dialog::backdrop{background:#10182870}
+    .honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
     .compose-dialog .compose{padding:22px}
     .dialog-actions{display:flex;align-items:center;gap:8px}
     .dialog-close{width:30px;height:30px;border:0;border-radius:8px;background:var(--surface);color:var(--muted);font-size:20px;cursor:pointer}
@@ -59,8 +60,9 @@
               <label class="field"><span>需求标题</span><input id="issue-title" name="title" maxlength="180" required placeholder="一句话说清楚想做什么"></label>
               <label class="field"><span>补充说明</span><textarea id="issue-body" name="body" placeholder="写一下现在的问题、希望怎么改"></textarea></label>
               <div id="attachments" class="attachments" aria-label="粘贴图片预览"></div>
-              <p class="attach-note">截图可以粘贴到说明框预览；提交后返回本页，需求列表会自动尝试更新。图片需在 GitHub 提交页再粘贴一次。</p>
-              <div class="compose-bottom"><span id="form-note" class="form-note" role="status"></span><button class="button primary" type="submit">前往 GitHub 提交 ↗</button></div>
+              <label class="honeypot" aria-hidden="true">公司网站<input name="company_website" type="text" tabindex="-1" autocomplete="off"></label>
+              <p class="attach-note">截图粘贴后会自动附到公开需求中。</p>
+              <div class="compose-bottom"><span id="form-note" class="form-note" role="status"></span><button class="button primary" type="submit">提交需求</button></div>
             </form>
           </dialog>
         </div>
@@ -72,10 +74,10 @@
     const issueList = document.getElementById('issue-list');
     const recentList = document.getElementById('recent-list');
     const requirementsDialog = document.getElementById('requirement-dialog');
+    const issueApiBaseUrl = 'https://dashboard-issue-api.ACCOUNT_SUBDOMAIN.workers.dev';
     const attachmentFiles = [];
     let issues = [];
     let filter = 'open';
-    let refreshIssuesOnReturn = false;
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
@@ -167,17 +169,11 @@
       document.querySelectorAll('[data-view-panel]').forEach(panel => panel.hidden = panel.dataset.viewPanel !== view);
     }));
 
-    document.getElementById('open-requirement-dialog').addEventListener('click', () => requirementsDialog.showModal());
+    document.getElementById('open-requirement-dialog').addEventListener('click', () => {
+      document.getElementById('form-note').textContent = '';
+      requirementsDialog.showModal();
+    });
     document.getElementById('close-requirement-dialog').addEventListener('click', () => requirementsDialog.close());
-    function refreshAfterReturn() {
-      if (document.visibilityState !== 'visible' || !refreshIssuesOnReturn) return;
-      refreshIssuesOnReturn = false;
-      refreshIssuesFromGitHub();
-    }
-
-    document.addEventListener('visibilitychange', refreshAfterReturn);
-    window.addEventListener('focus', refreshAfterReturn);
-
     document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
       filter = button.dataset.filter;
       document.querySelectorAll('[data-filter]').forEach(item => item.classList.toggle('active', item === button));
@@ -190,12 +186,16 @@
       const images = Array.from(event.clipboardData?.items || []).filter(item => item.type.startsWith('image/')).map(item => item.getAsFile()).filter(Boolean);
       if (!images.length) return;
       event.preventDefault();
-      images.forEach(file => attachmentFiles.push({url:URL.createObjectURL(file)}));
+      if (attachmentFiles.length + images.length > 4) {
+        document.getElementById('form-note').textContent = '最多粘贴 4 张图片。';
+        return;
+      }
+      images.forEach(file => attachmentFiles.push({file, url:URL.createObjectURL(file)}));
       document.getElementById('attachments').innerHTML = attachmentFiles.map((attachment, index) => `<div class="attachment"><img src="${attachment.url}" alt="粘贴的截图 ${index + 1}"></div>`).join('');
-      document.getElementById('form-note').textContent = `已预览 ${attachmentFiles.length} 张图；提交时请在 GitHub 页面再粘贴一次。`;
+      document.getElementById('form-note').textContent = `已添加 ${attachmentFiles.length} 张图片。`;
     });
 
-    document.getElementById('requirement-form').addEventListener('submit', event => {
+    document.getElementById('requirement-form').addEventListener('submit', async event => {
       event.preventDefault();
       const title = document.getElementById('issue-title').value.trim();
       const description = document.getElementById('issue-body').value.trim();
@@ -203,12 +203,34 @@
         document.getElementById('form-note').textContent = '先写一个需求标题。';
         return;
       }
-      const url = new URL(`https://github.com/${repository}/issues/new`);
-      url.searchParams.set('title', title);
-      if (description) url.searchParams.set('body', description);
-      refreshIssuesOnReturn = true;
-      window.open(url.toString(), '_blank', 'noopener,noreferrer');
-      requirementsDialog.close();
+      const formNote = document.getElementById('form-note');
+      const submitButton = event.currentTarget.querySelector('[type="submit"]');
+      if (issueApiBaseUrl.includes('ACCOUNT_SUBDOMAIN')) {
+        formNote.textContent = '自动提交通道还未部署，请稍后再试。';
+        return;
+      }
+      const payload = new FormData();
+      payload.set('title', title);
+      payload.set('body', description);
+      payload.set('company_website', event.currentTarget.elements.company_website.value);
+      attachmentFiles.forEach(({file}) => payload.append('image', file, file.name));
+      submitButton.disabled = true;
+      formNote.textContent = '正在提交…';
+      try {
+        const response = await fetch(new URL('/api/issues', issueApiBaseUrl), {method:'POST', body:payload});
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || '提交失败，请稍后重试。');
+        requirementsDialog.close();
+        event.currentTarget.reset();
+        attachmentFiles.splice(0).forEach(({url}) => URL.revokeObjectURL(url));
+        document.getElementById('attachments').replaceChildren();
+        document.getElementById('sync-label').textContent = `需求 #${result.number} 已提交`;
+        await refreshIssuesFromGitHub();
+      } catch (error) {
+        formNote.textContent = error.message || '提交失败，请稍后重试。';
+      } finally {
+        submitButton.disabled = false;
+      }
     });
 
     loadData();

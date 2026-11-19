@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "dashboard-issue-api",
+  "main": "worker/worker.mjs",
+  "compatibility_date": "2026-11-19",
+  "r2_buckets": [
+    {
+      "binding": "ISSUE_IMAGES",
+      "bucket_name": "dashboard-issue-images"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "SUBMIT_RATE_LIMIT",
+      "namespace_id": "2026111901",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    }
+  ]
+}
