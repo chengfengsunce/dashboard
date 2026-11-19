@@ -98,8 +98,8 @@
     const requirementsDialog = document.getElementById('requirement-dialog');
     const issueApiBaseUrl = 'https://dashboard-issue-api.ACCOUNT_SUBDOMAIN.workers.dev';
     const attachmentFiles = [];
-    let issues = [];
-    let allIssues = [];
+    let items = [];
+    let allItems = [];
     let repositories = [];
     let selectedRepositories = new Set();
     let filter = 'open';
@@ -143,10 +143,12 @@
     }
 
     function applyProjectFilter() {
-      issues = allIssues.filter(issue => selectedRepositories.has(issue.repo_full_name || repository));
+      items = allItems.filter(item => selectedRepositories.has(item.repo_full_name || repository));
     }
 
     function render() {
+      const sortedItems = [...items].sort((a, b) => Date.parse(b.updated_at || 0) - Date.parse(a.updated_at || 0));
+      const issues = sortedItems.filter(item => item.kind === 'issue');
       const openIssues = issues.filter(issue => issue.state !== 'closed');
       const closedIssues = issues.filter(issue => issue.state === 'closed');
       const donePercent = issues.length ? Math.round(closedIssues.length / issues.length * 100) : 0;
@@ -158,8 +160,12 @@
       document.getElementById('progress-bar').style.width = `${donePercent}%`;
       document.querySelector('.bar').setAttribute('aria-valuenow', String(donePercent));
 
-      const recent = [...issues].sort((a, b) => Date.parse(b.updated_at || 0) - Date.parse(a.updated_at || 0)).slice(0, 5);
-      recentList.innerHTML = recent.length ? recent.map(issue => `<div class="recent-item"><span class="dot ${issue.state === 'closed' ? 'closed' : ''}"></span><div><a class="recent-title" href="${issueUrl(issue)}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a><div class="recent-meta">${issue.state === 'closed' ? '已完成' : '进行中'} · ${formatDate(issue.updated_at)}</div></div></div>`).join('') : `<div class='empty'>${selectedRepositories.size ? '还没有需求，右侧可以直接添加。' : '请至少选择一个项目。'}</div>`;
+      const recent = sortedItems.slice(0, 5);
+      recentList.innerHTML = recent.length ? recent.map(item => {
+        const commit = item.kind === 'commit';
+        const activityType = commit ? `提交 · ${item.repo_full_name}` : `${item.state === 'closed' ? '已完成' : '进行中'} · ${item.repo_full_name}`;
+        return `<div class="recent-item"><span class="dot ${!commit && item.state === 'closed' ? 'closed' : ''}"></span><div><a class="recent-title" href="${item.html_url || issueUrl(item)}" target="_blank" rel="noreferrer">${escapeHtml(item.title || (commit ? '无提交说明' : '未命名需求'))}</a><div class="recent-meta">${escapeHtml(activityType)} · ${formatDate(item.updated_at)}</div></div></div>`;
+      }).join('') : `<div class='empty'>${selectedRepositories.size ? '还没有需求，右侧可以直接添加。' : '请至少选择一个项目。'}</div>`;
 
       const visible = filter === 'all' ? issues : issues.filter(issue => issue.state === filter);
       issueList.innerHTML = visible.length ? visible.map(renderIssue).join('') : `<div class='empty'>${selectedRepositories.size ? filter === 'closed' ? '还没有已完成的需求。' : '没有进行中的需求。' : '请至少选择一个项目。'}</div>`;
@@ -183,10 +189,9 @@
           ? new Set(repositories.map(project => project.full_name))
           : new Set(repositories.map(project => project.full_name).filter(name => previouslySelected.has(name)));
         const projectNames = new Set(repositories.map(project => project.full_name));
-        allIssues = (data.items || []).filter(item => item.kind === 'issue' && projectNames.has(item.repo_full_name));
+        allItems = (data.items || []).filter(item => (item.kind === 'issue' || item.kind === 'commit') && projectNames.has(item.repo_full_name));
         renderProjectFilter();
         applyProjectFilter();
-        issues.sort((a, b) => Date.parse(b.updated_at || 0) - Date.parse(a.updated_at || 0));
         const syncedAt = data.generated_at ? new Date(data.generated_at).toLocaleString('zh-CN', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'}) : '';
         status.textContent = syncedAt ? `数据更新于 ${syncedAt}` : '数据已更新';
         render();
@@ -206,9 +211,8 @@
         const response = await fetch(`https://api.github.com/repos/${repository}/issues?state=all&per_page=100`, {headers:{Accept:'application/vnd.github+json'}, cache:'no-store'});
         if (!response.ok) throw new Error('GitHub 暂时无法读取');
         const data = await response.json();
-        allIssues = [...allIssues.filter(issue => issue.repo_full_name !== repository), ...data.filter(issue => !issue.pull_request).map(issue => ({...issue, repo_full_name:repository}))];
+        allItems = [...allItems.filter(item => item.repo_full_name !== repository || item.kind === 'commit'), ...data.filter(issue => !issue.pull_request).map(issue => ({...issue, kind:'issue', repo_full_name:repository}))];
         applyProjectFilter();
-        issues.sort((a, b) => Date.parse(b.updated_at || 0) - Date.parse(a.updated_at || 0));
         document.getElementById('sync-label').textContent = '需求列表已更新';
         render();
       } catch {
