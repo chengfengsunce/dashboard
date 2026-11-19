@@ -1,28 +1,161 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>GitHub &#28304;&#30721;&#30475;&#26495;</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6fb">
+  <title>项目协作台</title>
   <style>
-    :root{--bg:#20242b;--panel:#282d35;--hover:#303640;--line:#3a414c;--text:#d7dae0;--muted:#8b93a1;--blue:#61afef;--green:#98c379;--yellow:#e5c07b;--red:#e06c75}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 "Microsoft YaHei",system-ui,sans-serif}a{color:inherit}.header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 4vw;border-bottom:1px solid var(--line)}h1{margin:0;color:#fff;font-size:24px}.subtitle{color:var(--muted);margin-top:3px}.actions{display:flex;gap:8px;flex-wrap:wrap}.button,select{border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--text);padding:7px 11px;font:inherit;cursor:pointer}.button:hover,select:hover{background:var(--hover);color:#fff}.button.primary{background:var(--green);border-color:var(--green);color:#20242b;font-weight:bold}.layout{display:grid;grid-template-columns:240px minmax(250px,390px) minmax(0,1fr);min-height:calc(100vh - 94px)}.panel{border-right:1px solid var(--line);min-width:0}.panel:last-child{border-right:0}.panel-head{display:flex;justify-content:space-between;align-items:center;padding:15px;border-bottom:1px solid var(--line);font-weight:bold}.repo-list,.tree{list-style:none;padding:8px;margin:0}.repo-list li button,.tree button{display:block;width:100%;border:0;border-radius:4px;background:transparent;color:var(--text);padding:8px 10px;text-align:left;font:inherit;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.repo-list li button:hover,.tree button:hover,.repo-list li.active button,.tree button.active{background:var(--hover);color:#fff}.repo-name{font-weight:bold}.repo-meta{display:block;color:var(--muted);font-size:11px;margin-top:2px}.tree-wrap{height:calc(100vh - 151px);overflow:auto}.tree li{margin:1px 0}.tree button{font:13px Consolas,monospace}.tree .folder{color:var(--yellow)}.tree .file{color:var(--blue)}.source-wrap{height:calc(100vh - 151px);overflow:auto}.source-head{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:1}.source-path{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:13px Consolas,monospace}.source{margin:0;padding:18px 20px;min-height:100%;white-space:pre;overflow:auto;font:13px/1.6 Consolas,monospace;color:#d7dae0}.empty,.error,.loading{padding:40px 20px;color:var(--muted);text-align:center}.error{color:var(--red)}.tabs{display:flex;gap:8px;padding:12px 15px;border-bottom:1px solid var(--line)}.tab{border:1px solid var(--line);border-radius:4px;background:transparent;color:var(--muted);padding:6px 10px;cursor:pointer}.tab.active{background:var(--hover);color:#fff}.activity{display:none;padding:12px 15px;height:calc(100vh - 151px);overflow:auto}.activity.show{display:block}.activity-item{padding:10px 0;border-bottom:1px solid var(--line)}.activity-item a{color:var(--blue);text-decoration:none}.activity-meta{color:var(--muted);font-size:12px;margin-top:3px}@media(max-width:900px){.layout{grid-template-columns:190px 260px minmax(0,1fr)}}@media(max-width:680px){.header{display:block}.actions{margin-top:12px}.layout{display:block}.panel{border-right:0;border-bottom:1px solid var(--line)}.repo-list{display:flex;gap:6px;overflow:auto}.repo-list li{min-width:145px}.tree-wrap,.source-wrap{height:auto;max-height:55vh}.source-wrap{min-height:300px}.source{min-height:300px}}
+    :root{font-family:Inter,"Microsoft YaHei",system-ui,sans-serif;color:#182230;background:#f4f6fb;font-synthesis:none;text-rendering:optimizeLegibility;--ink:#182230;--muted:#788396;--line:#e5e9f0;--blue:#4359d8;--blue-soft:#edf0ff;--green:#138a62;--green-soft:#e8f7f0;--panel:#fff;--surface:#f8f9fc;--shadow:0 12px 36px #1b2a4810}*{box-sizing:border-box}body{margin:0;min-width:320px}.topbar{min-height:86px;padding:16px clamp(18px,4vw,60px);display:flex;align-items:center;gap:14px;background:#fff;border-bottom:1px solid var(--line)}.brand{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--blue);color:#fff;font-weight:800;font-size:20px}.brand-copy{flex:1}.eyebrow{color:#8791a3;font-size:10px;font-weight:800;letter-spacing:.13em}.brand-copy h1{margin:2px 0 0;font-size:18px;letter-spacing:-.02em}.repo-name{margin-left:8px;color:#9099a9;font-size:13px;font-weight:500}.top-actions{display:flex;align-items:center;gap:10px}.sync-label{color:var(--muted);font-size:12px}.button{min-height:38px;padding:0 13px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:13px;font-weight:700;text-decoration:none;cursor:pointer;transition:.15s}.button:hover{border-color:#c5ccef;background:#fafaff}.button.primary{border-color:var(--blue);background:var(--blue);color:#fff}.button.primary:hover{background:#354ac4}.page{width:min(1440px,100%);margin:0 auto;padding:28px clamp(18px,4vw,60px) 54px}.intro{margin-bottom:22px}.intro h2{margin:0;font-size:24px;letter-spacing:-.04em}.intro p{margin:6px 0 0;color:var(--muted);font-size:13px}.columns{display:grid;grid-template-columns:minmax(270px,.82fr) minmax(0,1.45fr);gap:20px;align-items:start}.panel{min-width:0;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}.panel-head{padding:19px 20px 16px;border-bottom:1px solid var(--line)}.panel-head h3{margin:3px 0 0;font-size:17px}.panel-head p{margin:5px 0 0;color:var(--muted);font-size:12px}.progress-content{padding:20px}.progress-top{display:flex;align-items:end;justify-content:space-between;gap:12px}.progress-number{font-size:38px;line-height:1;font-weight:800;letter-spacing:-.06em}.progress-caption{margin-top:5px;color:var(--muted);font-size:12px}.progress-count{color:var(--muted);font-size:12px;text-align:right}.bar{height:8px;margin:18px 0 16px;overflow:hidden;border-radius:99px;background:#edf0f5}.bar span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#6679f3,#4359d8);transition:width .25s}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:13px;border:1px solid var(--line);border-radius:11px;background:var(--surface)}.stat strong{display:block;font-size:22px;line-height:1.1}.stat span{display:block;margin-top:5px;color:var(--muted);font-size:12px}.stat.done strong{color:var(--green)}.subhead{display:flex;align-items:center;justify-content:space-between;margin:24px 0 10px;font-size:13px;font-weight:800}.subhead a{color:var(--blue);font-size:12px;text-decoration:none}.recent-list,.issue-list{display:grid;gap:9px}.recent-item{display:grid;grid-template-columns:10px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #f0f2f6}.recent-item:last-child{border-bottom:0}.dot{width:8px;height:8px;margin-top:5px;border-radius:50%;background:#e5a339}.dot.closed{background:#16a477}.recent-title{color:var(--ink);font-size:12px;line-height:1.55;text-decoration:none}.recent-title:hover,.issue-title:hover{color:var(--blue)}.recent-meta{margin-top:3px;color:var(--muted);font-size:11px}.board{padding:18px 20px 20px}.compose{padding:15px;border:1px solid #dfe4ff;border-radius:12px;background:linear-gradient(140deg,#f8f9ff,#fff)}.compose-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.compose-title{font-size:14px;font-weight:800}.public-tag{padding:4px 8px;border-radius:99px;background:#f0f1f5;color:#677184;font-size:10px;font-weight:800}.field{display:block;margin-top:10px}.field span{display:block;margin-bottom:6px;color:#626e80;font-size:11px;font-weight:700}.field input,.field textarea{width:100%;border:1px solid #dfe4ec;border-radius:8px;outline:0;background:#fff;color:var(--ink);font:inherit;font-size:13px}.field input{height:39px;padding:0 11px}.field textarea{min-height:82px;padding:10px 11px;resize:vertical;line-height:1.55}.field input:focus,.field textarea:focus{border-color:#8995ed;box-shadow:0 0 0 3px #4359d81a}.attachments{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.attachment{position:relative;width:78px;height:58px;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:#fff}.attachment img{width:100%;height:100%;object-fit:cover}.attach-note{margin:8px 0 0;color:var(--muted);font-size:11px;line-height:1.55}.compose-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}.compose-bottom .button{flex:none}.form-note{min-height:16px;color:#bd4f45;font-size:11px}.list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 12px}.list-head h3{margin:0;font-size:15px}.filters{display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:9px;background:#f7f8fb}.filter{padding:6px 9px;border:0;border-radius:6px;background:transparent;color:var(--muted);font:inherit;font-size:11px;cursor:pointer}.filter.active{background:#fff;color:var(--ink);box-shadow:0 1px 4px #1b2a4814}.issue-card{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--line);border-radius:11px;background:#fff;transition:border-color .15s,transform .15s}.issue-card:hover{border-color:#cbd1fa;transform:translateY(-1px)}.issue-main{min-width:0}.issue-title{display:block;color:var(--ink);font-size:13px;font-weight:700;line-height:1.5;text-decoration:none;overflow-wrap:anywhere}.issue-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:7px;color:var(--muted);font-size:10px}.state{padding:3px 7px;border-radius:99px;background:#fff4df;color:#9b650c;font-weight:800}.state.closed{background:var(--green-soft);color:var(--green)}.label{padding:3px 7px;border-radius:99px;background:var(--blue-soft);color:#4c5dc0}.issue-number{flex:none;color:#9aa2b0;font-size:11px;font-weight:700}.empty{padding:28px 14px;text-align:center;color:var(--muted);font-size:13px}.error{margin-bottom:12px;padding:10px 12px;border:1px solid #f0d0ca;border-radius:9px;background:#fff7f5;color:#a4493e;font-size:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:850px){.columns{grid-template-columns:1fr}.progress-content{padding:18px}.topbar{padding-inline:18px}}@media(max-width:560px){.topbar{min-height:72px;gap:10px}.brand{width:36px;height:36px}.brand-copy h1{font-size:15px}.repo-name{display:block;margin:1px 0 0;font-size:11px}.top-actions{gap:6px}.sync-label{display:none}.button{padding-inline:10px;font-size:12px}.page{padding-top:21px}.intro h2{font-size:21px}.board{padding:15px}.list-head{align-items:flex-start;flex-direction:column}.compose-bottom{align-items:flex-start;flex-direction:column}.compose-bottom .button{width:100%}}
   </style>
 </head>
 <body>
-  <header class="header"><div><h1>GitHub &#28304;&#30721;&#30475;&#26495;</h1><div class="subtitle" id="subtitle">&#27491;&#22312;&#21152;&#36733;&#20179;&#24211;&#19982;&#28304;&#30721;...</div></div><div class="actions"><button class="button" id="refresh">&#21047;&#26032;</button><a class="button primary" id="github-link" target="_blank" rel="noreferrer">&#25171;&#24320; GitHub</a></div></header>
-  <main class="layout"><section class="panel"><div class="panel-head">&#20179;&#24211;</div><ul class="repo-list" id="repos"></ul></section><section class="panel"><div class="panel-head"><span>&#28304;&#30721;&#30446;&#24405;</span><select id="branch" aria-label="&#20998;&#25903;"></select></div><div class="tabs"><button class="tab active" data-tab="source">&#28304;&#30721;</button><button class="tab" data-tab="activity">&#26368;&#36817;&#36827;&#24230;</button></div><div id="tree-wrap" class="tree-wrap"><div id="tree-message" class="empty">&#35831;&#36873;&#25321;&#20179;&#24211;</div><ul id="tree" class="tree"></ul></div><div id="activity" class="activity"></div></section><section class="panel"><div class="source-wrap"><div class="source-head"><span id="source-path" class="source-path">&#36873;&#25321;&#25991;&#20214;&#26597;&#30475;&#28304;&#30721;</span><a id="raw-link" target="_blank" rel="noreferrer">Raw</a></div><pre id="source" class="source">&#35831;&#20174;&#20013;&#38388;&#30340;&#28304;&#30721;&#30446;&#24405;&#20013;&#36873;&#25321;&#25991;&#20214;</pre></div></section></main>
+  <header class="topbar">
+    <div class="brand" aria-hidden="true">D</div>
+    <div class="brand-copy"><div class="eyebrow">PROJECT SPACE</div><h1>项目协作台 <span class="repo-name">chengfengsunce / dashboard</span></h1></div>
+    <div class="top-actions"><span class="sync-label" id="sync-label">读取项目进度…</span><button class="button" id="refresh" type="button">刷新</button><a class="button" href="https://github.com/chengfengsunce/dashboard" target="_blank" rel="noreferrer">打开仓库 ↗</a></div>
+  </header>
+  <main class="page">
+    <div class="intro"><h2>把进展和需求放在一起</h2><p>左边看项目推进，右边直接整理新需求；需求和截图会公开显示。</p></div>
+    <div id="load-error" class="error" hidden></div>
+    <div class="columns">
+      <section class="panel" aria-labelledby="progress-heading">
+        <div class="panel-head"><div class="eyebrow">OVERVIEW</div><h3 id="progress-heading">项目进度</h3><p>根据需求是否完成自动统计</p></div>
+        <div class="progress-content">
+          <div class="progress-top"><div><div class="progress-number" id="progress-percent">0%</div><div class="progress-caption">需求完成率</div></div><div class="progress-count"><strong id="progress-done">0</strong> / <span id="progress-total">0</span> 项已完成</div></div>
+          <div class="bar" role="progressbar" aria-label="需求完成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress-bar"></span></div>
+          <div class="stats"><div class="stat"><strong id="open-count">0</strong><span>进行中</span></div><div class="stat done"><strong id="closed-count">0</strong><span>已完成</span></div></div>
+          <div class="subhead"><span>最近进展</span><a href="https://github.com/chengfengsunce/dashboard/issues" target="_blank" rel="noreferrer">查看全部 ↗</a></div>
+          <div id="recent-list" class="recent-list"><div class="empty">正在读取…</div></div>
+        </div>
+      </section>
+      <section class="panel" aria-labelledby="requirements-heading">
+        <div class="panel-head"><div class="eyebrow">REQUIREMENTS</div><h3 id="requirements-heading">需求</h3><p>新增后会进入公开需求列表</p></div>
+        <div class="board">
+          <form id="requirement-form" class="compose">
+            <div class="compose-top"><span class="compose-title">提一个新需求</span><span class="public-tag">公开</span></div>
+            <label class="field"><span>需求标题</span><input id="issue-title" name="title" maxlength="180" required placeholder="一句话说清楚想做什么"></label>
+            <label class="field"><span>补充说明</span><textarea id="issue-body" name="body" placeholder="写一下现在的问题、希望怎么改"></textarea></label>
+            <div id="attachments" class="attachments" aria-label="粘贴图片预览"></div>
+            <p class="attach-note">截图可以粘贴到说明框预览。点击提交后会打开 GitHub；为把图片真正附到需求上，请在 GitHub 页面里再粘贴一次。</p>
+            <div class="compose-bottom"><span id="form-note" class="form-note" role="status"></span><button class="button primary" type="submit">继续提交到 GitHub ↗</button></div>
+          </form>
+          <div class="list-head"><h3>需求列表</h3><div class="filters" role="group" aria-label="筛选需求"><button class="filter active" type="button" data-filter="open">进行中</button><button class="filter" type="button" data-filter="closed">已完成</button><button class="filter" type="button" data-filter="all">全部</button></div></div>
+          <div id="issue-list" class="issue-list"><div class="empty">正在读取需求…</div></div>
+        </div>
+      </section>
+    </div>
+  </main>
   <script>
-    let data={repositories:[],items:[]},selectedRepo=null,selectedBranch=null;const $=id=>document.getElementById(id);
-    function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-    function fmt(v){if(!v)return'Unknown';const d=new Date(v);return Number.isNaN(d.getTime())?'Unknown':d.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});}
-    function repoItems(){return data.items.filter(x=>x.repo_full_name===selectedRepo.full_name);}
-    function renderRepos(){ $('repos').innerHTML=data.repositories.map((r,i)=>`<li class="${i===0?'active':''}"><button data-repo="${esc(r.full_name)}"><span class="repo-name">${esc(r.name)}</span><span class="repo-meta">${r.private?'Private':'Public'} · ${esc(r.language||'Unknown')}</span></button></li>`).join('');document.querySelectorAll('[data-repo]').forEach(b=>b.addEventListener('click',()=>selectRepo(b.dataset.repo)));}
-    function selectRepo(fullName){selectedRepo=data.repositories.find(r=>r.full_name===fullName)||data.repositories[0];document.querySelectorAll('[data-repo]').forEach(b=>b.parentElement.classList.toggle('active',b.dataset.repo===selectedRepo.full_name));$('github-link').href=selectedRepo.html_url;$('subtitle').textContent=`${selectedRepo.full_name} · ${selectedRepo.private?'Private repository; source is not published':'Public source browser'}`;const source=selectedRepo.source||{};$('branch').innerHTML=(source.branches||[]).map(b=>`<option value="${esc(b.name)}">${esc(b.name)}</option>`).join('');selectedBranch=source.branches?.find(b=>b.name===selectedRepo.default_branch)||source.branches?.[0];$('branch').value=selectedBranch?.name||'';renderTree();renderActivity();clearSource();}
-    function renderTree(){const tree=selectedBranch?.entries||[];if(!selectedRepo?.source?.available){$('tree-message').textContent='私有仓库源码不在公开看板展示，请打开 GitHub 查看';$('tree').innerHTML='';return}if(!tree.length){$('tree-message').textContent='该分支暂无可展示文件';$('tree').innerHTML='';return}$('tree-message').textContent=selectedBranch.truncated?'文件较多，仅展示部分目录':'选择文件查看源码';const sorted=[...tree].sort((a,b)=>a.path.localeCompare(b.path));$('tree').innerHTML=sorted.map(f=>`<li><button class="file" data-file="${esc(f.path)}" title="${esc(f.path)}">&#128196; ${esc(f.path)}</button></li>`).join('');document.querySelectorAll('[data-file]').forEach(b=>b.addEventListener('click',()=>loadFile(b.dataset.file)));}
-    async function loadFile(path){document.querySelectorAll('[data-file]').forEach(b=>b.classList.toggle('active',b.dataset.file===path));$('source-path').textContent=path;$('source').textContent='Loading...';const raw=`https://raw.githubusercontent.com/${selectedRepo.full_name}/${encodeURIComponent(selectedBranch.name).replace(/%2F/g,'/')}/${path.split('/').map(encodeURIComponent).join('/')}`;$('raw-link').href=raw;try{const res=await fetch(raw);if(!res.ok)throw new Error(`HTTP ${res.status}`);const text=await res.text();if(text.length>1000000)throw new Error('File is larger than 1 MB');$('source').textContent=text;}catch(e){$('source').textContent=`Unable to load source: ${e.message}`;}}
-    function renderActivity(){const items=repoItems().slice(0,40);$('activity').innerHTML=items.length?items.map(x=>`<div class="activity-item"><a href="${esc(x.html_url)}" target="_blank" rel="noreferrer">${esc(x.title)}</a><div class="activity-meta">${esc(x.kind)} · ${fmt(x.updated_at)}</div></div>`).join(''):'<div class="empty">暂无动态</div>';}
-    function clearSource(){$('source-path').textContent='选择文件查看源码';$('source').textContent=selectedRepo?.private?'私有仓库源码不公开展示，请点击右上角打开 GitHub':'请从中间的源码目录中选择文件';$('raw-link').removeAttribute('href');}
-    async function load(force=false){$('subtitle').textContent='Loading repositories and source trees...';try{const r=await fetch(`data.json${force?`?t=${Date.now()}`:''}`,{cache:force?'no-store':'default'});if(!r.ok)throw new Error(`HTTP ${r.status}`);data=await r.json();renderRepos();if(data.repositories.length)selectRepo(data.repositories[0].full_name);$('refresh').textContent='Refresh';}catch(e){$('subtitle').textContent=`Unable to load dashboard data: ${e.message}`;}}
-    $('branch').addEventListener('change',()=>{selectedBranch=selectedRepo.source.branches.find(b=>b.name===$('branch').value);renderTree();clearSource();});$('refresh').addEventListener('click',()=>load(true));document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');const source=t.dataset.tab==='source';$('tree-wrap').style.display=source?'block':'none';$('activity').classList.toggle('show',!source);}));load();
+    const repository = 'chengfengsunce/dashboard';
+    const issueList = document.getElementById('issue-list');
+    const recentList = document.getElementById('recent-list');
+    const attachmentFiles = [];
+    let issues = [];
+    let filter = 'open';
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+    }
+
+    function formatDate(value) {
+      if (!value) return '时间未知';
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? '时间未知' : date.toLocaleDateString('zh-CN', {year:'numeric', month:'short', day:'numeric'});
+    }
+
+    function issueNumber(issue) {
+      return issue.number ?? (String(issue.id || '').split(':').pop() || '');
+    }
+
+    function issueUrl(issue) {
+      return `https://github.com/${repository}/issues/${encodeURIComponent(issueNumber(issue))}`;
+    }
+
+    function renderIssue(issue) {
+      const closed = issue.state === 'closed';
+      const labels = (issue.labels || []).map(label => `<span class="label">${escapeHtml(typeof label === 'string' ? label : label.name)}</span>`).join('');
+      return `<article class="issue-card"><div class="issue-main"><a class="issue-title" href="${issueUrl(issue)}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a><div class="issue-meta"><span class="state ${closed ? 'closed' : ''}">${closed ? '已完成' : '进行中'}</span><span>更新于 ${formatDate(issue.updated_at)}</span>${labels}</div></div><span class="issue-number">#${escapeHtml(issueNumber(issue))}</span></article>`;
+    }
+
+    function render() {
+      const openIssues = issues.filter(issue => issue.state !== 'closed');
+      const closedIssues = issues.filter(issue => issue.state === 'closed');
+      const donePercent = issues.length ? Math.round(closedIssues.length / issues.length * 100) : 0;
+      document.getElementById('progress-percent').textContent = `${donePercent}%`;
+      document.getElementById('progress-done').textContent = closedIssues.length;
+      document.getElementById('progress-total').textContent = issues.length;
+      document.getElementById('open-count').textContent = openIssues.length;
+      document.getElementById('closed-count').textContent = closedIssues.length;
+      document.getElementById('progress-bar').style.width = `${donePercent}%`;
+      document.querySelector('.bar').setAttribute('aria-valuenow', String(donePercent));
+
+      const recent = [...issues].sort((a, b) => Date.parse(b.updated_at || 0) - Date.parse(a.updated_at || 0)).slice(0, 5);
+      recentList.innerHTML = recent.length ? recent.map(issue => `<div class="recent-item"><span class="dot ${issue.state === 'closed' ? 'closed' : ''}"></span><div><a class="recent-title" href="${issueUrl(issue)}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a><div class="recent-meta">${issue.state === 'closed' ? '已完成' : '进行中'} · ${formatDate(issue.updated_at)}</div></div></div>`).join('') : '<div class="empty">还没有需求，右侧可以直接添加。</div>';
+
+      const visible = filter === 'all' ? issues : issues.filter(issue => issue.state === filter);
+      issueList.innerHTML = visible.length ? visible.map(renderIssue).join('') : `<div class="empty">${filter === 'closed' ? '还没有已完成的需求。' : '没有进行中的需求。'}</div>`;
+    }
+
+    async function loadData() {
+      const refresh = document.getElementById('refresh');
+      const status = document.getElementById('sync-label');
+      const error = document.getElementById('load-error');
+      refresh.disabled = true;
+      status.textContent = '正在刷新…';
+      error.hidden = true;
+      try {
+        const response = await fetch(`./data.json?refresh=${Date.now()}`, {cache:'no-store'});
+        if (!response.ok) throw new Error('项目数据暂时无法读取');
+        const data = await response.json();
+        issues = (data.items || []).filter(item => item.kind === 'issue' && item.repo_full_name === repository);
+        issues.sort((a, b) => Date.parse(b.updated_at || 0) - Date.parse(a.updated_at || 0));
+        const syncedAt = data.generated_at ? new Date(data.generated_at).toLocaleString('zh-CN', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'}) : '';
+        status.textContent = syncedAt ? `数据更新于 ${syncedAt}` : '数据已更新';
+        render();
+      } catch (failure) {
+        status.textContent = '暂时无法刷新';
+        error.hidden = false;
+        error.textContent = `${failure.message}；可以直接打开 GitHub 查看或提交需求。`;
+        recentList.innerHTML = '<div class="empty">项目进度暂时不可用。</div>';
+        issueList.innerHTML = '<div class="empty">需求暂时不可用。</div>';
+      } finally {
+        refresh.disabled = false;
+      }
+    }
+
+    document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
+      filter = button.dataset.filter;
+      document.querySelectorAll('[data-filter]').forEach(item => item.classList.toggle('active', item === button));
+      render();
+    }));
+
+    document.getElementById('refresh').addEventListener('click', loadData);
+
+    document.getElementById('issue-body').addEventListener('paste', event => {
+      const images = Array.from(event.clipboardData?.items || []).filter(item => item.type.startsWith('image/')).map(item => item.getAsFile()).filter(Boolean);
+      if (!images.length) return;
+      event.preventDefault();
+      images.forEach(file => attachmentFiles.push({url:URL.createObjectURL(file)}));
+      document.getElementById('attachments').innerHTML = attachmentFiles.map((attachment, index) => `<div class="attachment"><img src="${attachment.url}" alt="粘贴的截图 ${index + 1}"></div>`).join('');
+      document.getElementById('form-note').textContent = `已预览 ${attachmentFiles.length} 张图；提交时请在 GitHub 页面再粘贴一次。`;
+    });
+
+    document.getElementById('requirement-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const title = document.getElementById('issue-title').value.trim();
+      const description = document.getElementById('issue-body').value.trim();
+      if (!title) {
+        document.getElementById('form-note').textContent = '先写一个需求标题。';
+        return;
+      }
+      const url = new URL(`https://github.com/${repository}/issues/new`);
+      url.searchParams.set('title', title);
+      if (description) url.searchParams.set('body', description);
+      window.open(url.toString(), '_blank', 'noopener,noreferrer');
+    });
+
+    loadData();
   </script>
 </body>
 </html>
