@@ -38,16 +38,7 @@ async function sendDingTalk(env, title, submitter, project, url) {
   const search = await searchResponse.json();
   if (!searchResponse.ok) throw new Error('无法查找提出人，请开通钉钉通讯录搜索权限（qyapi_addresslist_search），并检查通讯录可见范围。');
   if (search.hasMore) throw new Error('提出人姓名匹配结果过多，请填写完整姓名后重试。');
-  const matches = [];
-  for (const userid of new Set(search.list || [])) {
-    const userResponse = await fetch('https://oapi.dingtalk.com/topapi/v2/user/get?access_token=' + encodeURIComponent(token.accessToken), {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userid }),
-    });
-    const user = await userResponse.json();
-    if (!userResponse.ok || user.errcode !== 0) throw new Error('无法核对提出人姓名，请开通钉钉成员信息读取权限（qyapi_get_member），并检查通讯录可见范围。');
-    if (user.result?.name === submitter && user.result.userid) matches.push(user.result.userid);
-  }
-  if (!matches.length) throw new Error(`未找到提出人“${submitter}”的钉钉账号，请检查姓名和通讯录可见范围。`);
+  const matches = [...new Set(search.list || [])];
   if (matches.length !== 1) throw new Error(`钉钉中有多位“${submitter}”，为避免通知错人，本次未发送。`);
   const response = await fetch('https://api.dingtalk.com/v1.0/robot/oToMessages/batchSend', {
     method: 'POST', headers,
