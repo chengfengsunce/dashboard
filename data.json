@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T05:59:04Z",
+  "generated_at": "2026-11-20T06:49:18Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T05:58:49Z",
+      "updated_at": "2026-11-20T06:49:06Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "cd856c6e7f9303d4e97714bdc214dd88aee294ca",
+            "sha": "f62abc37d1970e22adf12077ea709b054aab012b",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 19955,
-                "sha": "16384961d2c94561688627dc3b8162d4075c755b",
+                "size": 20233,
+                "sha": "51e4ea7b8f1539ab2444b84c9630b2ed06cfc1e0",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -50,8 +50,8 @@
               },
               {
                 "path": "index.html",
-                "size": 43142,
-                "sha": "de7c175e26518d411707111b76d6a46272c028c9",
+                "size": 43344,
+                "sha": "00b0d30d13b76067b40b59ffce58dae42f10d0e0",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/index.html"
               },
               {
@@ -62,8 +62,8 @@
               },
               {
                 "path": "worker/worker.mjs",
-                "size": 8954,
-                "sha": "e7d267dfdfb867c858a2c905dfa4e0439a90c89f",
+                "size": 11016,
+                "sha": "83c3019608a84972dc9e5bd02d90353cab354b97",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/worker.mjs"
               },
               {
@@ -132,6 +132,55 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:f62abc37d197",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "完成需求免密并支持钉钉通知",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/f62abc37d1970e22adf12077ea709b054aab012b",
+      "updated_at": "2026-11-20T06:48:59Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:2",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "全国客户位置分布显示",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/2",
+      "updated_at": "2026-11-20T06:09:12Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 2,
+      "created_at": "2026-01-20T07:41:11Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:1",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务站位置分布显示",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/1",
+      "updated_at": "2026-11-20T06:09:01Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 1,
+      "created_at": "2026-01-20T06:38:49Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵金桥"
+    },
     {
       "id": "commit:chengfengsunce/dashboard:cd856c6e7f93",
       "kind": "commit",
@@ -211,44 +260,6 @@
       ],
       "number": 3,
       "created_at": "2026-01-20T10:05:01Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "赵金桥"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:2",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "全国客户位置分布显示",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/2",
-      "updated_at": "2026-11-20T02:42:19Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 2,
-      "created_at": "2026-01-20T07:41:11Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "赵金桥"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:1",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "服务站位置分布显示",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/1",
-      "updated_at": "2026-11-20T02:42:06Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 1,
-      "created_at": "2026-01-20T06:38:49Z",
       "project_full_name": "售后指挥大屏",
       "submitter": "赵金桥"
     },
@@ -503,17 +514,6 @@
       "title": "增加项目搜索和多选筛选",
       "html_url": "https://github.com/chengfengsunce/dashboard/commit/854d43ef3b0405860fee48b9aae03c0a17463233",
       "updated_at": "2026-11-19T13:00:29Z",
-      "actor": "chengfengsunce"
-    },
-    {
-      "id": "commit:chengfengsunce/dashboard:2008ef6a8dc6",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "实现看板需求自动提交接口",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/2008ef6a8dc6d194a9d02d228be9943cdf415fa7",
-      "updated_at": "2026-11-19T11:58:23Z",
       "actor": "chengfengsunce"
     },
     {
