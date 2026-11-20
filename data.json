@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T02:43:11Z",
+  "generated_at": "2026-11-20T02:45:22Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T02:29:26Z",
+      "updated_at": "2026-11-20T02:45:13Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "2b2de8fe9a13906ed0e625736d454c6e15752617",
+            "sha": "7ed5c3f85748f2bd01505458c638bfa0677ab014",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -32,26 +32,26 @@
               },
               {
                 "path": "DEPLOY_AUTO_SUBMIT.md",
-                "size": 2835,
-                "sha": "2eeaa46763b148c83dea8d8af210ea589bae125d",
+                "size": 3146,
+                "sha": "185aa7f20cffb18536eca6fc4a12dbb7e149b56e",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/DEPLOY_AUTO_SUBMIT.md"
               },
               {
                 "path": "data.json",
-                "size": 19595,
-                "sha": "dec8d8438f0ae7a82f1f23d4798a33f68dc65905",
+                "size": 19415,
+                "sha": "d22e2dce851c8b81aab023ec996f320c5b8d775f",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
                 "path": "docs/superpowers/plans/2026-11-20-requirements-table.md",
-                "size": 2377,
-                "sha": "962257e84186e64bf714dd7b5287d6b8cf0dfd4c",
+                "size": 2988,
+                "sha": "603a0da9b099325e3c146a1ff49b386e0b17da46",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/docs/superpowers/plans/2026-11-20-requirements-table.md"
               },
               {
                 "path": "index.html",
-                "size": 41071,
-                "sha": "0ee1c70259576a95cefd48301ee733deafd775b6",
+                "size": 41760,
+                "sha": "f9d915a24fe77a5f890c7c3b1c991953cbdab80a",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/index.html"
               },
               {
@@ -62,8 +62,8 @@
               },
               {
                 "path": "worker/worker.mjs",
-                "size": 9396,
-                "sha": "4f81e07404955bd01af63a75ec303b4e6910bb0c",
+                "size": 8954,
+                "sha": "e7d267dfdfb867c858a2c905dfa4e0439a90c89f",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/worker.mjs"
               },
               {
@@ -126,6 +126,17 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:7ed5c3f85748",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "将需求删除操作改为完成并自动归入已完成列表",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/7ed5c3f85748f2bd01505458c638bfa0677ab014",
+      "updated_at": "2026-11-20T02:45:09Z",
+      "actor": "chengfengsunce"
+    },
     {
       "id": "issue:chengfengsunce/dashboard:4",
       "kind": "issue",
@@ -513,8 +524,8 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 24,
-    "commits": 9,
+    "items": 25,
+    "commits": 10,
     "issues": 15,
     "pull_requests": 0,
     "releases": 0
