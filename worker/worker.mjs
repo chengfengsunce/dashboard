@@ -109,9 +109,9 @@ async function submitIssue(request, env) {
   }
 }
 
-async function removeIssue(request, env, target, number) {
+async function completeIssue(request, env, target, number) {
   if (request.headers.get('Origin') !== allowedOrigin) return json(request, { error: '操作来源无效。' }, 403);
-  if (!env.ADMIN_TOKEN || !env.GITHUB_TOKEN) return json(request, { error: '管理员删除功能尚未配置。' }, 503);
+  if (!env.ADMIN_TOKEN || !env.GITHUB_TOKEN) return json(request, { error: '需求完成功能尚未配置。' }, 503);
   if (request.headers.get('Authorization') !== 'Bearer ' + env.ADMIN_TOKEN) return json(request, { error: '管理员密钥不正确。' }, 403);
   if (!target.startsWith(repository.split('/')[0] + '/')) return json(request, { error: '不允许操作其他账号的项目。' }, 403);
   const limit = await env.SUBMIT_RATE_LIMIT.limit({ key: 'admin:' + (request.headers.get('CF-Connecting-IP') || 'unknown') });
@@ -128,20 +128,16 @@ async function removeIssue(request, env, target, number) {
     const original = await fetch(issueUrl, { headers });
     const issue = await original.json();
     if (!original.ok) throw new Error('无法读取需求，请检查 GitHub 密钥的项目权限。');
-    if (issue.pull_request) return json(request, { error: '不能将代码合并请求作为需求删除。' }, 400);
-    if ((issue.labels || []).some(label => label.name === 'dashboard-hidden')) return json(request, { removed: true });
-    const labelResponse = await fetch('https://api.github.com/repos/' + target + '/labels', {
-      method: 'POST', headers, body: JSON.stringify({ name: 'dashboard-hidden', color: 'c5c5c5', description: '从公开需求看板移除，保留原始记录' }),
+    if (issue.pull_request) return json(request, { error: '不能将代码合并请求作为需求完成。' }, 400);
+    if (issue.state === 'closed') return json(request, { state: 'closed', updated_at: issue.updated_at });
+    const response = await fetch(issueUrl, {
+      method: 'PATCH', headers, body: JSON.stringify({ state: 'closed', state_reason: 'completed' }),
     });
-    const label = await labelResponse.json();
-    if (!labelResponse.ok && !(labelResponse.status === 422 && label.errors?.some(error => error.code === 'already_exists'))) {
-      throw new Error('无法创建移除标签，请检查 GitHub 密钥的 Issues 写入权限。');
-    }
-    const result = await fetch(issueUrl + '/labels', { method: 'POST', headers, body: JSON.stringify({ labels: ['dashboard-hidden'] }) });
-    if (!result.ok) throw new Error('需求移除失败，请检查 GitHub 密钥的 Issues 写入权限。');
-    return json(request, { removed: true });
+    const result = await response.json();
+    if (!response.ok || result.state !== 'closed') throw new Error('需求完成失败，请检查 GitHub 密钥的 Issues 写入权限。');
+    return json(request, { state: 'closed', updated_at: result.updated_at });
   } catch (error) {
-    return json(request, { error: error.message || '需求移除失败，请稍后重试。' }, 502);
+    return json(request, { error: error.message || '需求完成失败，请稍后重试。' }, 502);
   }
 }
 
@@ -155,7 +151,7 @@ export default {
         status: 204,
         headers: {
           'Access-Control-Allow-Origin': allowedOrigin,
-          'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
+          'Access-Control-Allow-Methods': 'POST, PATCH, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           'Access-Control-Max-Age': '86400',
         },
@@ -176,7 +172,7 @@ export default {
       });
     }
     if (request.method === 'POST' && url.pathname === '/api/issues') return submitIssue(request, env);
-    if (request.method === 'DELETE' && issueRoute) return removeIssue(request, env, issueRoute[1] + '/' + issueRoute[2], issueRoute[3]);
+    if (request.method === 'PATCH' && issueRoute) return completeIssue(request, env, issueRoute[1] + '/' + issueRoute[2], issueRoute[3]);
     return json(request, { error: 'Not found' }, 404);
   },
 };

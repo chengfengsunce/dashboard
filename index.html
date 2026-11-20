@@ -58,18 +58,18 @@
     .requirements-table tbody tr:hover{background:#f8f9ff}
     .requirements-table .issue-title{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;font-weight:500}
     .issue-sequence{color:var(--muted);font-variant-numeric:tabular-nums}
-    .delete-issue{padding:4px 0;border:0;background:transparent;color:#c64747;font:inherit;font-size:12px;cursor:pointer}
+    .complete-issue{padding:4px 0;border:0;background:transparent;color:var(--green);font:inherit;font-size:12px;cursor:pointer}
+    .issue-completed{color:var(--green);font-size:12px}
     .pagination{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:none;padding-top:12px}
     .pagination .button{min-height:32px}
     .button:disabled{opacity:.4;cursor:not-allowed}
     .page-info{margin-right:auto;font-size:12px;color:var(--muted)}
     .field select{width:100%;min-height:40px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
     .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .delete-warning{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.7}
-    #delete-issue-title{display:block;margin-bottom:6px;color:var(--ink);overflow-wrap:anywhere}
-    .button.danger{background:#b93838;border-color:#b93838;color:#fff}
+    .completion-note{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.7}
+    #complete-issue-title{display:block;margin-bottom:6px;color:var(--ink);overflow-wrap:anywhere}
     @media(max-width:850px){.topbar{flex-wrap:nowrap}.view-nav{order:0;flex-basis:auto}.top-actions{margin-left:0}.sync-label{display:none}.requirements-table tr{grid-template-columns:40px minmax(0,1fr) 110px 80px 94px 48px}}
-    @media(max-width:560px){.topbar{padding:8px 10px;gap:6px}.top-actions{width:auto}.top-actions>a{display:none}.view-nav{padding:2px;gap:0}.nav-button{padding:0 9px}.project-filter-toggle{padding:0 8px;gap:3px}.page{padding:8px}.board{padding:10px 8px}.board .list-head{gap:6px;flex-wrap:wrap;margin-bottom:8px}.list-actions{gap:5px}.requirements-table{font-size:11px}.requirements-table tr{grid-template-columns:30px minmax(0,1fr) 54px 42px 72px 36px}.requirements-table th,.requirements-table td{padding-inline:3px}.requirements-table .issue-title,.delete-issue{font-size:11px}.pagination{gap:6px;padding-top:8px}.pagination .button{padding:0 8px;font-size:12px}.page-info{font-size:11px}.field-pair{grid-template-columns:1fr;gap:0}}
+    @media(max-width:560px){.topbar{padding:8px 10px;gap:6px}.top-actions{width:auto}.top-actions>a{display:none}.view-nav{padding:2px;gap:0}.nav-button{padding:0 9px}.project-filter-toggle{padding:0 8px;gap:3px}.page{padding:8px}.board{padding:10px 8px}.board .list-head{gap:6px;flex-wrap:wrap;margin-bottom:8px}.list-actions{gap:5px}.requirements-table{font-size:11px}.requirements-table tr{grid-template-columns:30px minmax(0,1fr) 54px 42px 72px 40px}.requirements-table th,.requirements-table td{padding-inline:3px}.requirements-table .issue-title,.complete-issue,.issue-completed{font-size:11px}.pagination{gap:6px;padding-top:8px}.pagination .button{padding:0 8px;font-size:12px}.page-info{font-size:11px}.field-pair{grid-template-columns:1fr;gap:0}}
     @media(max-height:600px){.topbar{min-height:50px;padding-block:6px}.page{padding-block:6px}.board{padding-block:8px}.board .list-head{margin-bottom:6px}.pagination{padding-top:6px}.requirements-table th{padding-block:5px}}
   </style>
 </head>
@@ -120,12 +120,12 @@
               <div class="compose-bottom"><span id="form-note" class="form-note" role="status"></span><button class="button primary" type="submit">提交需求</button></div>
             </form>
           </dialog>
-          <dialog id="delete-dialog" class="compose-dialog" aria-labelledby="delete-dialog-title">
-            <form id="delete-form" class="compose">
-              <div class="compose-top"><span id="delete-dialog-title" class="compose-title">确认移除需求</span><button id="close-delete-dialog" class="dialog-close" type="button" aria-label="关闭删除确认">×</button></div>
-              <p class="delete-warning"><strong id="delete-issue-title"></strong>只从看板移除，GitHub 原始记录保留；需要恢复时可移除原记录的 dashboard-hidden 标签。</p>
-              <label class="field"><span>管理员密钥</span><input id="admin-token" type="password" required autocomplete="off" placeholder="仅管理员可以删除，不会保存此密钥"></label>
-              <div class="compose-bottom"><span id="delete-note" class="form-note" role="status"></span><button id="confirm-delete" class="button danger" type="submit">确认移除</button></div>
+          <dialog id="complete-dialog" class="compose-dialog" aria-labelledby="complete-dialog-title">
+            <form id="complete-form" class="compose">
+              <div class="compose-top"><span id="complete-dialog-title" class="compose-title">完成需求</span><button id="close-complete-dialog" class="dialog-close" type="button" aria-label="关闭完成确认">×</button></div>
+              <p class="completion-note"><strong id="complete-issue-title"></strong>确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。</p>
+              <label class="field"><span>管理员密钥</span><input id="admin-token" type="password" required autocomplete="off" placeholder="仅管理员可以完成需求，不会保存此密钥"></label>
+              <div class="compose-bottom"><span id="complete-note" class="form-note" role="status"></span><button id="confirm-complete" class="button primary" type="submit">确认完成</button></div>
             </form>
           </dialog>
         </div>
@@ -148,9 +148,9 @@
     let filter = 'open';
     const pageSize = 10;
     let currentPage = 1;
-    let issueToDelete = null;
-    let pendingRemovals = new Map();
-    try { pendingRemovals = new Map(JSON.parse(localStorage.getItem('dashboard-removed-issues') || '[]')); } catch {}
+    let issueToComplete = null;
+    let pendingCompletions = new Map();
+    try { pendingCompletions = new Map(JSON.parse(localStorage.getItem('dashboard-completed-issues') || '[]')); } catch {}
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
@@ -175,6 +175,17 @@
     }
 
     function normalizeIssue(issue) {
+      const key = issueKey(issue);
+      const completedAt = pendingCompletions.get(key);
+      if (completedAt) {
+        const newer = Date.parse(issue.updated_at) > Date.parse(completedAt);
+        if (newer || (issue.state === 'closed' && Date.parse(issue.updated_at) >= Date.parse(completedAt))) {
+          pendingCompletions.delete(key);
+          saveCompletions();
+        } else {
+          issue = {...issue, state:'closed', updated_at:completedAt};
+        }
+      }
       let metadata = {};
       const header = (issue.body || '').split('\n', 1)[0].trim();
       if (header.startsWith('<!-- dashboard-meta:') && header.endsWith(' -->')) {
@@ -187,13 +198,14 @@
       };
     }
 
-    function saveRemovals() {
-      try { localStorage.setItem('dashboard-removed-issues', JSON.stringify([...pendingRemovals])); } catch {}
+    function saveCompletions() {
+      try { localStorage.setItem('dashboard-completed-issues', JSON.stringify([...pendingCompletions])); } catch {}
     }
 
     function renderIssue(issue, index) {
       const project = (issue.project_full_name || repository).split('/').pop();
-      return `<tr data-issue-key="${escapeHtml(issueKey(issue))}"><td class="issue-sequence">${(currentPage - 1) * pageSize + index + 1}</td><td><a class="issue-title" href="${escapeHtml(issueUrl(issue))}" title="${escapeHtml(issue.title || '未命名需求')}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a></td><td title="${escapeHtml(issue.project_full_name)}">${escapeHtml(project)}</td><td title="${escapeHtml(issue.submitter)}">${escapeHtml(issue.submitter)}</td><td title="${escapeHtml(issue.created_at || '时间未知')}">${escapeHtml(formatDate(issue.created_at))}</td><td><button class="delete-issue" type="button" data-delete-issue="${escapeHtml(issueKey(issue))}" aria-label="删除需求：${escapeHtml(issue.title)}">删除</button></td></tr>`;
+      const action = issue.state === 'closed' ? '<span class="issue-completed">已完成</span>' : `<button class="complete-issue" type="button" data-complete-issue="${escapeHtml(issueKey(issue))}" aria-label="完成需求：${escapeHtml(issue.title)}">完成</button>`;
+      return `<tr data-issue-key="${escapeHtml(issueKey(issue))}"><td class="issue-sequence">${(currentPage - 1) * pageSize + index + 1}</td><td><a class="issue-title" href="${escapeHtml(issueUrl(issue))}" title="${escapeHtml(issue.title || '未命名需求')}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a></td><td title="${escapeHtml(issue.project_full_name)}">${escapeHtml(project)}</td><td title="${escapeHtml(issue.submitter)}">${escapeHtml(issue.submitter)}</td><td title="${escapeHtml(issue.created_at || '时间未知')}">${escapeHtml(formatDate(issue.created_at))}</td><td>${action}</td></tr>`;
     }
 
     function updateProjectFilterLabel() {
@@ -215,12 +227,7 @@
       items = allItems.filter(item => {
         if (item.kind === 'issue') {
           const hidden = (item.labels || []).some(label => (typeof label === 'string' ? label : label.name) === 'dashboard-hidden');
-          const key = issueKey(item);
-          if (!hidden && pendingRemovals.has(key) && Date.parse(item.updated_at) > pendingRemovals.get(key)) {
-            pendingRemovals.delete(key);
-            saveRemovals();
-          }
-          if (hidden || pendingRemovals.has(key)) return false;
+          if (hidden) return false;
         }
         return selectedRepositories.has(item.project_full_name || item.repo_full_name || repository);
       });
@@ -338,47 +345,48 @@
     document.getElementById('previous-page').addEventListener('click', () => { currentPage -= 1; render(); });
     document.getElementById('next-page').addEventListener('click', () => { currentPage += 1; render(); });
 
-    const deleteDialog = document.getElementById('delete-dialog');
+    const completeDialog = document.getElementById('complete-dialog');
     const adminToken = document.getElementById('admin-token');
     issueList.addEventListener('click', event => {
-      const button = event.target.closest('button[data-delete-issue]');
+      const button = event.target.closest('button[data-complete-issue]');
       if (!button) return;
-      issueToDelete = items.find(item => item.kind === 'issue' && issueKey(item) === button.dataset.deleteIssue);
-      if (!issueToDelete) return;
-      document.getElementById('delete-issue-title').textContent = issueToDelete.title;
-      document.getElementById('delete-note').textContent = '';
-      deleteDialog.showModal();
+      issueToComplete = items.find(item => item.kind === 'issue' && item.state !== 'closed' && issueKey(item) === button.dataset.completeIssue);
+      if (!issueToComplete) return;
+      document.getElementById('complete-issue-title').textContent = issueToComplete.title;
+      document.getElementById('complete-note').textContent = '';
+      completeDialog.showModal();
     });
-    document.getElementById('close-delete-dialog').addEventListener('click', () => deleteDialog.close());
-    deleteDialog.addEventListener('close', () => { adminToken.value = ''; issueToDelete = null; });
-    document.getElementById('delete-form').addEventListener('submit', async event => {
+    document.getElementById('close-complete-dialog').addEventListener('click', () => completeDialog.close());
+    completeDialog.addEventListener('close', () => { adminToken.value = ''; issueToComplete = null; });
+    document.getElementById('complete-form').addEventListener('submit', async event => {
       event.preventDefault();
-      if (!issueToDelete) return;
-      const note = document.getElementById('delete-note');
+      if (!issueToComplete) return;
+      const note = document.getElementById('complete-note');
       if (issueApiBaseUrl.includes('ACCOUNT_SUBDOMAIN')) {
-        note.textContent = '管理员删除通道还未部署，请稍后再试。';
+        note.textContent = '需求完成通道还未部署，请稍后再试。';
         adminToken.value = '';
         return;
       }
-      const issue = issueToDelete;
+      const issue = issueToComplete;
       const token = adminToken.value;
       adminToken.value = '';
-      const button = document.getElementById('confirm-delete');
+      const button = document.getElementById('confirm-complete');
       button.disabled = true;
-      note.textContent = '正在移除…';
+      note.textContent = '正在标记完成…';
       try {
         const route = `/api/issues/${(issue.repo_full_name || repository).split('/').map(encodeURIComponent).join('/')}/${encodeURIComponent(issueNumber(issue))}`;
-        const response = await fetch(new URL(route, issueApiBaseUrl), {method:'DELETE', headers:{Authorization:`Bearer ${token}`}});
+        const response = await fetch(new URL(route, issueApiBaseUrl), {method:'PATCH', headers:{Authorization:`Bearer ${token}`}});
         const result = await response.json();
-        if (!response.ok || !result.removed) throw new Error(result.error || '移除失败，请稍后重试。');
-        pendingRemovals.set(issueKey(issue), Date.now());
-        saveRemovals();
+        if (!response.ok || result.state !== 'closed' || !Number.isFinite(Date.parse(result.updated_at))) throw new Error(result.error || '完成失败，请稍后重试。');
+        pendingCompletions.set(issueKey(issue), result.updated_at);
+        saveCompletions();
+        allItems = allItems.map(item => item.kind === 'issue' && issueKey(item) === issueKey(issue) ? {...item, state:'closed', updated_at:result.updated_at} : item);
         applyProjectFilter(false);
         render();
-        deleteDialog.close();
-        document.getElementById('sync-label').textContent = '需求已移除，GitHub 原始记录保留';
+        completeDialog.close();
+        document.getElementById('sync-label').textContent = '需求已完成，可在“已完成”列表查看';
       } catch (error) {
-        note.textContent = error.message || '移除失败，请稍后重试。';
+        note.textContent = error.message || '完成失败，请稍后重试。';
       } finally {
         button.disabled = false;
       }
