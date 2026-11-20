@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T11:12:51Z",
+  "generated_at": "2026-11-20T14:42:36Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T07:46:21Z",
+      "updated_at": "2026-11-20T14:42:20Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "b6950476eae207c2646a89c94192b5a50686761b",
+            "sha": "ee9d654ea89d39bd20d64682433b9075224ed011",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 19775,
-                "sha": "de22f438f14f9bdb983a119688ead11403902029",
+                "size": 22632,
+                "sha": "c62fedf020596326b1e9287149981a27ff0a330a",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -62,8 +62,8 @@
               },
               {
                 "path": "worker/worker.mjs",
-                "size": 13024,
-                "sha": "0b86a251bf03f04cfef748e48a744de8b98d178c",
+                "size": 12265,
+                "sha": "4f49fb7ccfbaff654bcfc2d964534179e1981c46",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/worker.mjs"
               },
               {
@@ -132,6 +132,17 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:ee9d654ea89d",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "去掉钉钉通知的姓名二次核对",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/ee9d654ea89d39bd20d64682433b9075224ed011",
+      "updated_at": "2026-11-20T14:42:12Z",
+      "actor": "chengfengsunce"
+    },
     {
       "id": "issue:chengfengsunce/dashboard:14",
       "kind": "issue",
@@ -599,8 +610,8 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 28,
-    "commits": 9,
+    "items": 29,
+    "commits": 10,
     "issues": 19,
     "pull_requests": 0,
     "releases": 0
