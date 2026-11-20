@@ -19,6 +19,24 @@ function json(request, body, status = 200) {
   return new Response(JSON.stringify(body), { status, headers });
 }
 
+async function sendDingTalk(env, title, submitter, project, url) {
+  const timestamp = Date.now().toString();
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(env.DINGTALK_SECRET), { name: 'HMAC', hash: 'SHA-256' });
+  const digest = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(timestamp + '\n' + env.DINGTALK_SECRET));
+  const signature = btoa(String.fromCharCode(...new Uint8Array(digest))).replaceAll('+', '%2B').replaceAll('/', '%2F').replaceAll('=', '%3D');
+  const response = await fetch('https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2?access_token=' + encodeURIComponent(env.DINGTALK_ACCESS_TOKEN), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      agent_id: Number(env.DINGTALK_AGENT_ID),
+      userid_list: submitter,
+      msg: { msgtype: 'text', text: { content: `需求已完成：${title}\n项目：${project}\n详情：${url}` } },
+    }),
+  });
+  const result = await response.json();
+  if (!response.ok || result.errcode !== 0) throw new Error(result.errmsg || '钉钉通知发送失败。');
+}
+
 async function submitIssue(request, env) {
   if (request.headers.get('Origin') !== allowedOrigin) return json(request, { error: '提交来源无效。' }, 403);
   if (!env.GITHUB_TOKEN) return json(request, { error: '自动提交通道未配置 GitHub 密钥。' }, 503);
@@ -111,8 +129,7 @@ async function submitIssue(request, env) {
 
 async function completeIssue(request, env, target, number) {
   if (request.headers.get('Origin') !== allowedOrigin) return json(request, { error: '操作来源无效。' }, 403);
-  if (!env.ADMIN_TOKEN || !env.GITHUB_TOKEN) return json(request, { error: '需求完成功能尚未配置。' }, 503);
-  if (request.headers.get('Authorization') !== 'Bearer ' + env.ADMIN_TOKEN) return json(request, { error: '管理员密钥不正确。' }, 403);
+  if (!env.GITHUB_TOKEN) return json(request, { error: '需求完成功能尚未配置。' }, 503);
   if (!target.startsWith(repository.split('/')[0] + '/')) return json(request, { error: '不允许操作其他账号的项目。' }, 403);
   const limit = await env.SUBMIT_RATE_LIMIT.limit({ key: 'admin:' + (request.headers.get('CF-Connecting-IP') || 'unknown') });
   if (!limit.success) return json(request, { error: '操作太频繁，请稍后再试。' }, 429);
@@ -124,6 +141,11 @@ async function completeIssue(request, env, target, number) {
     'User-Agent': 'dashboard-issue-form',
   };
   const issueUrl = 'https://api.github.com/repos/' + target + '/issues/' + number;
+  let notify = true;
+  try {
+    const payload = await request.json();
+    if (payload && typeof payload === 'object') notify = payload.notify_submitter !== false;
+  } catch {}
   try {
     const original = await fetch(issueUrl, { headers });
     const issue = await original.json();
@@ -135,7 +157,22 @@ async function completeIssue(request, env, target, number) {
     });
     const result = await response.json();
     if (!response.ok || result.state !== 'closed') throw new Error('需求完成失败，请检查 GitHub 密钥的 Issues 写入权限。');
-    return json(request, { state: 'closed', updated_at: result.updated_at });
+    let notification = 'skipped';
+    if (notify && env.DINGTALK_ACCESS_TOKEN && env.DINGTALK_AGENT_ID && env.DINGTALK_SECRET) {
+      notification = 'failed';
+      let metadata = {};
+      const header = (issue.body || '').split('\n')[0].trim();
+      if (header.startsWith('<!-- dashboard-meta:') && header.endsWith(' -->')) {
+        try { metadata = JSON.parse(header.slice(20, -4)); } catch {}
+      }
+      const submitter = metadata.submitter || '';
+      if (!submitter) throw new Error('未找到提出人，无法发送钉钉通知。');
+      const project = metadata.project || target;
+      const text = `### 需求已完成\n\n**需求**：${issue.title}\n\n**项目**：${project}\n\n**提出人**：${submitter}\n\n**链接**：[查看需求](${issue.html_url})`;
+      await sendDingTalk(env, issue.title, submitter, project, issue.html_url);
+      notification = 'sent';
+    }
+    return json(request, { state: 'closed', updated_at: result.updated_at, notification });
   } catch (error) {
     return json(request, { error: error.message || '需求完成失败，请稍后重试。' }, 502);
   }

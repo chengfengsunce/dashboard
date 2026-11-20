@@ -66,7 +66,7 @@
     .page-info{margin-right:auto;font-size:12px;color:var(--muted)}
     .field select{width:100%;min-height:40px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
     .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .completion-note{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.7}
+    .completion-note{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.7}.choice{display:flex;align-items:center;gap:8px;margin:0 0 16px;color:var(--ink);font-size:13px;font-weight:600}.choice input{width:15px;height:15px;accent-color:var(--blue)}
     #complete-issue-title{display:block;margin-bottom:6px;color:var(--ink);overflow-wrap:anywhere}
     @media(max-width:850px){.topbar{flex-wrap:nowrap}.view-nav{order:0;flex-basis:auto}.top-actions{margin-left:0}.sync-label{display:none}.requirements-table tr{grid-template-columns:40px minmax(0,1fr) 110px 80px 94px 48px}}
     @media(max-width:560px){.topbar{padding:8px 10px;gap:6px}.top-actions{width:auto}.top-actions>a{display:none}.view-nav{padding:2px;gap:0}.nav-button{padding:0 9px}.project-filter-toggle{padding:0 8px;gap:3px}.page{padding:8px}.board{padding:10px 8px}.board .list-head{gap:6px;flex-wrap:wrap;margin-bottom:8px}.list-actions{gap:5px}.requirements-table{font-size:11px}.requirements-table tr{grid-template-columns:30px minmax(0,1fr) 54px 42px 72px 40px}.requirements-table th,.requirements-table td{padding-inline:3px}.requirements-table .issue-title,.complete-issue,.issue-completed{font-size:11px}.pagination{gap:6px;padding-top:8px}.pagination .button{padding:0 8px;font-size:12px}.page-info{font-size:11px}.field-pair{grid-template-columns:1fr;gap:0}}
@@ -124,7 +124,7 @@
             <form id="complete-form" class="compose">
               <div class="compose-top"><span id="complete-dialog-title" class="compose-title">完成需求</span><button id="close-complete-dialog" class="dialog-close" type="button" aria-label="关闭完成确认">×</button></div>
               <p class="completion-note"><strong id="complete-issue-title"></strong>确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。</p>
-              <label class="field"><span>管理员密钥</span><input id="admin-token" type="password" required autocomplete="off" placeholder="仅管理员可以完成需求，不会保存此密钥"></label>
+              <label class="choice"><input id="notify-submitter" type="checkbox" checked>通过钉钉通知提出人</label>
               <div class="compose-bottom"><span id="complete-note" class="form-note" role="status"></span><button id="confirm-complete" class="button primary" type="submit">确认完成</button></div>
             </form>
           </dialog>
@@ -372,7 +372,7 @@
     document.getElementById('next-page').addEventListener('click', () => { currentPage += 1; render(); });
 
     const completeDialog = document.getElementById('complete-dialog');
-    const adminToken = document.getElementById('admin-token');
+    const notifySubmitter = document.getElementById('notify-submitter');
     issueList.addEventListener('click', event => {
       const button = event.target.closest('button[data-complete-issue]');
       if (!button) return;
@@ -383,25 +383,23 @@
       completeDialog.showModal();
     });
     document.getElementById('close-complete-dialog').addEventListener('click', () => completeDialog.close());
-    completeDialog.addEventListener('close', () => { adminToken.value = ''; issueToComplete = null; });
+    completeDialog.addEventListener('close', () => { notifySubmitter.checked = true; issueToComplete = null; });
     document.getElementById('complete-form').addEventListener('submit', async event => {
       event.preventDefault();
       if (!issueToComplete) return;
       const note = document.getElementById('complete-note');
       if (issueApiBaseUrl.includes('ACCOUNT_SUBDOMAIN')) {
         note.textContent = '需求完成通道还未部署，请稍后再试。';
-        adminToken.value = '';
         return;
       }
       const issue = issueToComplete;
-      const token = adminToken.value;
-      adminToken.value = '';
+      const shouldNotify = notifySubmitter.checked;
       const button = document.getElementById('confirm-complete');
       button.disabled = true;
       note.textContent = '正在标记完成…';
       try {
         const route = `/api/issues/${(issue.repo_full_name || repository).split('/').map(encodeURIComponent).join('/')}/${encodeURIComponent(issueNumber(issue))}`;
-        const response = await fetch(new URL(route, issueApiBaseUrl), {method:'PATCH', headers:{Authorization:`Bearer ${token}`}});
+        const response = await fetch(new URL(route, issueApiBaseUrl), {method:'PATCH', headers: {'Content-Type':'application/json'}, body:JSON.stringify({notify_submitter:shouldNotify})});
         const result = await response.json();
         if (!response.ok || result.state !== 'closed' || !Number.isFinite(Date.parse(result.updated_at))) throw new Error(result.error || '完成失败，请稍后重试。');
         pendingCompletions.set(issueKey(issue), result.updated_at);
@@ -410,7 +408,7 @@
         applyProjectFilter(false);
         render();
         completeDialog.close();
-        document.getElementById('sync-label').textContent = '需求已完成，可在“已完成”列表查看';
+        document.getElementById('sync-label').textContent = result.notification === 'failed' ? '需求已完成，钉钉通知发送失败' : '需求已完成，可在“已完成”列表查看';
       } catch (error) {
         note.textContent = error.message || '完成失败，请稍后重试。';
       } finally {
