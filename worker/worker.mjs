@@ -20,21 +20,48 @@ function json(request, body, status = 200) {
 }
 
 async function sendDingTalk(env, title, submitter, project, url) {
-  const timestamp = Date.now().toString();
-  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(env.DINGTALK_SECRET), { name: 'HMAC', hash: 'SHA-256' });
-  const digest = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(timestamp + '\n' + env.DINGTALK_SECRET));
-  const signature = btoa(String.fromCharCode(...new Uint8Array(digest))).replaceAll('+', '%2B').replaceAll('/', '%2F').replaceAll('=', '%3D');
-  const response = await fetch('https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2?access_token=' + encodeURIComponent(env.DINGTALK_ACCESS_TOKEN), {
+  if (!env.DINGTALK_APP_KEY || !env.DINGTALK_SECRET || !env.DINGTALK_ROBOT_CODE) {
+    throw new Error('钉钉应用通知尚未配置完整。');
+  }
+  const tokenResponse = await fetch('https://api.dingtalk.com/v1.0/oauth2/accessToken', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ appKey: env.DINGTALK_APP_KEY, appSecret: env.DINGTALK_SECRET }),
+  });
+  const token = await tokenResponse.json();
+  if (!tokenResponse.ok || !token.accessToken) throw new Error('钉钉应用认证失败，请检查 Client ID 和 Client Secret。');
+  const headers = { 'Content-Type': 'application/json', 'x-acs-dingtalk-access-token': token.accessToken };
+  const searchResponse = await fetch('https://api.dingtalk.com/v1.0/contact/users/search', {
+    method: 'POST', headers,
+    body: JSON.stringify({ queryWord: submitter, offset: 0, size: 20 }),
+  });
+  const search = await searchResponse.json();
+  if (!searchResponse.ok) throw new Error('无法查找提出人，请开通钉钉通讯录搜索权限（qyapi_addresslist_search），并检查通讯录可见范围。');
+  if (search.hasMore) throw new Error('提出人姓名匹配结果过多，请填写完整姓名后重试。');
+  const matches = [];
+  for (const userid of new Set(search.list || [])) {
+    const userResponse = await fetch('https://oapi.dingtalk.com/topapi/v2/user/get?access_token=' + encodeURIComponent(token.accessToken), {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userid }),
+    });
+    const user = await userResponse.json();
+    if (!userResponse.ok || user.errcode !== 0) throw new Error('无法核对提出人姓名，请开通钉钉成员信息读取权限（qyapi_get_member），并检查通讯录可见范围。');
+    if (user.result?.name === submitter && user.result.userid) matches.push(user.result.userid);
+  }
+  if (!matches.length) throw new Error(`未找到提出人“${submitter}”的钉钉账号，请检查姓名和通讯录可见范围。`);
+  if (matches.length !== 1) throw new Error(`钉钉中有多位“${submitter}”，为避免通知错人，本次未发送。`);
+  const response = await fetch('https://api.dingtalk.com/v1.0/robot/oToMessages/batchSend', {
+    method: 'POST', headers,
     body: JSON.stringify({
-      agent_id: Number(env.DINGTALK_AGENT_ID),
-      userid_list: submitter,
-      msg: { msgtype: 'text', text: { content: `需求已完成：${title}\n项目：${project}\n详情：${url}` } },
+      robotCode: env.DINGTALK_ROBOT_CODE,
+      userIds: matches,
+      msgKey: 'sampleText',
+      msgParam: JSON.stringify({ content: `需求已完成：${title}\n项目：${project}\n详情：${url}` }),
     }),
   });
   const result = await response.json();
-  if (!response.ok || result.errcode !== 0) throw new Error(result.errmsg || '钉钉通知发送失败。');
+  if (!response.ok || !result.processQueryKey) throw new Error('钉钉机器人未接受通知，请检查机器人编码和消息发送权限。');
+  if (result.invalidStaffIdList?.length || result.filteredStaffIdList?.length) throw new Error('钉钉机器人无法通知该提出人，请检查应用可用范围和接收人账号。');
+  if (result.flowControlledStaffIdList?.length) throw new Error('钉钉通知触发限流，请稍后重试。');
 }
 
 async function submitIssue(request, env) {
@@ -141,38 +168,46 @@ async function completeIssue(request, env, target, number) {
     'User-Agent': 'dashboard-issue-form',
   };
   const issueUrl = 'https://api.github.com/repos/' + target + '/issues/' + number;
-  let notify = true;
+  let notify = false;
   try {
     const payload = await request.json();
-    if (payload && typeof payload === 'object') notify = payload.notify_submitter !== false;
-  } catch {}
+    notify = payload?.notify_submitter === true;
+  } catch {
+    return json(request, { error: '无法读取完成选项，请刷新后重试。' }, 400);
+  }
   try {
     const original = await fetch(issueUrl, { headers });
     const issue = await original.json();
     if (!original.ok) throw new Error('无法读取需求，请检查 GitHub 密钥的项目权限。');
     if (issue.pull_request) return json(request, { error: '不能将代码合并请求作为需求完成。' }, 400);
-    if (issue.state === 'closed') return json(request, { state: 'closed', updated_at: issue.updated_at });
-    const response = await fetch(issueUrl, {
-      method: 'PATCH', headers, body: JSON.stringify({ state: 'closed', state_reason: 'completed' }),
-    });
-    const result = await response.json();
-    if (!response.ok || result.state !== 'closed') throw new Error('需求完成失败，请检查 GitHub 密钥的 Issues 写入权限。');
-    let notification = 'skipped';
-    if (notify && env.DINGTALK_ACCESS_TOKEN && env.DINGTALK_AGENT_ID && env.DINGTALK_SECRET) {
-      notification = 'failed';
-      let metadata = {};
-      const header = (issue.body || '').split('\n')[0].trim();
-      if (header.startsWith('<!-- dashboard-meta:') && header.endsWith(' -->')) {
-        try { metadata = JSON.parse(header.slice(20, -4)); } catch {}
-      }
-      const submitter = metadata.submitter || '';
-      if (!submitter) throw new Error('未找到提出人，无法发送钉钉通知。');
-      const project = metadata.project || target;
-      const text = `### 需求已完成\n\n**需求**：${issue.title}\n\n**项目**：${project}\n\n**提出人**：${submitter}\n\n**链接**：[查看需求](${issue.html_url})`;
-      await sendDingTalk(env, issue.title, submitter, project, issue.html_url);
-      notification = 'sent';
+    let result = issue;
+    if (issue.state !== 'closed') {
+      const response = await fetch(issueUrl, {
+        method: 'PATCH', headers, body: JSON.stringify({ state: 'closed', state_reason: 'completed' }),
+      });
+      result = await response.json();
+      if (!response.ok || result.state !== 'closed') throw new Error('需求完成失败，请检查 GitHub 密钥的 Issues 写入权限。');
     }
-    return json(request, { state: 'closed', updated_at: result.updated_at, notification });
+    let notification = 'skipped';
+    let notificationError;
+    if (notify) {
+      try {
+        let metadata = {};
+        const header = (issue.body || '').split('\n')[0].trim();
+        if (header.startsWith('<!-- dashboard-meta:') && header.endsWith(' -->')) {
+          try { metadata = JSON.parse(header.slice(20, -4)); } catch {}
+        }
+        const submitter = typeof metadata?.submitter === 'string' ? metadata.submitter.trim() : '';
+        if (!submitter) throw new Error('需求中未填写提出人，无法发送钉钉通知。');
+        const project = metadata.project || target;
+        await sendDingTalk(env, issue.title, submitter, project, issue.html_url);
+        notification = 'queued';
+      } catch (error) {
+        notification = 'failed';
+        notificationError = error.message || '钉钉通知发送失败，请稍后重试。';
+      }
+    }
+    return json(request, { state: 'closed', updated_at: result.updated_at, notification, notification_error: notificationError });
   } catch (error) {
     return json(request, { error: error.message || '需求完成失败，请稍后重试。' }, 502);
   }

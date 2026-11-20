@@ -124,7 +124,7 @@
             <form id="complete-form" class="compose">
               <div class="compose-top"><span id="complete-dialog-title" class="compose-title">完成需求</span><button id="close-complete-dialog" class="dialog-close" type="button" aria-label="关闭完成确认">×</button></div>
               <p class="completion-note"><strong id="complete-issue-title"></strong>确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。</p>
-              <label class="choice"><input id="notify-submitter" type="checkbox" checked>通过钉钉通知提出人</label>
+              <label class="choice"><input id="notify-submitter" type="checkbox" checked><span id="notify-submitter-label">通过钉钉通知提出人</span></label>
               <div class="compose-bottom"><span id="complete-note" class="form-note" role="status"></span><button id="confirm-complete" class="button primary" type="submit">确认完成</button></div>
             </form>
           </dialog>
@@ -379,11 +379,12 @@
       issueToComplete = items.find(item => item.kind === 'issue' && item.state !== 'closed' && issueKey(item) === button.dataset.completeIssue);
       if (!issueToComplete) return;
       document.getElementById('complete-issue-title').textContent = issueToComplete.title;
+      document.getElementById('notify-submitter-label').textContent = `通过钉钉通知提出人：${issueToComplete.submitter || issueToComplete.actor || '未填写'}`;
       document.getElementById('complete-note').textContent = '';
       completeDialog.showModal();
     });
     document.getElementById('close-complete-dialog').addEventListener('click', () => completeDialog.close());
-    completeDialog.addEventListener('close', () => { notifySubmitter.checked = true; issueToComplete = null; });
+    completeDialog.addEventListener('close', () => { notifySubmitter.checked = true; issueToComplete = null; document.getElementById('confirm-complete').textContent = '确认完成'; });
     document.getElementById('complete-form').addEventListener('submit', async event => {
       event.preventDefault();
       if (!issueToComplete) return;
@@ -407,8 +408,14 @@
         allItems = allItems.map(item => item.kind === 'issue' && issueKey(item) === issueKey(issue) ? {...item, state:'closed', updated_at:result.updated_at} : item);
         applyProjectFilter(false);
         render();
-        completeDialog.close();
-        document.getElementById('sync-label').textContent = result.notification === 'failed' ? '需求已完成，钉钉通知发送失败' : '需求已完成，可在“已完成”列表查看';
+        if (result.notification === 'failed') {
+          note.textContent = `需求已完成，但通知未发出：${result.notification_error || '请稍后重试。'}`;
+          button.textContent = '重试钉钉通知';
+          document.getElementById('sync-label').textContent = '需求已完成，钉钉通知未发出';
+        } else {
+          completeDialog.close();
+          document.getElementById('sync-label').textContent = result.notification === 'queued' ? '需求已完成，钉钉通知已提交' : '需求已完成，可在“已完成”列表查看';
+        }
       } catch (error) {
         note.textContent = error.message || '完成失败，请稍后重试。';
       } finally {

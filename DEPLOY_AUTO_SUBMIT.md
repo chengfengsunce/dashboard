@@ -19,10 +19,20 @@
 
 ## 标记需求完成
 
-进行中的需求行显示“完成”，管理员点击后在弹窗临时输入 `ADMIN_TOKEN` 并确认。页面通过 `PATCH /api/issues/<owner>/<repo>/<number>` 请求 Worker；缺少密钥、密钥错误、非本站来源或其他账号的仓库均不能修改状态。管理员密钥不会写入网页、同步数据或浏览器存储，关闭弹窗即清空。
+进行中的需求行显示“完成”，点击后在弹窗确认，可选择是否通知提出人，不再输入管理员密码。页面通过 `PATCH /api/issues/<owner>/<repo>/<number>` 请求 Worker；非本站来源或其他账号的仓库均不能修改状态。看板公开且免密，任何访客都能提交完成操作；来源检查和限流不能替代身份认证。
 
 Worker 将原 GitHub Issue 的状态更新为 `closed`，原因设为 `completed`。成功后需求立即从“进行中”移入“已完成”，同步更新完成数量和完成率；“全部”中仍能查看，已完成行不再显示操作按钮。不会删除需求、隐藏需求，也不会覆盖原标签、正文和图片。旧版删除接口已取消。
 
 浏览器只暂存成功完成的需求编号和 GitHub 更新时间，避免旧同步数据把它退回进行中；下一次同步到已完成状态后清除暂存。若在 GitHub 将需求重新打开，较新的状态会正常恢复为进行中。
 
-`issueApiBaseUrl` 仍为 `ACCOUNT_SUBDOMAIN` 占位地址时，新增和完成都会明确提示“通道还未部署”，不会发送提交内容或管理员密钥，也不会假装修改成功。推送 GitHub Pages 不等于部署 Worker；新增或修改 Worker 后必须重新执行上面的发布步骤。
+`issueApiBaseUrl` 仍为 `ACCOUNT_SUBDOMAIN` 占位地址时，新增和完成都会明确提示“通道还未部署”，不会发送提交内容，也不会假装修改成功。推送 GitHub Pages 不等于部署 Worker；新增或修改 Worker 后必须重新执行上面的发布步骤。
+
+## 钉钉私聊通知
+
+在 Worker Secrets 中配置 `DINGTALK_APP_KEY`（Client ID / AppKey）、`DINGTALK_SECRET`（Client Secret）和 `DINGTALK_ROBOT_CODE`（机器人编码）。不使用群机器人签名，也不能把 AppKey 当成 access token；Worker 每次通知时用应用凭证换取 access token。凭证仅存放在 Worker Secrets，不能提交到 Git 或前端。
+
+应用需开通通讯录搜索权限 `qyapi_addresslist_search`、成员信息读取权限 `qyapi_get_member` 和机器人消息发送权限，并将提出人纳入通讯录可见范围和应用可用范围。权限或能力调整后，按钉钉开放平台提示发布版本使其生效。
+
+Worker 从 GitHub 需求元数据读取姓名，搜索并核对钉钉成员的完整姓名，只有唯一匹配时才向该成员的 `userid` 发送机器人单聊消息；找不到或同名时不会猜测收件人。
+
+需求完成与通知结果分别返回。通知失败不撤销已完成状态，弹窗显示具体原因并允许重试；重试不会重复关闭需求。钉钉接口接受消息后显示“通知已提交”，不将接口接受等同于已读或已送达。
