@@ -229,7 +229,7 @@
           const hidden = (item.labels || []).some(label => (typeof label === 'string' ? label : label.name) === 'dashboard-hidden');
           if (hidden) return false;
         }
-        return selectedRepositories.has(item.project_full_name || item.repo_full_name || repository);
+        return selectedRepositories.has(item.repo_full_name || repository);
       });
     }
 
