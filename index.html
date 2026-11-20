@@ -38,6 +38,39 @@
     .dialog-close{width:30px;height:30px;border:0;border-radius:8px;background:var(--surface);color:var(--muted);font-size:20px;cursor:pointer}
     @media(max-width:850px){.topbar{flex-wrap:wrap}.view-nav{order:3;flex-basis:100%;justify-content:center}.top-actions{margin-left:auto}}
     @media(max-width:560px){.topbar{padding:12px 16px}.top-actions{width:100%;justify-content:space-between}.page{padding:12px 16px 16px}.list-head{align-items:flex-start;flex-wrap:wrap}.list-actions{width:100%;justify-content:space-between;flex-wrap:wrap}.compose-dialog .compose{padding:17px}}
+    html,body{height:100%;overflow:hidden}
+    body{height:100dvh;display:flex;flex-direction:column}
+    .brand,.brand-copy{display:none}
+    .topbar{flex:none;min-height:62px;padding:10px clamp(12px,3vw,36px);justify-content:space-between}
+    .page{flex:1;min-height:0;width:100%;padding:12px clamp(12px,3vw,36px)}
+    .columns,.panel,.board{height:100%;min-height:0}
+    .panel{overflow:hidden}
+    .board{display:flex;flex-direction:column;padding:14px 18px}
+    .board .list-head{flex:none;margin:0 0 12px;flex-direction:row;align-items:center}
+    .issue-list{position:relative;display:block;flex:1;min-height:0;overflow:hidden}
+    .issue-list>.empty{position:absolute;inset:48px 0 0;display:grid;place-content:center}
+    .requirements-table{display:flex;flex-direction:column;width:100%;height:100%;border-collapse:collapse;font-size:13px;text-align:left}
+    .requirements-table thead{flex:none;background:var(--surface);color:#667085}
+    .requirements-table tbody{display:grid;grid-template-rows:repeat(10,minmax(0,1fr));flex:1;min-height:0}
+    .requirements-table tr{display:grid;grid-template-columns:54px minmax(0,1fr) minmax(100px,.3fr) minmax(90px,.22fr) 106px 62px;align-items:center;min-height:0;border-bottom:1px solid var(--line)}
+    .requirements-table th,.requirements-table td{display:block;min-width:0;padding:9px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .requirements-table td{padding-block:0}
+    .requirements-table tbody tr:hover{background:#f8f9ff}
+    .requirements-table .issue-title{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;font-weight:500}
+    .issue-sequence{color:var(--muted);font-variant-numeric:tabular-nums}
+    .delete-issue{padding:4px 0;border:0;background:transparent;color:#c64747;font:inherit;font-size:12px;cursor:pointer}
+    .pagination{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:none;padding-top:12px}
+    .pagination .button{min-height:32px}
+    .button:disabled{opacity:.4;cursor:not-allowed}
+    .page-info{margin-right:auto;font-size:12px;color:var(--muted)}
+    .field select{width:100%;min-height:40px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
+    .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .delete-warning{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.7}
+    #delete-issue-title{display:block;margin-bottom:6px;color:var(--ink);overflow-wrap:anywhere}
+    .button.danger{background:#b93838;border-color:#b93838;color:#fff}
+    @media(max-width:850px){.topbar{flex-wrap:nowrap}.view-nav{order:0;flex-basis:auto}.top-actions{margin-left:0}.sync-label{display:none}.requirements-table tr{grid-template-columns:40px minmax(0,1fr) 110px 80px 94px 48px}}
+    @media(max-width:560px){.topbar{padding:8px 10px;gap:6px}.top-actions{width:auto}.top-actions>a{display:none}.view-nav{padding:2px;gap:0}.nav-button{padding:0 9px}.project-filter-toggle{padding:0 8px;gap:3px}.page{padding:8px}.board{padding:10px 8px}.board .list-head{gap:6px;flex-wrap:wrap;margin-bottom:8px}.list-actions{gap:5px}.requirements-table{font-size:11px}.requirements-table tr{grid-template-columns:30px minmax(0,1fr) 54px 42px 72px 36px}.requirements-table th,.requirements-table td{padding-inline:3px}.requirements-table .issue-title,.delete-issue{font-size:11px}.pagination{gap:6px;padding-top:8px}.pagination .button{padding:0 8px;font-size:12px}.page-info{font-size:11px}.field-pair{grid-template-columns:1fr;gap:0}}
+    @media(max-height:600px){.topbar{min-height:50px;padding-block:6px}.page{padding-block:6px}.board{padding-block:8px}.board .list-head{margin-bottom:6px}.pagination{padding-top:6px}.requirements-table th{padding-block:5px}}
   </style>
 </head>
 <body>
@@ -74,15 +107,25 @@
         <div class="board">
           <div class="list-head"><h3 id="requirements-heading">需求列表</h3><div class="list-actions"><div class="filters" role="group" aria-label="筛选需求"><button class="filter active" type="button" data-filter="open">进行中</button><button class="filter" type="button" data-filter="closed">已完成</button><button class="filter" type="button" data-filter="all">全部</button></div><button class="button primary" id="open-requirement-dialog" type="button">＋ 新增需求</button></div></div>
           <div id="issue-list" class="issue-list"><div class="empty">正在读取需求…</div></div>
+          <div class="pagination" aria-label="需求翻页"><span id="page-info" class="page-info" aria-live="polite">第 1 / 1 页 · 共 0 条</span><button id="previous-page" class="button" type="button" disabled>上一页</button><button id="next-page" class="button" type="button" disabled>下一页</button></div>
           <dialog id="requirement-dialog" class="compose-dialog" aria-labelledby="dialog-title">
             <form id="requirement-form" class="compose">
               <div class="compose-top"><span id="dialog-title" class="compose-title">新增需求</span><div class="dialog-actions"><span class="public-tag">公开</span><button class="dialog-close" id="close-requirement-dialog" type="button" aria-label="关闭弹窗">×</button></div></div>
               <label class="field"><span>需求标题</span><input id="issue-title" name="title" maxlength="180" required placeholder="一句话说清楚想做什么"></label>
+              <div class="field-pair"><label class="field"><span>所属项目</span><select id="issue-project" name="project" required aria-label="所属项目"></select></label><label class="field"><span>提出人</span><input id="issue-submitter" name="submitter" maxlength="60" required placeholder="填写提出人姓名" autocomplete="name"></label></div>
               <label class="field"><span>补充说明</span><textarea id="issue-body" name="body" placeholder="写一下现在的问题、希望怎么改"></textarea></label>
               <div id="attachments" class="attachments" aria-label="粘贴图片预览"></div>
               <label class="honeypot" aria-hidden="true">公司网站<input name="company_website" type="text" tabindex="-1" autocomplete="off"></label>
               <p class="attach-note">截图粘贴后会自动附到公开需求中。</p>
               <div class="compose-bottom"><span id="form-note" class="form-note" role="status"></span><button class="button primary" type="submit">提交需求</button></div>
+            </form>
+          </dialog>
+          <dialog id="delete-dialog" class="compose-dialog" aria-labelledby="delete-dialog-title">
+            <form id="delete-form" class="compose">
+              <div class="compose-top"><span id="delete-dialog-title" class="compose-title">确认移除需求</span><button id="close-delete-dialog" class="dialog-close" type="button" aria-label="关闭删除确认">×</button></div>
+              <p class="delete-warning"><strong id="delete-issue-title"></strong>只从看板移除，GitHub 原始记录保留；需要恢复时可移除原记录的 dashboard-hidden 标签。</p>
+              <label class="field"><span>管理员密钥</span><input id="admin-token" type="password" required autocomplete="off" placeholder="仅管理员可以删除，不会保存此密钥"></label>
+              <div class="compose-bottom"><span id="delete-note" class="form-note" role="status"></span><button id="confirm-delete" class="button danger" type="submit">确认移除</button></div>
             </form>
           </dialog>
         </div>
@@ -103,6 +146,11 @@
     let repositories = [];
     let selectedRepositories = new Set();
     let filter = 'open';
+    const pageSize = 10;
+    let currentPage = 1;
+    let issueToDelete = null;
+    let pendingRemovals = new Map();
+    try { pendingRemovals = new Map(JSON.parse(localStorage.getItem('dashboard-removed-issues') || '[]')); } catch {}
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
@@ -111,7 +159,7 @@
     function formatDate(value) {
       if (!value) return '时间未知';
       const date = new Date(value);
-      return Number.isNaN(date.getTime()) ? '时间未知' : date.toLocaleDateString('zh-CN', {year:'numeric', month:'short', day:'numeric'});
+      return Number.isNaN(date.getTime()) ? '时间未知' : date.toLocaleDateString('zh-CN', {year:'numeric', month:'2-digit', day:'2-digit'});
     }
 
     function issueNumber(issue) {
@@ -122,10 +170,30 @@
       return issue.html_url || `https://github.com/${issue.repo_full_name || repository}/issues/${encodeURIComponent(issueNumber(issue))}`;
     }
 
-    function renderIssue(issue) {
-      const closed = issue.state === 'closed';
-      const labels = (issue.labels || []).map(label => `<span class="label">${escapeHtml(typeof label === 'string' ? label : label.name)}</span>`).join('');
-      return `<article class="issue-card"><div class="issue-main"><a class="issue-title" href="${issueUrl(issue)}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a><div class="issue-meta"><span class="state ${closed ? 'closed' : ''}">${closed ? '已完成' : '进行中'}</span><span>更新于 ${formatDate(issue.updated_at)}</span>${labels}</div></div><span class="issue-number">#${escapeHtml(issueNumber(issue))}</span></article>`;
+    function issueKey(issue) {
+      return `${issue.repo_full_name || repository}#${issueNumber(issue)}`;
+    }
+
+    function normalizeIssue(issue) {
+      let metadata = {};
+      const header = (issue.body || '').split('\n', 1)[0].trim();
+      if (header.startsWith('<!-- dashboard-meta:') && header.endsWith(' -->')) {
+        try { metadata = JSON.parse(header.slice('<!-- dashboard-meta:'.length, -' -->'.length)); } catch {}
+      }
+      if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) metadata = {};
+      return {...issue,
+        project_full_name: issue.project_full_name || (typeof metadata.project === 'string' && metadata.project) || issue.repo_full_name || repository,
+        submitter: issue.submitter || (typeof metadata.submitter === 'string' && metadata.submitter) || issue.actor || issue.user?.login || '未知',
+      };
+    }
+
+    function saveRemovals() {
+      try { localStorage.setItem('dashboard-removed-issues', JSON.stringify([...pendingRemovals])); } catch {}
+    }
+
+    function renderIssue(issue, index) {
+      const project = (issue.project_full_name || repository).split('/').pop();
+      return `<tr data-issue-key="${escapeHtml(issueKey(issue))}"><td class="issue-sequence">${(currentPage - 1) * pageSize + index + 1}</td><td><a class="issue-title" href="${escapeHtml(issueUrl(issue))}" title="${escapeHtml(issue.title || '未命名需求')}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a></td><td title="${escapeHtml(issue.project_full_name)}">${escapeHtml(project)}</td><td title="${escapeHtml(issue.submitter)}">${escapeHtml(issue.submitter)}</td><td title="${escapeHtml(issue.created_at || '时间未知')}">${escapeHtml(formatDate(issue.created_at))}</td><td><button class="delete-issue" type="button" data-delete-issue="${escapeHtml(issueKey(issue))}" aria-label="删除需求：${escapeHtml(issue.title)}">删除</button></td></tr>`;
     }
 
     function updateProjectFilterLabel() {
@@ -142,8 +210,20 @@
       updateProjectFilterLabel();
     }
 
-    function applyProjectFilter() {
-      items = allItems.filter(item => selectedRepositories.has(item.repo_full_name || repository));
+    function applyProjectFilter(resetPage = true) {
+      if (resetPage) currentPage = 1;
+      items = allItems.filter(item => {
+        if (item.kind === 'issue') {
+          const hidden = (item.labels || []).some(label => (typeof label === 'string' ? label : label.name) === 'dashboard-hidden');
+          const key = issueKey(item);
+          if (!hidden && pendingRemovals.has(key) && Date.parse(item.updated_at) > pendingRemovals.get(key)) {
+            pendingRemovals.delete(key);
+            saveRemovals();
+          }
+          if (hidden || pendingRemovals.has(key)) return false;
+        }
+        return selectedRepositories.has(item.project_full_name || item.repo_full_name || repository);
+      });
     }
 
     function render() {
@@ -163,12 +243,18 @@
       const recent = sortedItems.slice(0, 5);
       recentList.innerHTML = recent.length ? recent.map(item => {
         const commit = item.kind === 'commit';
-        const activityType = commit ? `提交 · ${item.repo_full_name}` : `${item.state === 'closed' ? '已完成' : '进行中'} · ${item.repo_full_name}`;
-        return `<div class="recent-item"><span class="dot ${!commit && item.state === 'closed' ? 'closed' : ''}"></span><div><a class="recent-title" href="${item.html_url || issueUrl(item)}" target="_blank" rel="noreferrer">${escapeHtml(item.title || (commit ? '无提交说明' : '未命名需求'))}</a><div class="recent-meta">${escapeHtml(activityType)} · ${formatDate(item.updated_at)}</div></div></div>`;
-      }).join('') : `<div class='empty'>${selectedRepositories.size ? '还没有需求，右侧可以直接添加。' : '请至少选择一个项目。'}</div>`;
+        const activityType = commit ? `提交 · ${item.repo_full_name}` : `${item.state === 'closed' ? '已完成' : '进行中'} · ${item.project_full_name}`;
+        return `<div class="recent-item"><span class="dot ${!commit && item.state === 'closed' ? 'closed' : ''}"></span><div><a class="recent-title" href="${escapeHtml(item.html_url || issueUrl(item))}" target="_blank" rel="noreferrer">${escapeHtml(item.title || (commit ? '无提交说明' : '未命名需求'))}</a><div class="recent-meta">${escapeHtml(activityType)} · ${formatDate(item.updated_at)}</div></div></div>`;
+      }).join('') : `<div class='empty'>${selectedRepositories.size ? '还没有进展，可以在需求页新增需求。' : '请至少选择一个项目。'}</div>`;
 
       const visible = filter === 'all' ? issues : issues.filter(issue => issue.state === filter);
-      issueList.innerHTML = visible.length ? visible.map(renderIssue).join('') : `<div class='empty'>${selectedRepositories.size ? filter === 'closed' ? '还没有已完成的需求。' : '没有进行中的需求。' : '请至少选择一个项目。'}</div>`;
+      const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
+      currentPage = Math.max(1, Math.min(currentPage, totalPages));
+      const page = visible.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+      issueList.innerHTML = `<table class="requirements-table" aria-label="需求列表"><thead><tr><th scope="col">编号</th><th scope="col">需求</th><th scope="col">所属项目</th><th scope="col">提出人</th><th scope="col">时间</th><th scope="col">操作</th></tr></thead><tbody>${page.map(renderIssue).join('')}</tbody></table>${visible.length ? '' : `<div class="empty">${selectedRepositories.size ? filter === 'closed' ? '还没有已完成的需求。' : filter === 'all' ? '还没有需求。' : '没有进行中的需求。' : '请至少选择一个项目。'}</div>`}`;
+      document.getElementById('page-info').textContent = `第 ${currentPage} / ${totalPages} 页 · 共 ${visible.length} 条`;
+      document.getElementById('previous-page').disabled = currentPage === 1;
+      document.getElementById('next-page').disabled = currentPage === totalPages;
     }
 
     async function loadData() {
@@ -189,7 +275,7 @@
           ? new Set(repositories.map(project => project.full_name))
           : new Set(repositories.map(project => project.full_name).filter(name => previouslySelected.has(name)));
         const projectNames = new Set(repositories.map(project => project.full_name));
-        allItems = (data.items || []).filter(item => (item.kind === 'issue' || item.kind === 'commit') && projectNames.has(item.repo_full_name));
+        allItems = (data.items || []).filter(item => (item.kind === 'issue' || item.kind === 'commit') && projectNames.has(item.repo_full_name)).map(item => item.kind === 'issue' ? normalizeIssue(item) : item);
         renderProjectFilter();
         applyProjectFilter();
         const syncedAt = data.generated_at ? new Date(data.generated_at).toLocaleString('zh-CN', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'}) : '';
@@ -208,15 +294,22 @@
 
     async function refreshIssuesFromGitHub() {
       try {
-        const response = await fetch(`https://api.github.com/repos/${repository}/issues?state=all&per_page=100`, {headers:{Accept:'application/vnd.github+json'}, cache:'no-store'});
-        if (!response.ok) throw new Error('GitHub 暂时无法读取');
-        const data = await response.json();
-        allItems = [...allItems.filter(item => item.repo_full_name !== repository || item.kind === 'commit'), ...data.filter(issue => !issue.pull_request).map(issue => ({...issue, kind:'issue', repo_full_name:repository}))];
+        const data = [];
+        let page = 1;
+        while (true) {
+          const response = await fetch(`https://api.github.com/repos/${repository}/issues?state=all&per_page=100&page=${page}`, {headers:{Accept:'application/vnd.github+json'}, cache:'no-store'});
+          if (!response.ok) throw new Error('GitHub 暂时无法读取');
+          const batch = await response.json();
+          data.push(...batch);
+          if (batch.length < 100) break;
+          page += 1;
+        }
+        allItems = [...allItems.filter(item => item.repo_full_name !== repository || item.kind === 'commit'), ...data.filter(issue => !issue.pull_request).map(issue => normalizeIssue({...issue, kind:'issue', repo_full_name:repository}))];
         applyProjectFilter();
         document.getElementById('sync-label').textContent = '需求列表已更新';
         render();
       } catch {
-        await loadData();
+        document.getElementById('sync-label').textContent = '需求已提交，GitHub 列表暂时无法刷新';
       }
     }
 
@@ -228,16 +321,68 @@
 
     document.getElementById('open-requirement-dialog').addEventListener('click', () => {
       document.getElementById('form-note').textContent = '';
+      const project = document.getElementById('issue-project');
+      project.innerHTML = repositories.map(item => `<option value="${escapeHtml(item.full_name)}">${escapeHtml(item.name)}</option>`).join('');
+      project.value = repositories.find(item => selectedRepositories.has(item.full_name))?.full_name || repositories[0]?.full_name || '';
       requirementsDialog.showModal();
     });
     document.getElementById('close-requirement-dialog').addEventListener('click', () => requirementsDialog.close());
     document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
       filter = button.dataset.filter;
+      currentPage = 1;
       document.querySelectorAll('[data-filter]').forEach(item => item.classList.toggle('active', item === button));
       render();
     }));
 
     document.getElementById('refresh').addEventListener('click', loadData);
+    document.getElementById('previous-page').addEventListener('click', () => { currentPage -= 1; render(); });
+    document.getElementById('next-page').addEventListener('click', () => { currentPage += 1; render(); });
+
+    const deleteDialog = document.getElementById('delete-dialog');
+    const adminToken = document.getElementById('admin-token');
+    issueList.addEventListener('click', event => {
+      const button = event.target.closest('button[data-delete-issue]');
+      if (!button) return;
+      issueToDelete = items.find(item => item.kind === 'issue' && issueKey(item) === button.dataset.deleteIssue);
+      if (!issueToDelete) return;
+      document.getElementById('delete-issue-title').textContent = issueToDelete.title;
+      document.getElementById('delete-note').textContent = '';
+      deleteDialog.showModal();
+    });
+    document.getElementById('close-delete-dialog').addEventListener('click', () => deleteDialog.close());
+    deleteDialog.addEventListener('close', () => { adminToken.value = ''; issueToDelete = null; });
+    document.getElementById('delete-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!issueToDelete) return;
+      const note = document.getElementById('delete-note');
+      if (issueApiBaseUrl.includes('ACCOUNT_SUBDOMAIN')) {
+        note.textContent = '管理员删除通道还未部署，请稍后再试。';
+        adminToken.value = '';
+        return;
+      }
+      const issue = issueToDelete;
+      const token = adminToken.value;
+      adminToken.value = '';
+      const button = document.getElementById('confirm-delete');
+      button.disabled = true;
+      note.textContent = '正在移除…';
+      try {
+        const route = `/api/issues/${(issue.repo_full_name || repository).split('/').map(encodeURIComponent).join('/')}/${encodeURIComponent(issueNumber(issue))}`;
+        const response = await fetch(new URL(route, issueApiBaseUrl), {method:'DELETE', headers:{Authorization:`Bearer ${token}`}});
+        const result = await response.json();
+        if (!response.ok || !result.removed) throw new Error(result.error || '移除失败，请稍后重试。');
+        pendingRemovals.set(issueKey(issue), Date.now());
+        saveRemovals();
+        applyProjectFilter(false);
+        render();
+        deleteDialog.close();
+        document.getElementById('sync-label').textContent = '需求已移除，GitHub 原始记录保留';
+      } catch (error) {
+        note.textContent = error.message || '移除失败，请稍后重试。';
+      } finally {
+        button.disabled = false;
+      }
+    });
 
     projectSearch.addEventListener('input', renderProjectFilter);
     projectOptions.addEventListener('change', event => {
@@ -279,14 +424,21 @@
 
     document.getElementById('requirement-form').addEventListener('submit', async event => {
       event.preventDefault();
+      const form = event.currentTarget;
       const title = document.getElementById('issue-title').value.trim();
       const description = document.getElementById('issue-body').value.trim();
+      const project = document.getElementById('issue-project').value;
+      const submitter = document.getElementById('issue-submitter').value.trim();
       if (!title) {
         document.getElementById('form-note').textContent = '先写一个需求标题。';
         return;
       }
       const formNote = document.getElementById('form-note');
-      const submitButton = event.currentTarget.querySelector('[type="submit"]');
+      if (!project || !submitter) {
+        formNote.textContent = '请选择所属项目，并填写提出人姓名。';
+        return;
+      }
+      const submitButton = form.querySelector('[type="submit"]');
       if (issueApiBaseUrl.includes('ACCOUNT_SUBDOMAIN')) {
         formNote.textContent = '自动提交通道还未部署，请稍后再试。';
         return;
@@ -294,7 +446,9 @@
       const payload = new FormData();
       payload.set('title', title);
       payload.set('body', description);
-      payload.set('company_website', event.currentTarget.elements.company_website.value);
+      payload.set('project', project);
+      payload.set('submitter', submitter);
+      payload.set('company_website', form.elements.company_website.value);
       attachmentFiles.forEach(({file}) => payload.append('image', file, file.name));
       submitButton.disabled = true;
       formNote.textContent = '正在提交…';
@@ -302,8 +456,15 @@
         const response = await fetch(new URL('/api/issues', issueApiBaseUrl), {method:'POST', body:payload});
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || '提交失败，请稍后重试。');
+        allItems.unshift(normalizeIssue({kind:'issue', repo_full_name:repository, number:result.number, title, project_full_name:project, submitter, state:'open', created_at:result.created_at, updated_at:result.updated_at, html_url:result.url, labels:[]}));
+        selectedRepositories.add(project);
+        filter = 'open';
+        document.querySelectorAll('[data-filter]').forEach(button => button.classList.toggle('active', button.dataset.filter === filter));
+        renderProjectFilter();
+        applyProjectFilter();
+        render();
         requirementsDialog.close();
-        event.currentTarget.reset();
+        form.reset();
         attachmentFiles.splice(0).forEach(({url}) => URL.revokeObjectURL(url));
         document.getElementById('attachments').replaceChildren();
         document.getElementById('sync-label').textContent = `需求 #${result.number} 已提交`;

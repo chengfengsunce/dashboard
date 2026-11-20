@@ -109,9 +109,9 @@ def repo_activity(repo: dict) -> list[dict]:
         item["actor"] = author.get("login") or (commit_data.get("author") or {}).get("name")
         items.append(item)
 
-    issues = api_get(
+    issues = get_all_pages(
         f"/repos/{owner}/{name}/issues",
-        {"state": "all", "sort": "updated", "direction": "desc", "per_page": PER_REPO},
+        {"state": "all", "sort": "updated", "direction": "desc"},
     )
     for issue in issues if isinstance(issues, list) else []:
         kind = "pull_request" if issue.get("pull_request") else "issue"
@@ -126,6 +126,19 @@ def repo_activity(repo: dict) -> list[dict]:
         item["state"] = issue.get("state", "open")
         item["actor"] = (issue.get("user") or {}).get("login")
         item["labels"] = [label.get("name") for label in issue.get("labels", []) if label.get("name")]
+        item["number"] = issue.get("number")
+        item["created_at"] = issue.get("created_at")
+        metadata = {}
+        header = (issue.get("body") or "").partition("\n")[0].strip()
+        if header.startswith("<!-- dashboard-meta:") and header.endswith(" -->"):
+            try:
+                metadata = json.loads(header[len("<!-- dashboard-meta:"):-len(" -->")])
+            except (ValueError, TypeError):
+                pass
+        if not isinstance(metadata, dict):
+            metadata = {}
+        item["project_full_name"] = metadata.get("project") if isinstance(metadata.get("project"), str) else repo["full_name"]
+        item["submitter"] = metadata.get("submitter") if isinstance(metadata.get("submitter"), str) else item["actor"]
         items.append(item)
 
     releases = api_get(

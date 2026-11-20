@@ -56,6 +56,11 @@ async function submitIssue(request, env) {
 
   const title = String(form.get('title') || '').trim();
   const description = String(form.get('body') || '').trim();
+  const project = String(form.get('project') || repository).trim();
+  const submitter = String(form.get('submitter') || '').trim();
+  if (!/^chengfengsunce\/[a-zA-Z0-9_.-]+$/.test(project) || !submitter || submitter.length > 60 || /[<>\r\n]/.test(submitter)) {
+    return json(request, { error: '请选择所属项目，并填写不超过 60 字的提出人姓名。' }, 400);
+  }
   if (!title || title.length > 180 || description.length > 20_000) {
     return json(request, { error: '请填写标题，并确认标题、说明没有超出长度限制。' }, 400);
   }
@@ -82,7 +87,8 @@ async function submitIssue(request, env) {
       imageLinks.push(`![需求截图](${new URL(`/images/${key}`, request.url)})`);
     }
 
-    const body = [description, ...imageLinks].filter(Boolean).join('\n\n');
+    const metadata = '<!-- dashboard-meta:' + JSON.stringify({ project, submitter }) + ' -->';
+    const body = [metadata, description, ...imageLinks].filter(Boolean).join('\n\n');
     const response = await fetch(`https://api.github.com/repos/${repository}/issues`, {
       method: 'POST',
       headers: {
@@ -96,24 +102,61 @@ async function submitIssue(request, env) {
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.message || 'GitHub 创建需求失败。');
-    return json(request, { number: result.number, url: result.html_url }, 201);
+    return json(request, { number: result.number, url: result.html_url, created_at: result.created_at, updated_at: result.updated_at }, 201);
   } catch (error) {
     await Promise.all(uploadedKeys.map(key => env.ISSUE_IMAGES.delete(key)));
     return json(request, { error: error.message || '提交失败，请稍后重试。' }, 502);
   }
 }
 
+async function removeIssue(request, env, target, number) {
+  if (request.headers.get('Origin') !== allowedOrigin) return json(request, { error: '操作来源无效。' }, 403);
+  if (!env.ADMIN_TOKEN || !env.GITHUB_TOKEN) return json(request, { error: '管理员删除功能尚未配置。' }, 503);
+  if (request.headers.get('Authorization') !== 'Bearer ' + env.ADMIN_TOKEN) return json(request, { error: '管理员密钥不正确。' }, 403);
+  if (!target.startsWith(repository.split('/')[0] + '/')) return json(request, { error: '不允许操作其他账号的项目。' }, 403);
+  const limit = await env.SUBMIT_RATE_LIMIT.limit({ key: 'admin:' + (request.headers.get('CF-Connecting-IP') || 'unknown') });
+  if (!limit.success) return json(request, { error: '操作太频繁，请稍后再试。' }, 429);
+  const headers = {
+    Accept: 'application/vnd.github+json',
+    Authorization: 'Bearer ' + env.GITHUB_TOKEN,
+    'Content-Type': 'application/json; charset=utf-8',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'User-Agent': 'dashboard-issue-form',
+  };
+  const issueUrl = 'https://api.github.com/repos/' + target + '/issues/' + number;
+  try {
+    const original = await fetch(issueUrl, { headers });
+    const issue = await original.json();
+    if (!original.ok) throw new Error('无法读取需求，请检查 GitHub 密钥的项目权限。');
+    if (issue.pull_request) return json(request, { error: '不能将代码合并请求作为需求删除。' }, 400);
+    if ((issue.labels || []).some(label => label.name === 'dashboard-hidden')) return json(request, { removed: true });
+    const labelResponse = await fetch('https://api.github.com/repos/' + target + '/labels', {
+      method: 'POST', headers, body: JSON.stringify({ name: 'dashboard-hidden', color: 'c5c5c5', description: '从公开需求看板移除，保留原始记录' }),
+    });
+    const label = await labelResponse.json();
+    if (!labelResponse.ok && !(labelResponse.status === 422 && label.errors?.some(error => error.code === 'already_exists'))) {
+      throw new Error('无法创建移除标签，请检查 GitHub 密钥的 Issues 写入权限。');
+    }
+    const result = await fetch(issueUrl + '/labels', { method: 'POST', headers, body: JSON.stringify({ labels: ['dashboard-hidden'] }) });
+    if (!result.ok) throw new Error('需求移除失败，请检查 GitHub 密钥的 Issues 写入权限。');
+    return json(request, { removed: true });
+  } catch (error) {
+    return json(request, { error: error.message || '需求移除失败，请稍后重试。' }, 502);
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (request.method === 'OPTIONS' && url.pathname === '/api/issues') {
+    const issueRoute = url.pathname.match(/^\/api\/issues\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_.-]+)\/([1-9][0-9]*)$/);
+    if (request.method === 'OPTIONS' && (url.pathname === '/api/issues' || issueRoute)) {
       if (request.headers.get('Origin') !== allowedOrigin) return new Response(null, { status: 403 });
       return new Response(null, {
         status: 204,
         headers: {
           'Access-Control-Allow-Origin': allowedOrigin,
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           'Access-Control-Max-Age': '86400',
         },
       });
@@ -133,6 +176,7 @@ export default {
       });
     }
     if (request.method === 'POST' && url.pathname === '/api/issues') return submitIssue(request, env);
+    if (request.method === 'DELETE' && issueRoute) return removeIssue(request, env, issueRoute[1] + '/' + issueRoute[2], issueRoute[3]);
     return json(request, { error: 'Not found' }, 404);
   },
 };
