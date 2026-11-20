@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T03:49:06Z",
+  "generated_at": "2026-11-20T05:59:04Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T03:48:56Z",
+      "updated_at": "2026-11-20T05:58:49Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "ec7422a2204f74b91f91eb2a993cd0dceaa6d603",
+            "sha": "cd856c6e7f9303d4e97714bdc214dd88aee294ca",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 19946,
-                "sha": "a538fe3e1dff6e79bcf986981235c1e5b18ab6e0",
+                "size": 19955,
+                "sha": "16384961d2c94561688627dc3b8162d4075c755b",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -50,8 +50,8 @@
               },
               {
                 "path": "index.html",
-                "size": 43148,
-                "sha": "29491ef90883bb4b72b1af35433e777482de0100",
+                "size": 43142,
+                "sha": "de7c175e26518d411707111b76d6a46272c028c9",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/index.html"
               },
               {
@@ -65,6 +65,12 @@
                 "size": 8954,
                 "sha": "e7d267dfdfb867c858a2c905dfa4e0439a90c89f",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/worker.mjs"
+              },
+              {
+                "path": "wrangler-deploy.jsonc",
+                "size": 335,
+                "sha": "2f8492ea8fcad5f6572f4abba282a6bbf3a68c8a",
+                "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/wrangler-deploy.jsonc"
               },
               {
                 "path": "wrangler.jsonc",
@@ -126,6 +132,17 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:cd856c6e7f93",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "接入需求接口地址",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/cd856c6e7f9303d4e97714bdc214dd88aee294ca",
+      "updated_at": "2026-11-20T05:58:44Z",
+      "actor": "chengfengsunce"
+    },
     {
       "id": "commit:chengfengsunce/dashboard:ec7422a2204f",
       "kind": "commit",
@@ -497,17 +514,6 @@
       "title": "实现看板需求自动提交接口",
       "html_url": "https://github.com/chengfengsunce/dashboard/commit/2008ef6a8dc6d194a9d02d228be9943cdf415fa7",
       "updated_at": "2026-11-19T11:58:23Z",
-      "actor": "chengfengsunce"
-    },
-    {
-      "id": "commit:chengfengsunce/dashboard:33f8331e0c62",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "精简看板标题并释放列表空间",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/33f8331e0c62cd5432521bede6055013b46600cf",
-      "updated_at": "2026-11-19T09:27:33Z",
       "actor": "chengfengsunce"
     },
     {
