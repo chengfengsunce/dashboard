@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T02:58:48Z",
+  "generated_at": "2026-11-20T03:02:41Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T02:45:23Z",
+      "updated_at": "2026-11-20T03:02:33Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "3bcf53098c0cc4646e5f79747c57a62ed80a9dc0",
+            "sha": "8be61629bb210f4527ad329f8d6a27113c995a48",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 19928,
-                "sha": "fb5c8a1165b3630d18b0fb72dfb6ddffcbdbf666",
+                "size": 19439,
+                "sha": "edd594301ad059ec15120b66dcf2dfc8d41f0edb",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -50,8 +50,8 @@
               },
               {
                 "path": "index.html",
-                "size": 41760,
-                "sha": "f9d915a24fe77a5f890c7c3b1c991953cbdab80a",
+                "size": 41734,
+                "sha": "9db7daec00b85deb5edfa16e7f1bb478eb308e80",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/index.html"
               },
               {
@@ -126,6 +126,17 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:8be61629bb21",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "修复需求筛选：按仓库匹配而非业务项目名",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/8be61629bb210f4527ad329f8d6a27113c995a48",
+      "updated_at": "2026-11-20T03:02:28Z",
+      "actor": "chengfengsunce"
+    },
     {
       "id": "commit:chengfengsunce/dashboard:7ed5c3f85748",
       "kind": "commit",
@@ -513,8 +524,8 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 24,
-    "commits": 9,
+    "items": 25,
+    "commits": 10,
     "issues": 15,
     "pull_requests": 0,
     "releases": 0
