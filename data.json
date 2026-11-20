@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T02:29:24Z",
+  "generated_at": "2026-11-20T02:43:11Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T02:29:13Z",
+      "updated_at": "2026-11-20T02:29:26Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "206fe6b74f415a63fab1c21f1cf14a677a208f1e",
+            "sha": "2b2de8fe9a13906ed0e625736d454c6e15752617",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 15424,
-                "sha": "a09cf4b9b31321ae83188dacaaf04e3be1deda4e",
+                "size": 19595,
+                "sha": "dec8d8438f0ae7a82f1f23d4798a33f68dc65905",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -127,6 +127,291 @@
   ],
   "items": [
     {
+      "id": "issue:chengfengsunce/dashboard:4",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "客户的签约服务，鼠标放在客户位置上，悬停展示服务列表",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/4",
+      "updated_at": "2026-11-20T02:42:45Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 4,
+      "created_at": "2026-01-20T10:06:27Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:3",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务站和客户之间的服务范围关系连线",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/3",
+      "updated_at": "2026-11-20T02:42:32Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 3,
+      "created_at": "2026-01-20T10:05:01Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:2",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "全国客户位置分布显示",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/2",
+      "updated_at": "2026-11-20T02:42:19Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 2,
+      "created_at": "2026-01-20T07:41:11Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:1",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务站位置分布显示",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/1",
+      "updated_at": "2026-11-20T02:42:06Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 1,
+      "created_at": "2026-01-20T06:38:49Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:15",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "哨兵巡检客户名称乱码识别与异常数据手动修改支持",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/15",
+      "updated_at": "2026-11-20T02:41:08Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "哨兵巡检"
+      ],
+      "number": 15,
+      "created_at": "2026-11-20T01:23:40Z",
+      "project_full_name": "哨兵巡检",
+      "submitter": "刘亚红"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:14",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "出一版直接能扫三天的验证工具 + 15s取值算法排查",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/14",
+      "updated_at": "2026-11-20T02:40:55Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "硬件收敛/数据验证"
+      ],
+      "number": 14,
+      "created_at": "2026-11-20T01:23:34Z",
+      "project_full_name": "硬件收敛数据验证",
+      "submitter": "周永浩"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:13",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "客户服务记录识别有误排查",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/13",
+      "updated_at": "2026-11-20T02:40:42Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 13,
+      "created_at": "2026-11-20T01:23:28Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "刘亚红"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:12",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "维护类型误报成售后类型：小北提示工程师修正 + 系统名写法统一",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/12",
+      "updated_at": "2026-11-20T02:40:29Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 12,
+      "created_at": "2026-11-20T01:23:22Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵玉帅"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:11",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "大屏数据问题修复：矿名颠倒不一致、手动同步按钮报错、导出今年未服务客户",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/11",
+      "updated_at": "2026-11-20T02:40:16Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 11,
+      "created_at": "2026-11-20T01:23:16Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周娟娟"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:10",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "销售部客户信息同步到指挥大屏：新增9个字段及匹配逻辑",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/10",
+      "updated_at": "2026-11-20T02:40:04Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 10,
+      "created_at": "2026-11-20T01:23:10Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周娟娟"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:9",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "其他来源的任务发群里下单功能",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/9",
+      "updated_at": "2026-11-20T02:39:51Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 9,
+      "created_at": "2026-11-20T01:23:04Z",
+      "project_full_name": "400来电调度",
+      "submitter": "周娟娟"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:8",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "排水系统识别错误修复",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/8",
+      "updated_at": "2026-11-20T02:39:39Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 8,
+      "created_at": "2026-11-20T01:22:58Z",
+      "project_full_name": "400来电调度",
+      "submitter": "杨家宁"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:7",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "终端用户手动录入体验优化：支持简称下拉、选中全称带出系统名",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/7",
+      "updated_at": "2026-11-20T02:39:26Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 7,
+      "created_at": "2026-11-20T01:22:52Z",
+      "project_full_name": "400来电调度",
+      "submitter": "杨家宁"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:6",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "来电关联执行中任务处理人 + 终端用户准确识别并带出所属服务站",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/6",
+      "updated_at": "2026-11-20T02:39:14Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 6,
+      "created_at": "2026-11-20T01:22:44Z",
+      "project_full_name": "400来电调度",
+      "submitter": "周娟娟"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:5",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "来电识别错误案例排查与匹配规则优化（煤矿误判非煤、定位误判排水/环网等5例）",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/5",
+      "updated_at": "2026-11-20T02:39:01Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 5,
+      "created_at": "2026-11-20T01:22:38Z",
+      "project_full_name": "400来电调度",
+      "submitter": "周娟娟"
+    },
+    {
       "id": "commit:chengfengsunce/dashboard:206fe6b74f41",
       "kind": "commit",
       "repo": "dashboard",
@@ -147,215 +432,6 @@
       "html_url": "https://github.com/chengfengsunce/dashboard/commit/b6e7227d2534eb38438d7c864682fb56dc0efbf2",
       "updated_at": "2026-11-20T02:28:37Z",
       "actor": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:15",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "哨兵巡检客户名称乱码识别与异常数据手动修改支持",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/15",
-      "updated_at": "2026-11-20T01:23:40Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "哨兵巡检"
-      ],
-      "number": 15,
-      "created_at": "2026-11-20T01:23:40Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:14",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "出一版直接能扫三天的验证工具 + 15s取值算法排查",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/14",
-      "updated_at": "2026-11-20T01:23:34Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "硬件收敛/数据验证"
-      ],
-      "number": 14,
-      "created_at": "2026-11-20T01:23:34Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:13",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "客户服务记录识别有误排查",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/13",
-      "updated_at": "2026-11-20T01:23:28Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 13,
-      "created_at": "2026-11-20T01:23:28Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:12",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "维护类型误报成售后类型：小北提示工程师修正 + 系统名写法统一",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/12",
-      "updated_at": "2026-11-20T01:23:22Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 12,
-      "created_at": "2026-11-20T01:23:22Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:11",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "大屏数据问题修复：矿名颠倒不一致、手动同步按钮报错、导出今年未服务客户",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/11",
-      "updated_at": "2026-11-20T01:23:16Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 11,
-      "created_at": "2026-11-20T01:23:16Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:10",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "销售部客户信息同步到指挥大屏：新增9个字段及匹配逻辑",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/10",
-      "updated_at": "2026-11-20T01:23:10Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 10,
-      "created_at": "2026-11-20T01:23:10Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:9",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "其他来源的任务发群里下单功能",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/9",
-      "updated_at": "2026-11-20T01:23:04Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 9,
-      "created_at": "2026-11-20T01:23:04Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:8",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "排水系统识别错误修复",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/8",
-      "updated_at": "2026-11-20T01:22:58Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 8,
-      "created_at": "2026-11-20T01:22:58Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:7",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "终端用户手动录入体验优化：支持简称下拉、选中全称带出系统名",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/7",
-      "updated_at": "2026-11-20T01:22:52Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 7,
-      "created_at": "2026-11-20T01:22:52Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:6",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "来电关联执行中任务处理人 + 终端用户准确识别并带出所属服务站",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/6",
-      "updated_at": "2026-11-20T01:22:44Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 6,
-      "created_at": "2026-11-20T01:22:44Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:5",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "来电识别错误案例排查与匹配规则优化（煤矿误判非煤、定位误判排水/环网等5例）",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/5",
-      "updated_at": "2026-11-20T01:22:38Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 5,
-      "created_at": "2026-11-20T01:22:38Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
     },
     {
       "id": "commit:chengfengsunce/dashboard:d2d517bbca4f",
@@ -422,82 +498,6 @@
       "html_url": "https://github.com/chengfengsunce/dashboard/commit/23a93a135480105308c02f1392303505357b01c1",
       "updated_at": "2026-11-19T08:26:14Z",
       "actor": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:4",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "客户的签约服务，鼠标放在客户位置上，悬停展示服务列表",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/4",
-      "updated_at": "2026-01-20T10:24:38Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 4,
-      "created_at": "2026-01-20T10:06:27Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:3",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "服务站和客户之间的服务范围关系连线",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/3",
-      "updated_at": "2026-01-20T10:24:38Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 3,
-      "created_at": "2026-01-20T10:05:01Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:2",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "全国客户位置分布显示",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/2",
-      "updated_at": "2026-01-20T10:24:37Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 2,
-      "created_at": "2026-01-20T07:41:11Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:1",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "服务站位置分布显示",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/1",
-      "updated_at": "2026-01-20T10:24:37Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 1,
-      "created_at": "2026-01-20T06:38:49Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
     },
     {
       "id": "commit:chengfengsunce/free_time:5379c72be6b6",
