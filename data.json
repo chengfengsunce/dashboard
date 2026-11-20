@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T07:46:20Z",
+  "generated_at": "2026-11-20T11:12:51Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T07:38:50Z",
+      "updated_at": "2026-11-20T07:46:21Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "df4867945a1379855cda357f17497ea1096158a1",
+            "sha": "b6950476eae207c2646a89c94192b5a50686761b",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 20261,
-                "sha": "ece268f01789af3c234405edbbdb48105e0e5d47",
+                "size": 19775,
+                "sha": "de22f438f14f9bdb983a119688ead11403902029",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -132,6 +132,124 @@
     }
   ],
   "items": [
+    {
+      "id": "issue:chengfengsunce/dashboard:14",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "出一版直接能扫三天的验证工具 + 15s取值算法排查",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/14",
+      "updated_at": "2026-11-20T11:12:29Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "硬件收敛/数据验证"
+      ],
+      "number": 14,
+      "created_at": "2026-11-20T01:23:34Z",
+      "project_full_name": "硬件收敛数据验证",
+      "submitter": "周永浩"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:19",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "scan one 输出增加人员巷道位置列（按基站位置和左右侧自动计算）",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/19",
+      "updated_at": "2026-11-20T11:12:18Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "P2-排期",
+        "方向质量扫描器"
+      ],
+      "number": 19,
+      "created_at": "2026-11-20T11:12:18Z",
+      "project_full_name": "方向质量扫描器",
+      "submitter": "马根于"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:18",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察在矿天数计算错误修复与全量数据自检",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/18",
+      "updated_at": "2026-11-20T11:12:16Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏",
+        "P1-本周"
+      ],
+      "number": 18,
+      "created_at": "2026-11-20T11:12:16Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周艳鸽"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:17",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察统计范围扩展：纳入隐患任务等非维护任务类型",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/17",
+      "updated_at": "2026-11-20T11:12:14Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏",
+        "P2-排期"
+      ],
+      "number": 17,
+      "created_at": "2026-11-20T11:12:14Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周艳鸽"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:16",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察数据导出功能（导出按钮）",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/16",
+      "updated_at": "2026-11-20T11:12:12Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏",
+        "P2-排期"
+      ],
+      "number": 16,
+      "created_at": "2026-11-20T11:12:12Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周艳鸽"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:4",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "客户的签约服务，鼠标放在客户位置上，悬停展示服务列表",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/4",
+      "updated_at": "2026-11-20T07:55:23Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 4,
+      "created_at": "2026-01-20T10:06:27Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵金桥"
+    },
     {
       "id": "commit:chengfengsunce/dashboard:9c627fb797d6",
       "kind": "commit",
@@ -256,25 +374,6 @@
       "actor": "chengfengsunce"
     },
     {
-      "id": "issue:chengfengsunce/dashboard:4",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "客户的签约服务，鼠标放在客户位置上，悬停展示服务列表",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/4",
-      "updated_at": "2026-11-20T02:42:45Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 4,
-      "created_at": "2026-01-20T10:06:27Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "赵金桥"
-    },
-    {
       "id": "issue:chengfengsunce/dashboard:15",
       "kind": "issue",
       "repo": "dashboard",
@@ -292,25 +391,6 @@
       "created_at": "2026-11-20T01:23:40Z",
       "project_full_name": "哨兵巡检",
       "submitter": "刘亚红"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:14",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "出一版直接能扫三天的验证工具 + 15s取值算法排查",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/14",
-      "updated_at": "2026-11-20T02:40:55Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "硬件收敛/数据验证"
-      ],
-      "number": 14,
-      "created_at": "2026-11-20T01:23:34Z",
-      "project_full_name": "硬件收敛数据验证",
-      "submitter": "周永浩"
     },
     {
       "id": "issue:chengfengsunce/dashboard:13",
@@ -519,9 +599,9 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 24,
+    "items": 28,
     "commits": 9,
-    "issues": 15,
+    "issues": 19,
     "pull_requests": 0,
     "releases": 0
   }
