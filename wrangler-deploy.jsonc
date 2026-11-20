@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "dashboard-issue-api",
+  "main": "worker/worker.mjs",
+  "compatibility_date": "2026-11-19",
+  "ratelimits": [
+    {
+      "name": "SUBMIT_RATE_LIMIT",
+      "namespace_id": "2026111901",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    }
+  ]
+}
