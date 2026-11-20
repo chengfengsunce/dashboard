@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T16:43:41Z",
+  "generated_at": "2026-11-20T22:49:58Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T14:42:37Z",
+      "updated_at": "2026-11-20T16:43:42Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "22b7404c889dc760cb051874a8a37ed1d853144c",
+            "sha": "dd7e3afed2278dafc84bbd3d3cb0e75a9e7c3c9a",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 23121,
-                "sha": "b5b84e6a72f49d0ee8339f10aef13f64571f4d66",
+                "size": 22626,
+                "sha": "9f46674cd38fbc7f0d32225da0d8cdc078b01a91",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -575,17 +575,6 @@
       "submitter": "周娟娟"
     },
     {
-      "id": "commit:chengfengsunce/dashboard:206fe6b74f41",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "需求列表增加字段分页和管理员移除",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/206fe6b74f415a63fab1c21f1cf14a677a208f1e",
-      "updated_at": "2026-11-20T02:29:08Z",
-      "actor": "chengfengsunce"
-    },
-    {
       "id": "commit:chengfengsunce/free_time:5379c72be6b6",
       "kind": "commit",
       "repo": "free_time",
@@ -599,8 +588,8 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 28,
-    "commits": 9,
+    "items": 27,
+    "commits": 8,
     "issues": 19,
     "pull_requests": 0,
     "releases": 0
