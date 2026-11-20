@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T03:02:41Z",
+  "generated_at": "2026-11-20T03:49:06Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-20T03:02:33Z",
+      "updated_at": "2026-11-20T03:48:56Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "8be61629bb210f4527ad329f8d6a27113c995a48",
+            "sha": "ec7422a2204f74b91f91eb2a993cd0dceaa6d603",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 19439,
-                "sha": "edd594301ad059ec15120b66dcf2dfc8d41f0edb",
+                "size": 19946,
+                "sha": "a538fe3e1dff6e79bcf986981235c1e5b18ab6e0",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -50,8 +50,8 @@
               },
               {
                 "path": "index.html",
-                "size": 41734,
-                "sha": "9db7daec00b85deb5edfa16e7f1bb478eb308e80",
+                "size": 43148,
+                "sha": "29491ef90883bb4b72b1af35433e777482de0100",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/index.html"
               },
               {
@@ -126,6 +126,17 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:ec7422a2204f",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "项目筛选改为需求去重列表并按时间倒序",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/ec7422a2204f74b91f91eb2a993cd0dceaa6d603",
+      "updated_at": "2026-11-20T03:48:53Z",
+      "actor": "chengfengsunce"
+    },
     {
       "id": "commit:chengfengsunce/dashboard:8be61629bb21",
       "kind": "commit",
@@ -497,17 +508,6 @@
       "title": "精简看板标题并释放列表空间",
       "html_url": "https://github.com/chengfengsunce/dashboard/commit/33f8331e0c62cd5432521bede6055013b46600cf",
       "updated_at": "2026-11-19T09:27:33Z",
-      "actor": "chengfengsunce"
-    },
-    {
-      "id": "commit:chengfengsunce/dashboard:29b01eecceae",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "调整项目看板导航与需求提交流程",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/29b01eecceaee1bd6366b3f0aef816ef54087b2d",
-      "updated_at": "2026-11-19T09:07:10Z",
       "actor": "chengfengsunce"
     },
     {
