@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T05:23:33Z",
+  "generated_at": "2026-11-22T13:30:58Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-21T23:52:15Z",
+      "updated_at": "2026-11-22T05:23:34Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "a0ffc29b9df6d1e73d068a49d725543a0a7412fe",
+            "sha": "f84085a33af94c1ae16601644c4bb84e819b1615",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -39,7 +39,7 @@
               {
                 "path": "data.json",
                 "size": 21617,
-                "sha": "8649ed73e7b98e1b4fde8ac96e700da25e938aa1",
+                "sha": "84d9a55066e4e5ded4a94119df3987cad62d3f55",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -363,17 +363,6 @@
       "actor": "chengfengsunce"
     },
     {
-      "id": "commit:chengfengsunce/dashboard:8be61629bb21",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "修复需求筛选：按仓库匹配而非业务项目名",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/8be61629bb210f4527ad329f8d6a27113c995a48",
-      "updated_at": "2026-11-20T03:02:28Z",
-      "actor": "chengfengsunce"
-    },
-    {
       "id": "issue:chengfengsunce/dashboard:15",
       "kind": "issue",
       "repo": "dashboard",
@@ -577,8 +566,8 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 26,
-    "commits": 7,
+    "items": 25,
+    "commits": 6,
     "issues": 19,
     "pull_requests": 0,
     "releases": 0
