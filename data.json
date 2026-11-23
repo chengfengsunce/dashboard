@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T01:05:22Z",
+  "generated_at": "2026-11-23T07:52:17Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-22T20:28:38Z",
+      "updated_at": "2026-11-23T07:52:05Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "35b25c3c45466e29f3aecec4ac947245bd6665a5",
+            "sha": "419e8c8649724a203a6c263a7f5f72c71ad91783",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -32,14 +32,14 @@
               },
               {
                 "path": "DEPLOY_AUTO_SUBMIT.md",
-                "size": 4297,
-                "sha": "ab03782373108f61b99713c3d1232522f39c5a51",
+                "size": 8435,
+                "sha": "685b25e0280b99723a602d0cccbf10c09fb32ef8",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/DEPLOY_AUTO_SUBMIT.md"
               },
               {
                 "path": "data.json",
-                "size": 21111,
-                "sha": "2bef94beb307a5f9330c4c19d71f8c745e5fda8f",
+                "size": 20608,
+                "sha": "b6f1b5693e8b3caa0f01f32c7ac09a0af6c939e0",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -50,8 +50,8 @@
               },
               {
                 "path": "index.html",
-                "size": 43989,
-                "sha": "0873d764a1cc9b41b66f73b77c0bec6980de8785",
+                "size": 56364,
+                "sha": "e3a8b7db3d7e6e6c88c84e10058e25517b1ffc32",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/index.html"
               },
               {
@@ -61,9 +61,15 @@
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/scripts/sync_github.py"
               },
               {
+                "path": "worker/notifications.mjs",
+                "size": 7257,
+                "sha": "2a8f0c7e1119037e9c9499d62f91102fab106038",
+                "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/notifications.mjs"
+              },
+              {
                 "path": "worker/worker.mjs",
-                "size": 12265,
-                "sha": "4f49fb7ccfbaff654bcfc2d964534179e1981c46",
+                "size": 14910,
+                "sha": "69e52418dae54acd8636445be930c0efd6bc1acc",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/worker.mjs"
               },
               {
@@ -132,6 +138,119 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:419e8c864972",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "feat: 支持多选需求并合并钉钉完成通知",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/419e8c8649724a203a6c263a7f5f72c71ad91783",
+      "updated_at": "2026-11-23T07:51:57Z",
+      "actor": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:25",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "xxx",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/25",
+      "updated_at": "2026-11-23T06:52:27Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 25,
+      "created_at": "2026-11-23T06:52:21Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:24",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "亲亲亲亲亲亲亲亲亲亲",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/24",
+      "updated_at": "2026-11-23T05:45:23Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 24,
+      "created_at": "2026-11-23T05:45:18Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:23",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "test",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/23",
+      "updated_at": "2026-11-23T05:44:08Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 23,
+      "created_at": "2026-11-23T05:44:04Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:22",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "test",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/22",
+      "updated_at": "2026-11-23T05:18:02Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 22,
+      "created_at": "2026-11-23T05:17:59Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:21",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "cbmp的过期问题",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/21",
+      "updated_at": "2026-11-23T03:15:49Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 21,
+      "created_at": "2026-11-23T03:15:41Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:20",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "400电话卡片中，备注中显示cbmp查询不可用",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/20",
+      "updated_at": "2026-11-23T01:25:41Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 20,
+      "created_at": "2026-11-23T01:25:35Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
     {
       "id": "commit:chengfengsunce/dashboard:ee9d654ea89d",
       "kind": "commit",
@@ -341,17 +460,6 @@
       "submitter": "赵金桥"
     },
     {
-      "id": "commit:chengfengsunce/dashboard:cd856c6e7f93",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "接入需求接口地址",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/cd856c6e7f9303d4e97714bdc214dd88aee294ca",
-      "updated_at": "2026-11-20T05:58:44Z",
-      "actor": "chengfengsunce"
-    },
-    {
       "id": "issue:chengfengsunce/dashboard:15",
       "kind": "issue",
       "repo": "dashboard",
@@ -555,9 +663,9 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 24,
+    "items": 30,
     "commits": 5,
-    "issues": 19,
+    "issues": 25,
     "pull_requests": 0,
     "releases": 0
   }
