@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T20:28:37Z",
+  "generated_at": "2026-11-23T01:05:22Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-22T13:30:59Z",
+      "updated_at": "2026-11-22T20:28:38Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "95c5d1fd96bc724d9259ee33c922c72335d5c55c",
+            "sha": "35b25c3c45466e29f3aecec4ac947245bd6665a5",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -39,7 +39,7 @@
               {
                 "path": "data.json",
                 "size": 21111,
-                "sha": "abab90a34d19f62f304c2e05f80be743f2259d90",
+                "sha": "2bef94beb307a5f9330c4c19d71f8c745e5fda8f",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -352,17 +352,6 @@
       "actor": "chengfengsunce"
     },
     {
-      "id": "commit:chengfengsunce/dashboard:ec7422a2204f",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "项目筛选改为需求去重列表并按时间倒序",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/ec7422a2204f74b91f91eb2a993cd0dceaa6d603",
-      "updated_at": "2026-11-20T03:48:53Z",
-      "actor": "chengfengsunce"
-    },
-    {
       "id": "issue:chengfengsunce/dashboard:15",
       "kind": "issue",
       "repo": "dashboard",
@@ -566,8 +555,8 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 25,
-    "commits": 6,
+    "items": 24,
+    "commits": 5,
     "issues": 19,
     "pull_requests": 0,
     "releases": 0
