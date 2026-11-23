@@ -71,6 +71,23 @@
     @media(max-width:850px){.topbar{flex-wrap:nowrap}.view-nav{order:0;flex-basis:auto}.top-actions{margin-left:0}.sync-label{display:none}.requirements-table tr{grid-template-columns:40px minmax(0,1fr) 110px 80px 94px 48px}}
     @media(max-width:560px){.topbar{padding:8px 10px;gap:6px}.top-actions{width:auto}.top-actions>a{display:none}.view-nav{padding:2px;gap:0}.nav-button{padding:0 9px}.project-filter-toggle{padding:0 8px;gap:3px}.page{padding:8px}.board{padding:10px 8px}.board .list-head{gap:6px;flex-wrap:wrap;margin-bottom:8px}.list-actions{gap:5px}.requirements-table{font-size:11px}.requirements-table tr{grid-template-columns:30px minmax(0,1fr) 54px 42px 72px 40px}.requirements-table th,.requirements-table td{padding-inline:3px}.requirements-table .issue-title,.complete-issue,.issue-completed{font-size:11px}.pagination{gap:6px;padding-top:8px}.pagination .button{padding:0 8px;font-size:12px}.page-info{font-size:11px}.field-pair{grid-template-columns:1fr;gap:0}}
     @media(max-height:600px){.topbar{min-height:50px;padding-block:6px}.page{padding-block:6px}.board{padding-block:8px}.board .list-head{margin-bottom:6px}.pagination{padding-top:6px}.requirements-table th{padding-block:5px}}
+    .requirements-table tr{grid-template-columns:76px minmax(0,1fr) minmax(100px,.3fr) minmax(90px,.22fr) 106px 62px}
+    .requirements-table .issue-sequence,.issue-selection{display:flex;align-items:center;gap:8px}
+    .issue-selection input,.issue-sequence input{width:15px;height:15px;margin:0;accent-color:var(--blue);flex:none;cursor:pointer}
+    .requirements-table tr[data-selected="true"]{background:var(--blue-soft)}
+    .batch-actions{display:flex;align-items:center;gap:10px;flex:none;margin:0 0 10px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:12px}
+    .batch-actions[hidden],#single-completion-field[hidden],#batch-completion-fields[hidden]{display:none}
+    .batch-actions .button{min-height:32px;font-size:12px}
+    .batch-actions .batch-clear{margin-left:auto}
+    #selection-note{color:var(--muted);font-size:11px}
+    .completion-entry{padding:14px 0;border-top:1px solid var(--line)}
+    .completion-entry:first-child{padding-top:0;border-top:0}
+    .completion-entry-title{font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+    .completion-entry-meta,.batch-entry-result{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+    .batch-entry-result:empty{display:none}
+    #complete-form .choice{margin-top:16px}
+    @media(max-width:850px){.requirements-table tr{grid-template-columns:64px minmax(0,1fr) 110px 80px 94px 48px}}
+    @media(max-width:560px){.requirements-table tr{grid-template-columns:48px minmax(0,1fr) 54px 42px 72px 40px}.requirements-table .issue-sequence,.issue-selection{gap:4px}.batch-actions{gap:6px;padding:7px 6px;flex-wrap:wrap}.batch-actions .button{padding-inline:8px;font-size:11px}#selection-note{flex-basis:100%}}
   </style>
 </head>
 <body>
@@ -106,6 +123,7 @@
       <section class="panel" id="requirements-panel" data-view-panel="requirements" aria-labelledby="requirements-heading">
         <div class="board">
           <div class="list-head"><h3 id="requirements-heading">需求列表</h3><div class="list-actions"><div class="filters" role="group" aria-label="筛选需求"><button class="filter active" type="button" data-filter="open">进行中</button><button class="filter" type="button" data-filter="closed">已完成</button><button class="filter" type="button" data-filter="all">全部</button></div><button class="button primary" id="open-requirement-dialog" type="button">＋ 新增需求</button></div></div>
+          <div id="batch-actions" class="batch-actions" hidden><strong id="batch-count" aria-live="polite">已选 0 项</strong><button id="clear-selected-issues" class="button batch-clear" type="button">清空</button><button id="open-batch-completion" class="button primary" type="button">批量完成并通知</button><span id="selection-note" role="status">可跨页选择，每批最多 10 项</span></div>
           <div id="issue-list" class="issue-list"><div class="empty">正在读取需求…</div></div>
           <div class="pagination" aria-label="需求翻页"><span id="page-info" class="page-info" aria-live="polite">第 1 / 1 页 · 共 0 条</span><button id="previous-page" class="button" type="button" disabled>上一页</button><button id="next-page" class="button" type="button" disabled>下一页</button></div>
           <dialog id="requirement-dialog" class="compose-dialog" aria-labelledby="dialog-title">
@@ -123,7 +141,9 @@
           <dialog id="complete-dialog" class="compose-dialog" aria-labelledby="complete-dialog-title">
             <form id="complete-form" class="compose">
               <div class="compose-top"><span id="complete-dialog-title" class="compose-title">完成需求</span><button id="close-complete-dialog" class="dialog-close" type="button" aria-label="关闭完成确认">×</button></div>
-              <p class="completion-note"><strong id="complete-issue-title"></strong>确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。</p>
+              <p class="completion-note"><strong id="complete-issue-title"></strong><span id="completion-description">确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。</span></p>
+              <label id="single-completion-field" class="field"><span>改好了什么（选填）</span><textarea id="completion-summary" name="completion_summary" maxlength="500" placeholder="用一两句话说明：以前有什么问题，现在可以怎么用了。"></textarea></label>
+              <div id="batch-completion-fields" hidden></div>
               <label class="choice"><input id="notify-submitter" type="checkbox" checked><span id="notify-submitter-label">通过钉钉通知提出人</span></label>
               <div class="compose-bottom"><span id="complete-note" class="form-note" role="status"></span><button id="confirm-complete" class="button primary" type="submit">确认完成</button></div>
             </form>
@@ -148,7 +168,13 @@
     let filter = 'open';
     const pageSize = 10;
     let currentPage = 1;
-    let issueToComplete = null;
+    const selectedIssueKeys = new Set();
+    let completionTargets = [];
+    let batchCompletion = false;
+    let completionBusy = false;
+    let completionPendingKeys = new Set();
+    const completionResults = new Map();
+    let submittedNotificationCount = 0;
     let pendingCompletions = new Map();
     try { pendingCompletions = new Map(JSON.parse(localStorage.getItem('dashboard-completed-issues') || '[]')); } catch {}
 
@@ -195,6 +221,7 @@
       return {...issue,
         project_full_name: issue.project_full_name || (typeof metadata.project === 'string' && metadata.project) || issue.repo_full_name || repository,
         submitter: issue.submitter || (typeof metadata.submitter === 'string' && metadata.submitter) || issue.actor || issue.user?.login || '未知',
+        completion_summary: issue.completion_summary || (typeof metadata.completion_summary === 'string' ? metadata.completion_summary : ''),
       };
     }
 
@@ -205,7 +232,9 @@
     function renderIssue(issue, index) {
       const project = (issue.project_full_name || repository).split('/').pop();
       const action = issue.state === 'closed' ? '<span class="issue-completed">已完成</span>' : `<button class="complete-issue" type="button" data-complete-issue="${escapeHtml(issueKey(issue))}" aria-label="完成需求：${escapeHtml(issue.title)}">完成</button>`;
-      return `<tr data-issue-key="${escapeHtml(issueKey(issue))}"><td class="issue-sequence">${(currentPage - 1) * pageSize + index + 1}</td><td><a class="issue-title" href="${escapeHtml(issueUrl(issue))}" title="${escapeHtml(issue.title || '未命名需求')}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a></td><td title="${escapeHtml(issue.project_full_name)}">${escapeHtml(project)}</td><td title="${escapeHtml(issue.submitter)}">${escapeHtml(issue.submitter)}</td><td title="${escapeHtml(issue.created_at || '时间未知')}">${escapeHtml(formatDate(issue.created_at))}</td><td>${action}</td></tr>`;
+      const key = issueKey(issue);
+      const selection = issue.state === 'closed' ? '' : `<input type="checkbox" data-select-issue="${escapeHtml(key)}" aria-label="选择需求：${escapeHtml(issue.title)}" ${selectedIssueKeys.has(key) ? 'checked' : selectedIssueKeys.size >= 10 ? 'disabled' : ''}>`;
+      return `<tr data-issue-key="${escapeHtml(key)}" data-selected="${selectedIssueKeys.has(key)}"><td class="issue-sequence">${selection}<span>${(currentPage - 1) * pageSize + index + 1}</span></td><td><a class="issue-title" href="${escapeHtml(issueUrl(issue))}" title="${escapeHtml(issue.title || '未命名需求')}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a></td><td title="${escapeHtml(issue.project_full_name)}">${escapeHtml(project)}</td><td title="${escapeHtml(issue.submitter)}">${escapeHtml(issue.submitter)}</td><td title="${escapeHtml(issue.created_at || '时间未知')}">${escapeHtml(formatDate(issue.created_at))}</td><td>${action}</td></tr>`;
     }
 
     function getIssueProjects() {
@@ -261,6 +290,8 @@
     function render() {
       const issues = [...items].filter(item => item.kind === 'issue').sort((a, b) => Date.parse(b.created_at || 0) - Date.parse(a.created_at || 0));
       const openIssues = issues.filter(issue => issue.state !== 'closed');
+      const selectableKeys = new Set(openIssues.map(issueKey));
+      for (const key of selectedIssueKeys) if (!selectableKeys.has(key)) selectedIssueKeys.delete(key);
       const closedIssues = issues.filter(issue => issue.state === 'closed');
       const donePercent = issues.length ? Math.round(closedIssues.length / issues.length * 100) : 0;
       document.getElementById('progress-percent').textContent = `${donePercent}%`;
@@ -282,7 +313,15 @@
       const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
       currentPage = Math.max(1, Math.min(currentPage, totalPages));
       const page = visible.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-      issueList.innerHTML = `<table class="requirements-table" aria-label="需求列表"><thead><tr><th scope="col">编号</th><th scope="col">需求</th><th scope="col">所属项目</th><th scope="col">提出人</th><th scope="col">时间</th><th scope="col">操作</th></tr></thead><tbody>${page.map(renderIssue).join('')}</tbody></table>${visible.length ? '' : `<div class="empty">${selectedRepositories.size ? filter === 'closed' ? '还没有已完成的需求。' : filter === 'all' ? '还没有需求。' : '没有进行中的需求。' : '请至少选择一个项目。'}</div>`}`;
+      issueList.innerHTML = `<table class="requirements-table" aria-label="需求列表"><thead><tr><th scope="col"><label class="issue-selection"><input id="select-page-issues" type="checkbox" aria-label="全选本页进行中的需求"><span>编号</span></label></th><th scope="col">需求</th><th scope="col">所属项目</th><th scope="col">提出人</th><th scope="col">时间</th><th scope="col">操作</th></tr></thead><tbody>${page.map(renderIssue).join('')}</tbody></table>${visible.length ? '' : `<div class="empty">${selectedRepositories.size ? filter === 'closed' ? '还没有已完成的需求。' : filter === 'all' ? '还没有需求。' : '没有进行中的需求。' : '请至少选择一个项目。'}</div>`}`;
+      const pageChoices = page.filter(issue => issue.state !== 'closed');
+      const selectedOnPage = pageChoices.filter(issue => selectedIssueKeys.has(issueKey(issue))).length;
+      const selectPage = document.getElementById('select-page-issues');
+      selectPage.checked = pageChoices.length > 0 && selectedOnPage === pageChoices.length;
+      selectPage.indeterminate = selectedOnPage > 0 && selectedOnPage < pageChoices.length;
+      selectPage.disabled = !pageChoices.length || (selectedIssueKeys.size >= 10 && selectedOnPage === 0);
+      document.getElementById('batch-actions').hidden = !selectedIssueKeys.size;
+      document.getElementById('batch-count').textContent = `已选 ${selectedIssueKeys.size} 项`;
       document.getElementById('page-info').textContent = `第 ${currentPage} / ${totalPages} 页 · 共 ${visible.length} 条`;
       document.getElementById('previous-page').disabled = currentPage === 1;
       document.getElementById('next-page').disabled = currentPage === totalPages;
@@ -362,6 +401,7 @@
     document.getElementById('close-requirement-dialog').addEventListener('click', () => requirementsDialog.close());
     document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
       filter = button.dataset.filter;
+      selectedIssueKeys.clear();
       currentPage = 1;
       document.querySelectorAll('[data-filter]').forEach(item => item.classList.toggle('active', item === button));
       render();
@@ -373,53 +413,131 @@
 
     const completeDialog = document.getElementById('complete-dialog');
     const notifySubmitter = document.getElementById('notify-submitter');
+    const completionSummary = document.getElementById('completion-summary');
+    const batchFields = document.getElementById('batch-completion-fields');
+    function openCompletionDialog(requirements, batch) {
+      if (!requirements.length) return;
+      completionTargets = requirements;
+      batchCompletion = batch;
+      completionPendingKeys = new Set(requirements.map(issueKey));
+      completionResults.clear();
+      submittedNotificationCount = 0;
+      document.getElementById('complete-dialog-title').textContent = batch ? '批量完成需求' : '完成需求';
+      document.getElementById('complete-issue-title').textContent = batch ? `本次完成 ${requirements.length} 项需求` : requirements[0].title;
+      document.getElementById('completion-description').textContent = batch ? '确认后移入“已完成”。同一提出人的需求合并为一条通知，不同的人各收自己的内容。' : '确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。';
+      document.getElementById('single-completion-field').hidden = batch;
+      batchFields.hidden = !batch;
+      completionSummary.value = batch ? '' : requirements[0].completion_summary || '';
+      batchFields.innerHTML = batch ? requirements.map(issue => `<section class="completion-entry"><strong class="completion-entry-title">${escapeHtml(issue.title)}</strong><p class="completion-entry-meta">提出人：${escapeHtml(issue.submitter || '未填写')}</p><label class="field"><span>改好了什么（选填）</span><textarea data-batch-summary="${escapeHtml(issueKey(issue))}" maxlength="500" placeholder="用一两句话说明做了什么、现在能怎么用。">${escapeHtml(issue.completion_summary || '')}</textarea></label><p class="batch-entry-result" data-batch-result="${escapeHtml(issueKey(issue))}" role="status"></p></section>`).join('') : '';
+      document.getElementById('notify-submitter-label').textContent = batch ? '通过钉钉通知提出人（同一个人合并，每人一条）' : `通过钉钉通知提出人：${requirements[0].submitter || requirements[0].actor || '未填写'}`;
+      document.getElementById('complete-note').textContent = '';
+      document.getElementById('confirm-complete').textContent = batch ? '确认完成并合并通知' : '确认完成';
+      completeDialog.showModal();
+    }
+    issueList.addEventListener('change', event => {
+      const input = event.target.closest('input[type="checkbox"]');
+      if (!input) return;
+      document.getElementById('selection-note').textContent = '可跨页选择，每批最多 10 项';
+      if (input.id === 'select-page-issues') {
+        const keys = [...issueList.querySelectorAll('input[data-select-issue]')].map(choice => choice.dataset.selectIssue);
+        if (input.checked && new Set([...selectedIssueKeys, ...keys]).size > 10) {
+          document.getElementById('selection-note').textContent = '每批最多 10 项，可先清空选择或逐项勾选。';
+        } else {
+          for (const key of keys) if (input.checked) selectedIssueKeys.add(key); else selectedIssueKeys.delete(key);
+        }
+      } else if (input.dataset.selectIssue) {
+        if (input.checked && selectedIssueKeys.size < 10) selectedIssueKeys.add(input.dataset.selectIssue);
+        else selectedIssueKeys.delete(input.dataset.selectIssue);
+      }
+      render();
+    });
+    document.getElementById('clear-selected-issues').addEventListener('click', () => { selectedIssueKeys.clear(); render(); });
+    notifySubmitter.addEventListener('change', () => {
+      if (batchCompletion && completionResults.size === 0) document.getElementById('confirm-complete').textContent = notifySubmitter.checked ? '确认完成并合并通知' : '确认完成';
+    });
+    document.getElementById('open-batch-completion').addEventListener('click', () => {
+      const requirements = [...selectedIssueKeys].map(key => items.find(item => item.kind === 'issue' && item.state !== 'closed' && issueKey(item) === key)).filter(Boolean);
+      openCompletionDialog(requirements, true);
+    });
     issueList.addEventListener('click', event => {
       const button = event.target.closest('button[data-complete-issue]');
       if (!button) return;
-      issueToComplete = items.find(item => item.kind === 'issue' && item.state !== 'closed' && issueKey(item) === button.dataset.completeIssue);
-      if (!issueToComplete) return;
-      document.getElementById('complete-issue-title').textContent = issueToComplete.title;
-      document.getElementById('notify-submitter-label').textContent = `通过钉钉通知提出人：${issueToComplete.submitter || issueToComplete.actor || '未填写'}`;
-      document.getElementById('complete-note').textContent = '';
-      completeDialog.showModal();
+      const issue = items.find(item => item.kind === 'issue' && item.state !== 'closed' && issueKey(item) === button.dataset.completeIssue);
+      if (issue) openCompletionDialog([issue], false);
     });
-    document.getElementById('close-complete-dialog').addEventListener('click', () => completeDialog.close());
-    completeDialog.addEventListener('close', () => { notifySubmitter.checked = true; issueToComplete = null; document.getElementById('confirm-complete').textContent = '确认完成'; });
+    document.getElementById('close-complete-dialog').addEventListener('click', () => { if (!completionBusy) completeDialog.close(); });
+    completeDialog.addEventListener('cancel', event => { if (completionBusy) event.preventDefault(); });
+    completeDialog.addEventListener('close', () => { notifySubmitter.checked = true; completionSummary.value = ''; batchFields.innerHTML = ''; completionTargets = []; completionPendingKeys.clear(); completionResults.clear(); document.getElementById('confirm-complete').textContent = '确认完成'; });
     document.getElementById('complete-form').addEventListener('submit', async event => {
       event.preventDefault();
-      if (!issueToComplete) return;
+      if (completionBusy || !completionTargets.length) return;
       const note = document.getElementById('complete-note');
       if (issueApiBaseUrl.includes('ACCOUNT_SUBDOMAIN')) {
         note.textContent = '需求完成通道还未部署，请稍后再试。';
         return;
       }
-      const issue = issueToComplete;
+      const requirements = completionTargets.filter(issue => completionPendingKeys.has(issueKey(issue)));
+      if (!requirements.length) return;
+      const summaries = new Map([...batchFields.querySelectorAll('textarea[data-batch-summary]')].map(input => [input.dataset.batchSummary, input.value.trim()]));
       const shouldNotify = notifySubmitter.checked;
       const button = document.getElementById('confirm-complete');
+      completionBusy = true;
       button.disabled = true;
-      note.textContent = '正在标记完成…';
+      document.getElementById('close-complete-dialog').disabled = true;
+      notifySubmitter.disabled = true;
+      completionSummary.disabled = true;
+      batchFields.querySelectorAll('textarea').forEach(input => input.disabled = true);
+      note.textContent = batchCompletion ? '正在完成需求并合并通知…' : '正在标记完成…';
       try {
-        const route = `/api/issues/${(issue.repo_full_name || repository).split('/').map(encodeURIComponent).join('/')}/${encodeURIComponent(issueNumber(issue))}`;
-        const response = await fetch(new URL(route, issueApiBaseUrl), {method:'PATCH', headers: {'Content-Type':'application/json'}, body:JSON.stringify({notify_submitter:shouldNotify})});
+        const issue = requirements[0];
+        const route = batchCompletion ? '/api/issues/complete-batch' : `/api/issues/${(issue.repo_full_name || repository).split('/').map(encodeURIComponent).join('/')}/${encodeURIComponent(issueNumber(issue))}`;
+        const payload = batchCompletion ? { issues: requirements.map(item => ({ repo: item.repo_full_name || repository, number: Number(issueNumber(item)), completion_summary: summaries.get(issueKey(item)) || '' })), notify_submitter: shouldNotify } : { notify_submitter: shouldNotify, completion_summary: completionSummary.value.trim() };
+        const response = await fetch(new URL(route, issueApiBaseUrl), {method:batchCompletion ? 'POST' : 'PATCH', headers: {'Content-Type':'application/json'}, body:JSON.stringify(payload)});
         const result = await response.json();
-        if (!response.ok || result.state !== 'closed' || !Number.isFinite(Date.parse(result.updated_at))) throw new Error(result.error || '完成失败，请稍后重试。');
-        pendingCompletions.set(issueKey(issue), result.updated_at);
+        if (!response.ok) throw new Error(result.error || '完成失败，请稍后重试。');
+        const results = batchCompletion ? result.results : [{ ...result, repo: issue.repo_full_name || repository, number: Number(issueNumber(issue)) }];
+        const submittedKeys = new Set(requirements.map(issueKey));
+        if (!Array.isArray(results) || results.length !== requirements.length || new Set(results.map(entry => entry.repo + '#' + entry.number)).size !== results.length || results.some(entry => !submittedKeys.has(entry.repo + '#' + entry.number))) throw new Error('完成结果不完整，请刷新核对需求状态后再操作。');
+        submittedNotificationCount += batchCompletion ? result.notification_count || 0 : result.notification === 'queued' ? 1 : 0;
+        for (const entry of results) {
+          const key = entry.repo + '#' + entry.number;
+          const completed = entry.state === 'closed' && Number.isFinite(Date.parse(entry.updated_at));
+          completionResults.set(key, entry);
+          if (completed) {
+            pendingCompletions.set(key, entry.updated_at);
+            selectedIssueKeys.delete(key);
+            const savedSummary = batchCompletion ? summaries.get(key) || '' : completionSummary.value.trim();
+            allItems = allItems.map(item => item.kind === 'issue' && issueKey(item) === key ? {...item, state:'closed', updated_at:entry.updated_at, completion_summary:savedSummary || item.completion_summary} : item);
+          }
+          const success = completed && (!shouldNotify || entry.notification === 'queued');
+          if (success) completionPendingKeys.delete(key);
+          const resultLabel = [...batchFields.querySelectorAll('[data-batch-result]')].find(label => label.dataset.batchResult === key);
+          if (resultLabel) resultLabel.textContent = !completed ? `未成功：${entry.error || '请核对需求状态。'}` : entry.notification === 'failed' ? `已完成，通知未成功：${entry.notification_error || '请稍后重试。'}` : shouldNotify ? '已完成，通知已提交。' : '已完成，未发送通知。';
+        }
         saveCompletions();
-        allItems = allItems.map(item => item.kind === 'issue' && issueKey(item) === issueKey(issue) ? {...item, state:'closed', updated_at:result.updated_at} : item);
         applyProjectFilter(false);
         render();
-        if (result.notification === 'failed') {
-          note.textContent = `需求已完成，但通知未发出：${result.notification_error || '请稍后重试。'}`;
-          button.textContent = '重试钉钉通知';
-          document.getElementById('sync-label').textContent = '需求已完成，钉钉通知未发出';
+        const completedCount = [...completionResults.values()].filter(entry => entry.state === 'closed').length;
+        if (completionPendingKeys.size) {
+          const failure = [...completionResults.values()].find(entry => entry.error || entry.notification_error);
+          note.textContent = `${completedCount} 项已完成，${completionPendingKeys.size} 项未成功：${failure?.error || failure?.notification_error || '请核对状态后重试。'}`;
+          button.textContent = batchCompletion ? '重试未成功项' : '重试钉钉通知';
+          document.getElementById('sync-label').textContent = '完成结果中有未成功项，请查看弹窗';
         } else {
+          const warning = [...completionResults.values()].find(entry => entry.notification_warning)?.notification_warning;
+          const status = warning || (batchCompletion ? `${completedCount} 项需求已完成${submittedNotificationCount ? `，已合并提交 ${submittedNotificationCount} 条钉钉通知` : ''}` : result.notification === 'queued' ? (result.notification_format === 'card' ? '需求已完成，钉钉卡片已提交' : '需求已完成，钉钉通知已提交') : '需求已完成，可在“已完成”列表查看');
           completeDialog.close();
-          document.getElementById('sync-label').textContent = result.notification === 'queued' ? '需求已完成，钉钉通知已提交' : '需求已完成，可在“已完成”列表查看';
+          document.getElementById('sync-label').textContent = status;
         }
       } catch (error) {
-        note.textContent = error.message || '完成失败，请稍后重试。';
+        note.textContent = error instanceof TypeError || error instanceof SyntaxError ? '本次结果未确认，请先核对需求状态和钉钉消息，再重试，避免重复通知。' : error.message || '完成失败，请稍后重试。';
       } finally {
+        completionBusy = false;
         button.disabled = false;
+        document.getElementById('close-complete-dialog').disabled = false;
+        notifySubmitter.disabled = false;
+        completionSummary.disabled = false;
+        batchFields.querySelectorAll('textarea[data-batch-summary]').forEach(input => input.disabled = !completionPendingKeys.has(input.dataset.batchSummary));
       }
     });
 
