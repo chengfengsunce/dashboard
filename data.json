@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T07:52:17Z",
+  "generated_at": "2026-11-23T09:05:02Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-23T07:52:05Z",
+      "updated_at": "2026-11-23T07:52:18Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "419e8c8649724a203a6c263a7f5f72c71ad91783",
+            "sha": "67d7187a3ddbc48a21a4e522b465c351fb863dd0",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 20608,
-                "sha": "b6f1b5693e8b3caa0f01f32c7ac09a0af6c939e0",
+                "size": 24620,
+                "sha": "1a4e1f886c5dd49c23ec593b3f358adb95191381",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -138,6 +138,100 @@
     }
   ],
   "items": [
+    {
+      "id": "issue:chengfengsunce/dashboard:16",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察数据导出功能（导出按钮）",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/16",
+      "updated_at": "2026-11-23T08:05:21Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏",
+        "P2-排期"
+      ],
+      "number": 16,
+      "created_at": "2026-11-20T11:12:12Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周艳鸽"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:17",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察统计范围扩展：纳入隐患任务等非维护任务类型",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/17",
+      "updated_at": "2026-11-23T08:05:20Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏",
+        "P2-排期"
+      ],
+      "number": 17,
+      "created_at": "2026-11-20T11:12:14Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周艳鸽"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:18",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察在矿天数计算错误修复与全量数据自检",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/18",
+      "updated_at": "2026-11-23T08:05:19Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏",
+        "P1-本周"
+      ],
+      "number": 18,
+      "created_at": "2026-11-20T11:12:16Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "周艳鸽"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:26",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察在矿天数计算错误修复与全量数据自检",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/26",
+      "updated_at": "2026-11-23T08:03:48Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 26,
+      "created_at": "2026-11-23T08:02:56Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:27",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "服务洞察统计范围扩展：纳入隐患任务等非维护任务类型",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/27",
+      "updated_at": "2026-11-23T08:03:47Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [],
+      "number": 27,
+      "created_at": "2026-11-23T08:03:29Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "赵金桥"
+    },
     {
       "id": "commit:chengfengsunce/dashboard:419e8c864972",
       "kind": "commit",
@@ -300,66 +394,6 @@
       "created_at": "2026-11-20T11:12:18Z",
       "project_full_name": "方向质量扫描器",
       "submitter": "马根于"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:18",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "服务洞察在矿天数计算错误修复与全量数据自检",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/18",
-      "updated_at": "2026-11-20T11:12:16Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏",
-        "P1-本周"
-      ],
-      "number": 18,
-      "created_at": "2026-11-20T11:12:16Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "周艳鸽"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:17",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "服务洞察统计范围扩展：纳入隐患任务等非维护任务类型",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/17",
-      "updated_at": "2026-11-20T11:12:14Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏",
-        "P2-排期"
-      ],
-      "number": 17,
-      "created_at": "2026-11-20T11:12:14Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "周艳鸽"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:16",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "服务洞察数据导出功能（导出按钮）",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/16",
-      "updated_at": "2026-11-20T11:12:12Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏",
-        "P2-排期"
-      ],
-      "number": 16,
-      "created_at": "2026-11-20T11:12:12Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "周艳鸽"
     },
     {
       "id": "issue:chengfengsunce/dashboard:4",
@@ -663,9 +697,9 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 30,
+    "items": 32,
     "commits": 5,
-    "issues": 25,
+    "issues": 27,
     "pull_requests": 0,
     "releases": 0
   }
