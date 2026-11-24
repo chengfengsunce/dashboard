@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T05:26:02Z",
+  "generated_at": "2026-11-24T11:50:58Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-23T21:24:36Z",
+      "updated_at": "2026-11-24T05:26:04Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "a8eca1c2df83541fec4e23d0cc74029e5252fcec",
+            "sha": "3c74c24a7ca4293d9279b56b8d1427523ce55c4c",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -39,7 +39,7 @@
               {
                 "path": "data.json",
                 "size": 25466,
-                "sha": "5e8ce3fac4f908e93a8e9e54a5123d78b7119318",
+                "sha": "bfede90951b8a3daefcbc73ef97b83fd743d6ca1",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -138,6 +138,105 @@
     }
   ],
   "items": [
+    {
+      "id": "issue:chengfengsunce/dashboard:12",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "维护类型误报成售后类型：小北提示工程师修正 + 系统名写法统一",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/12",
+      "updated_at": "2026-11-24T11:50:34Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏"
+      ],
+      "number": 12,
+      "created_at": "2026-11-20T01:23:22Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "赵玉帅"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:31",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "400接报增加客户获知途径询问与记录字段",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/31",
+      "updated_at": "2026-11-24T11:50:22Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度",
+        "P2-排期"
+      ],
+      "number": 31,
+      "created_at": "2026-11-24T11:50:22Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:30",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "氚云WX维修申请单改造：按品类三级联动筛选 + 故障现象/检测结果支持复选",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/30",
+      "updated_at": "2026-11-24T11:50:19Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "P1-本周",
+        "氚云表单"
+      ],
+      "number": 30,
+      "created_at": "2026-11-24T11:50:19Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:29",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "[缺陷] 400来电播报\"影响\"字段11-24起不显示：AI置信度不足兜底导致字段丢失",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/29",
+      "updated_at": "2026-11-24T11:50:17Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度",
+        "P0-紧急"
+      ],
+      "number": 29,
+      "created_at": "2026-11-24T11:50:17Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:28",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "400来电播报增加故障等级自动匹配（AI学习各系统故障等级判断标准）",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/28",
+      "updated_at": "2026-11-24T11:50:15Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度",
+        "P1-本周"
+      ],
+      "number": 28,
+      "created_at": "2026-11-24T11:50:15Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
     {
       "id": "issue:chengfengsunce/dashboard:16",
       "kind": "issue",
@@ -415,17 +514,6 @@
       "submitter": "赵金桥"
     },
     {
-      "id": "commit:chengfengsunce/dashboard:9c627fb797d6",
-      "kind": "commit",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "修复钉钉私聊通知鉴权及完成状态误报",
-      "html_url": "https://github.com/chengfengsunce/dashboard/commit/9c627fb797d6b7159e5842efb9022d33ef8c4e2a",
-      "updated_at": "2026-11-20T07:38:35Z",
-      "actor": "chengfengsunce"
-    },
-    {
       "id": "issue:chengfengsunce/dashboard:3",
       "kind": "issue",
       "repo": "dashboard",
@@ -519,25 +607,6 @@
       "created_at": "2026-11-20T01:23:28Z",
       "project_full_name": "售后指挥大屏",
       "submitter": "刘亚红"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:12",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "维护类型误报成售后类型：小北提示工程师修正 + 系统名写法统一",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/12",
-      "updated_at": "2026-11-20T02:40:29Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏"
-      ],
-      "number": 12,
-      "created_at": "2026-11-20T01:23:22Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "赵玉帅"
     },
     {
       "id": "issue:chengfengsunce/dashboard:11",
@@ -686,9 +755,9 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 31,
-    "commits": 4,
-    "issues": 27,
+    "items": 34,
+    "commits": 3,
+    "issues": 31,
     "pull_requests": 0,
     "releases": 0
   }
