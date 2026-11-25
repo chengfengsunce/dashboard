@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T09:15:45Z",
+  "generated_at": "2026-11-25T19:30:14Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-25T01:18:15Z",
+      "updated_at": "2026-11-25T09:15:47Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "b2ece8bf8fba0d05863719110a30093994c6ad5b",
+            "sha": "d3156c6c7f1079546e821a15871f7c1a8c8718f5",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -38,8 +38,8 @@
               },
               {
                 "path": "data.json",
-                "size": 28701,
-                "sha": "7d64a1154b132a4b3043285856f061a4366d7393",
+                "size": 28213,
+                "sha": "cb5bf9bed1fb32429eb07d1f413f1b9bf28f284d",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -139,6 +139,26 @@
   ],
   "items": [
     {
+      "id": "issue:chengfengsunce/dashboard:28",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "400来电播报增加故障等级自动匹配（AI学习各系统故障等级判断标准）",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/28",
+      "updated_at": "2026-11-25T14:49:30Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度",
+        "P1-本周"
+      ],
+      "number": 28,
+      "created_at": "2026-11-24T11:50:15Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
+    {
       "id": "issue:chengfengsunce/dashboard:32",
       "kind": "issue",
       "repo": "dashboard",
@@ -146,8 +166,8 @@
       "repo_url": "https://github.com/chengfengsunce/dashboard",
       "title": "售后维护任务最佳派单人员推荐：基于7类条件+特殊时段综合匹配最优处理人员",
       "html_url": "https://github.com/chengfengsunce/dashboard/issues/32",
-      "updated_at": "2026-11-25T01:17:51Z",
-      "state": "open",
+      "updated_at": "2026-11-25T14:49:29Z",
+      "state": "closed",
       "actor": "chengfengsunce",
       "labels": [
         "来电派单/400调度",
@@ -155,6 +175,66 @@
       ],
       "number": 32,
       "created_at": "2026-11-25T01:17:51Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:29",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "[缺陷] 400来电播报\"影响\"字段11-24起不显示：AI置信度不足兜底导致字段丢失",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/29",
+      "updated_at": "2026-11-25T14:49:27Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度",
+        "P0-紧急"
+      ],
+      "number": 29,
+      "created_at": "2026-11-24T11:50:17Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:31",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "400接报增加客户获知途径询问与记录字段",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/31",
+      "updated_at": "2026-11-25T14:49:26Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度",
+        "P2-排期"
+      ],
+      "number": 31,
+      "created_at": "2026-11-24T11:50:22Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:30",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "氚云WX维修申请单改造：按品类三级联动筛选 + 故障现象/检测结果支持复选",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/30",
+      "updated_at": "2026-11-25T14:48:53Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "P1-本周",
+        "氚云表单"
+      ],
+      "number": 30,
+      "created_at": "2026-11-24T11:50:19Z",
       "project_full_name": "chengfengsunce/dashboard",
       "submitter": "chengfengsunce"
     },
@@ -176,86 +256,6 @@
       "created_at": "2026-11-20T01:23:22Z",
       "project_full_name": "售后指挥大屏",
       "submitter": "赵玉帅"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:31",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "400接报增加客户获知途径询问与记录字段",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/31",
-      "updated_at": "2026-11-24T11:50:22Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度",
-        "P2-排期"
-      ],
-      "number": 31,
-      "created_at": "2026-11-24T11:50:22Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:30",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "氚云WX维修申请单改造：按品类三级联动筛选 + 故障现象/检测结果支持复选",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/30",
-      "updated_at": "2026-11-24T11:50:19Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "P1-本周",
-        "氚云表单"
-      ],
-      "number": 30,
-      "created_at": "2026-11-24T11:50:19Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:29",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "[缺陷] 400来电播报\"影响\"字段11-24起不显示：AI置信度不足兜底导致字段丢失",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/29",
-      "updated_at": "2026-11-24T11:50:17Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度",
-        "P0-紧急"
-      ],
-      "number": 29,
-      "created_at": "2026-11-24T11:50:17Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:28",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "400来电播报增加故障等级自动匹配（AI学习各系统故障等级判断标准）",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/28",
-      "updated_at": "2026-11-24T11:50:15Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度",
-        "P1-本周"
-      ],
-      "number": 28,
-      "created_at": "2026-11-24T11:50:15Z",
-      "project_full_name": "chengfengsunce/dashboard",
-      "submitter": "chengfengsunce"
     },
     {
       "id": "issue:chengfengsunce/dashboard:16",
