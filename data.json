@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T00:44:17Z",
+  "generated_at": "2026-11-25T01:18:14Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-24T16:10:42Z",
+      "updated_at": "2026-11-25T00:44:18Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "8e646621e03eee2a9740ca22708665ffa90e2903",
+            "sha": "b415fd86137d326ff49f3d8bd91234c1bc193029",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -39,7 +39,7 @@
               {
                 "path": "data.json",
                 "size": 27938,
-                "sha": "8497d6148420eafe0c672e05b9517bcf5a25159b",
+                "sha": "e693158cfb44074d8e1973572a8c31c91224b19a",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -138,6 +138,26 @@
     }
   ],
   "items": [
+    {
+      "id": "issue:chengfengsunce/dashboard:32",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "售后维护任务最佳派单人员推荐：基于7类条件+特殊时段综合匹配最优处理人员",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/32",
+      "updated_at": "2026-11-25T01:17:51Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度",
+        "P1-本周"
+      ],
+      "number": 32,
+      "created_at": "2026-11-25T01:17:51Z",
+      "project_full_name": "chengfengsunce/dashboard",
+      "submitter": "chengfengsunce"
+    },
     {
       "id": "issue:chengfengsunce/dashboard:12",
       "kind": "issue",
@@ -755,9 +775,9 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 34,
+    "items": 35,
     "commits": 3,
-    "issues": 31,
+    "issues": 32,
     "pull_requests": 0,
     "releases": 0
   }
