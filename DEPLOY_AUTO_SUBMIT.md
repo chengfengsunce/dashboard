@@ -27,6 +27,26 @@ Worker 将原 GitHub Issue 的状态更新为 `closed`，原因设为 `completed
 
 `issueApiBaseUrl` 仍为 `ACCOUNT_SUBDOMAIN` 占位地址时，新增和完成都会明确提示“通道还未部署”，不会发送提交内容，也不会假装修改成功。推送 GitHub Pages 不等于部署 Worker；新增或修改 Worker 后必须重新执行上面的发布步骤。
 
+## 完成说明自动填充与保存
+
+“改好了什么”现在按真实仓库与Issue编号独立保存草稿。弹窗打开时自动读取已经写入的实际处理结果；输入立即备份到本机，停顿约1.2秒、离开输入框或关闭弹窗时同步到服务端。重新打开、刷新页面或换设备会读取服务端草稿，批量弹窗也逐项恢复。
+
+输入框下方显示“草稿已保存”才表示服务端已接受。网络失败时说明保留在本机，并显示重试入口；无法使用本机存储时会明确提示未保存。另一处已经修改说明时保留当前输入，提示核对后再选择“保存当前说明”。弹窗打开期间每20秒检查服务端新结果，人工有未同步修改时不覆盖输入。
+
+草稿接口只修改 `dashboard-meta.completion_draft`、`completion_draft_revision` 和 `completion_draft_updated_at`，保留原正文、截图、其他元数据和需求状态。保存草稿不会完成需求或发送钉钉消息；“确认完成”继续由处理人决定。
+
+自动化完成开发与验证后，可保存实际结果供弹窗自动填充：
+
+```powershell
+python scripts/save_completion_draft.py --issue "chengfengsunce/dashboard#7" --summary-file "完成说明.txt" --expected-title "终端用户手动录入体验优化：支持简称下拉、选中全称带出系统名"
+```
+
+说明文件使用UTF-8、最多500字；标题核对可防止误用表格行号，脚本保存后会回读验证内容与状态。只填写实际验证过的结果，未发布应注明“尚未上线”；不得从标题编造完成说明。脚本不关闭需求、不发通知，不使用或保存任何管理员凭据。
+
+接口为 `GET /api/issues/<owner>/<repo>/<number>/completion-draft` 和 `PUT` 同一路由，仍沿用本站来源及当前账号仓库限制。`GET` 返回 `title`、`state`、`completion_summary`、`revision` 和草稿更新时间；`PUT` 接受 `{ "completion_summary": "实际说明", "revision": "刚读到的版本" }`，成功返回新版本。版本不同返回409及当前服务端草稿；重复保存相同内容不重复修改GitHub。读写共用独立 `DRAFT_RATE_LIMIT` 绑定，每个来源每分钟60次，不消耗原需求完成限额。
+
+部署需同时发布 Worker、前端 `completion-drafts.mjs` 和更新后的 `index.html`；`scripts/sync_github.py` 同步保留草稿字段。草稿存放在原公开Issue元数据内，访问范围与需求一致，不能在其中填写凭据或不适合公开的信息。
+
 ## 多选完成与合并通知
 
 需求编号旁可勾选进行中的需求，表头复选框全选本页。选择在翻页时保留，每批最多 10 项；切换状态会清空选择，变更项目筛选后会移除已不在范围内的选择。选中后点击“批量完成并通知”，在弹窗逐项填写可选的完成说明，也可取消通知只完成需求。

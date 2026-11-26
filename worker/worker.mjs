@@ -1,4 +1,5 @@
 import { sendCompletionNotifications } from './notifications.mjs';
+import { completionDraft } from './completion-drafts.mjs';
 
 const repository = 'chengfengsunce/dashboard';
 const allowedOrigin = 'https://chengfengsunce.github.io';
@@ -13,7 +14,7 @@ const imageTypes = new Map([
 ]);
 
 function json(request, body, status = 200) {
-  const headers = { 'Content-Type': 'application/json; charset=utf-8' };
+  const headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' };
   if (request.headers.get('Origin') === allowedOrigin) {
     headers['Access-Control-Allow-Origin'] = allowedOrigin;
     headers.Vary = 'Origin';
@@ -146,8 +147,11 @@ async function completeRequirement(env, target, number, completionSummary) {
     update.state = 'closed';
     update.state_reason = 'completed';
   }
-  if (completionSummary && completionSummary !== metadata.completion_summary) {
-    metadata = { ...metadata, completion_summary: completionSummary };
+  if (typeof completionSummary === 'string' && (completionSummary !== metadata.completion_summary
+      || (typeof metadata.completion_draft === 'string' && completionSummary !== metadata.completion_draft))) {
+    metadata = { ...metadata, completion_summary: completionSummary,
+      ...(typeof metadata.completion_draft === 'string' ? { completion_draft: completionSummary,
+        completion_draft_revision: crypto.randomUUID(), completion_draft_updated_at: new Date().toISOString() } : {}) };
     const headerEnd = issueBody.indexOf('\n');
     const remainingBody = hasMetadataHeader ? (headerEnd < 0 ? '' : issueBody.slice(headerEnd)) : (issueBody ? '\n\n' + issueBody : '');
     update.body = '<!-- dashboard-meta:' + JSON.stringify(metadata) + ' -->' + remainingBody;
@@ -164,7 +168,8 @@ async function completeRequirement(env, target, number, completionSummary) {
     key: target + '#' + number, repo: target, number: Number(number), title: issue.title,
     state: 'closed', updated_at: result.updated_at,
     submitter: typeof metadata.submitter === 'string' ? metadata.submitter.trim() : '',
-    completion_summary: completionSummary || (typeof metadata.completion_summary === 'string' ? metadata.completion_summary.trim().slice(0, 500) : ''),
+    completion_summary: typeof completionSummary === 'string' ? completionSummary
+      : typeof metadata.completion_summary === 'string' ? metadata.completion_summary.trim().slice(0, 500) : '',
   };
 }
 
@@ -182,7 +187,7 @@ async function completeIssue(request, env, target, number) {
   try { payload = await request.json(); } catch { return json(request, { error: '无法读取完成选项，请刷新后重试。' }, 400); }
   if (!validSummary(payload?.completion_summary)) return json(request, { error: '请用不超过 500 字的一两句话说明改好了什么。' }, 400);
   try {
-    const completed = await completeRequirement(env, target, number, payload?.completion_summary?.trim() || '');
+    const completed = await completeRequirement(env, target, number, payload?.completion_summary?.trim());
     let receipt = { notification: 'skipped' };
     if (payload?.notify_submitter === true) {
       try {
@@ -235,7 +240,7 @@ async function completeBatch(request, env) {
   const completed = [];
   for (const entry of payload.issues) {
     try {
-      const requirement = await completeRequirement(env, entry.repo, entry.number, entry.completion_summary?.trim() || '');
+      const requirement = await completeRequirement(env, entry.repo, entry.number, entry.completion_summary?.trim());
       completed.push(requirement);
       results.push({ repo: requirement.repo, number: requirement.number, state: requirement.state, updated_at: requirement.updated_at, notification: 'skipped' });
     } catch (error) {
@@ -262,13 +267,14 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const issueRoute = url.pathname.match(/^\/api\/issues\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_.-]+)\/([1-9][0-9]*)$/);
-    if (request.method === 'OPTIONS' && (url.pathname === '/api/issues' || url.pathname === '/api/issues/complete-batch' || issueRoute)) {
+    const draftRoute = url.pathname.match(/^\/api\/issues\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_.-]+)\/([1-9][0-9]{0,9})\/completion-draft$/);
+    if (request.method === 'OPTIONS' && (url.pathname === '/api/issues' || url.pathname === '/api/issues/complete-batch' || issueRoute || draftRoute)) {
       if (request.headers.get('Origin') !== allowedOrigin) return new Response(null, { status: 403 });
       return new Response(null, {
         status: 204,
         headers: {
           'Access-Control-Allow-Origin': allowedOrigin,
-          'Access-Control-Allow-Methods': 'POST, PATCH, OPTIONS',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           'Access-Control-Max-Age': '86400',
         },
@@ -289,6 +295,7 @@ export default {
       });
     }
     if (request.method === 'POST' && url.pathname === '/api/issues') return submitIssue(request, env);
+    if (draftRoute && ['GET', 'PUT'].includes(request.method)) return completionDraft(request, env, draftRoute[1] + '/' + draftRoute[2], draftRoute[3], json);
     if (request.method === 'POST' && url.pathname === '/api/issues/complete-batch') return completeBatch(request, env);
     if (request.method === 'PATCH' && issueRoute) return completeIssue(request, env, issueRoute[1] + '/' + issueRoute[2], issueRoute[3]);
     return json(request, { error: 'Not found' }, 404);

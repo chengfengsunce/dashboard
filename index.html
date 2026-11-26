@@ -83,6 +83,8 @@
     .completion-entry{padding:14px 0;border-top:1px solid var(--line)}
     .completion-entry:first-child{padding-top:0;border-top:0}
     .completion-entry-title{font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+    .draft-save-status{min-height:18px;margin:6px 0 14px;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+    .draft-save-status button{padding:0;border:0;background:transparent;color:var(--blue);font:inherit;text-decoration:underline;cursor:pointer}
     .completion-entry-meta,.batch-entry-result{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
     .batch-entry-result:empty{display:none}
     #complete-form .choice{margin-top:16px}
@@ -142,7 +144,7 @@
             <form id="complete-form" class="compose">
               <div class="compose-top"><span id="complete-dialog-title" class="compose-title">完成需求</span><button id="close-complete-dialog" class="dialog-close" type="button" aria-label="关闭完成确认">×</button></div>
               <p class="completion-note"><strong id="complete-issue-title"></strong><span id="completion-description">确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。</span></p>
-              <label id="single-completion-field" class="field"><span>改好了什么（选填）</span><textarea id="completion-summary" name="completion_summary" maxlength="500" placeholder="用一两句话说明：以前有什么问题，现在可以怎么用了。"></textarea></label>
+              <div id="single-completion-field"><label class="field"><span>改好了什么（选填）</span><textarea id="completion-summary" name="completion_summary" maxlength="500" placeholder="用一两句话说明：以前有什么问题，现在可以怎么用了。"></textarea></label><p id="completion-draft-status" class="draft-save-status" role="status"></p></div>
               <div id="batch-completion-fields" hidden></div>
               <label class="choice"><input id="notify-submitter" type="checkbox" checked><span id="notify-submitter-label">通过钉钉通知提出人</span></label>
               <div class="compose-bottom"><span id="complete-note" class="form-note" role="status"></span><button id="confirm-complete" class="button primary" type="submit">确认完成</button></div>
@@ -152,7 +154,8 @@
       </section>
     </div>
   </main>
-  <script>
+  <script type="module">
+    import { createCompletionDraftStore } from './completion-drafts.mjs';
     const repository = 'chengfengsunce/dashboard';
     const issueList = document.getElementById('issue-list');
     const recentList = document.getElementById('recent-list');
@@ -222,6 +225,8 @@
         project_full_name: issue.project_full_name || (typeof metadata.project === 'string' && metadata.project) || issue.repo_full_name || repository,
         submitter: issue.submitter || (typeof metadata.submitter === 'string' && metadata.submitter) || issue.actor || issue.user?.login || '未知',
         completion_summary: issue.completion_summary || (typeof metadata.completion_summary === 'string' ? metadata.completion_summary : ''),
+        completion_draft: typeof issue.completion_draft === 'string' ? issue.completion_draft
+          : typeof metadata.completion_draft === 'string' ? metadata.completion_draft : undefined,
       };
     }
 
@@ -415,6 +420,38 @@
     const notifySubmitter = document.getElementById('notify-submitter');
     const completionSummary = document.getElementById('completion-summary');
     const batchFields = document.getElementById('batch-completion-fields');
+    let draftStorage;
+    try { draftStorage = localStorage; } catch {}
+    const completionDrafts = createCompletionDraftStore({ apiBaseUrl: issueApiBaseUrl, storage: draftStorage,
+      onChange(key, state) {
+        if (!completeDialog.open || !completionTargets.some(issue => issueKey(issue) === key)) return;
+        const input = batchCompletion ? [...batchFields.querySelectorAll('[data-batch-summary]')]
+          .find(element => element.dataset.batchSummary === key) : completionSummary;
+        if (!state.dirty && input && input.value !== state.summary) input.value = state.summary;
+        const status = batchCompletion ? [...batchFields.querySelectorAll('[data-draft-status]')]
+          .find(element => element.dataset.draftStatus === key) : document.getElementById('completion-draft-status');
+        if (!status) return;
+        const messages = { loading: '正在读取已保存的说明…', saving: '正在保存草稿…', saved: '草稿已保存',
+          local: state.localSaved ? '已保存在本机，等待同步…' : '等待保存草稿…',
+          error: state.localSaved ? '草稿已保存在本机，云端暂未保存。' : '草稿尚未保存，请保持页面打开后重试。',
+          conflict: '另一处已更新说明，当前修改已保留。' };
+        status.textContent = messages[state.status] || '';
+        if (['error', 'conflict'].includes(state.status)) {
+          const retry = document.createElement('button');
+          retry.type = 'button';
+          retry.dataset.retryDraft = key;
+          retry.textContent = state.status === 'conflict' ? '保存当前说明' : '重试保存';
+          status.append(' ', retry);
+        }
+      },
+    });
+    function refreshCompletionDrafts() {
+      if (!completeDialog.open || completionBusy || document.hidden) return;
+      completionTargets.forEach(issue => {
+        const key = issueKey(issue);
+        if (!completionDrafts.state(key).dirty) completionDrafts.load(key);
+      });
+    }
     function openCompletionDialog(requirements, batch) {
       if (!requirements.length) return;
       completionTargets = requirements;
@@ -427,13 +464,39 @@
       document.getElementById('completion-description').textContent = batch ? '确认后移入“已完成”。同一提出人的需求合并为一条通知，不同的人各收自己的内容。' : '确认后标记为已完成，自动移入“已完成”列表；需求和附件都会保留。';
       document.getElementById('single-completion-field').hidden = batch;
       batchFields.hidden = !batch;
-      completionSummary.value = batch ? '' : requirements[0].completion_summary || '';
-      batchFields.innerHTML = batch ? requirements.map(issue => `<section class="completion-entry"><strong class="completion-entry-title">${escapeHtml(issue.title)}</strong><p class="completion-entry-meta">提出人：${escapeHtml(issue.submitter || '未填写')}</p><label class="field"><span>改好了什么（选填）</span><textarea data-batch-summary="${escapeHtml(issueKey(issue))}" maxlength="500" placeholder="用一两句话说明做了什么、现在能怎么用。">${escapeHtml(issue.completion_summary || '')}</textarea></label><p class="batch-entry-result" data-batch-result="${escapeHtml(issueKey(issue))}" role="status"></p></section>`).join('') : '';
+      const draftValue = issue => completionDrafts.value(issueKey(issue), issue.completion_draft ?? issue.completion_summary ?? '');
+      completionSummary.value = batch ? '' : draftValue(requirements[0]);
+      document.getElementById('completion-draft-status').textContent = '';
+      batchFields.innerHTML = batch ? requirements.map(issue => `<section class="completion-entry"><strong class="completion-entry-title">${escapeHtml(issue.title)}</strong><p class="completion-entry-meta">提出人：${escapeHtml(issue.submitter || '未填写')}</p><label class="field"><span>改好了什么（选填）</span><textarea data-batch-summary="${escapeHtml(issueKey(issue))}" maxlength="500" placeholder="用一两句话说明做了什么、现在能怎么用。">${escapeHtml(draftValue(issue))}</textarea></label><p class="draft-save-status" data-draft-status="${escapeHtml(issueKey(issue))}" role="status"></p><p class="batch-entry-result" data-batch-result="${escapeHtml(issueKey(issue))}" role="status"></p></section>`).join('') : '';
       document.getElementById('notify-submitter-label').textContent = batch ? '通过钉钉通知提出人（同一个人合并，每人一条）' : `通过钉钉通知提出人：${requirements[0].submitter || requirements[0].actor || '未填写'}`;
       document.getElementById('complete-note').textContent = '';
       document.getElementById('confirm-complete').textContent = batch ? '确认完成并合并通知' : '确认完成';
       completeDialog.showModal();
+      requirements.forEach(issue => {
+        const key = issueKey(issue);
+        completionDrafts.load(key).then(() => {
+          if (completionDrafts.state(key).dirty && completionDrafts.state(key).status === 'local') completionDrafts.flush([key]);
+        });
+      });
     }
+    completeDialog.addEventListener('input', event => {
+      if (completionBusy) return;
+      const input = event.target;
+      const key = input.id === 'completion-summary' ? completionTargets[0] && issueKey(completionTargets[0]) : input.dataset.batchSummary;
+      if (key) completionDrafts.update(key, input.value);
+    });
+    completeDialog.addEventListener('focusout', event => {
+      const key = event.target.id === 'completion-summary' ? completionTargets[0] && issueKey(completionTargets[0]) : event.target.dataset.batchSummary;
+      if (key) completionDrafts.flush([key]);
+    });
+    completeDialog.addEventListener('click', event => {
+      const retry = event.target.closest('[data-retry-draft]');
+      if (retry && !completionBusy) completionDrafts.retry(retry.dataset.retryDraft);
+    });
+    window.addEventListener('pagehide', () => completionDrafts.flush());
+    window.addEventListener('focus', refreshCompletionDrafts);
+    document.addEventListener('visibilitychange', refreshCompletionDrafts);
+    setInterval(refreshCompletionDrafts, 20000);
     issueList.addEventListener('change', event => {
       const input = event.target.closest('input[type="checkbox"]');
       if (!input) return;
@@ -467,7 +530,7 @@
     });
     document.getElementById('close-complete-dialog').addEventListener('click', () => { if (!completionBusy) completeDialog.close(); });
     completeDialog.addEventListener('cancel', event => { if (completionBusy) event.preventDefault(); });
-    completeDialog.addEventListener('close', () => { notifySubmitter.checked = true; completionSummary.value = ''; batchFields.innerHTML = ''; completionTargets = []; completionPendingKeys.clear(); completionResults.clear(); document.getElementById('confirm-complete').textContent = '确认完成'; });
+    completeDialog.addEventListener('close', () => { completionDrafts.flush(completionTargets.map(issueKey)); notifySubmitter.checked = true; completionSummary.value = ''; batchFields.innerHTML = ''; completionTargets = []; completionPendingKeys.clear(); completionResults.clear(); document.getElementById('confirm-complete').textContent = '确认完成'; });
     document.getElementById('complete-form').addEventListener('submit', async event => {
       event.preventDefault();
       if (completionBusy || !completionTargets.length) return;
@@ -489,6 +552,7 @@
       batchFields.querySelectorAll('textarea').forEach(input => input.disabled = true);
       note.textContent = batchCompletion ? '正在完成需求并合并通知…' : '正在标记完成…';
       try {
+        await completionDrafts.flush(requirements.map(issueKey));
         const issue = requirements[0];
         const route = batchCompletion ? '/api/issues/complete-batch' : `/api/issues/${(issue.repo_full_name || repository).split('/').map(encodeURIComponent).join('/')}/${encodeURIComponent(issueNumber(issue))}`;
         const payload = batchCompletion ? { issues: requirements.map(item => ({ repo: item.repo_full_name || repository, number: Number(issueNumber(item)), completion_summary: summaries.get(issueKey(item)) || '' })), notify_submitter: shouldNotify } : { notify_submitter: shouldNotify, completion_summary: completionSummary.value.trim() };
@@ -504,6 +568,7 @@
           const completed = entry.state === 'closed' && Number.isFinite(Date.parse(entry.updated_at));
           completionResults.set(key, entry);
           if (completed) {
+            completionDrafts.forget(key);
             pendingCompletions.set(key, entry.updated_at);
             selectedIssueKeys.delete(key);
             const savedSummary = batchCompletion ? summaries.get(key) || '' : completionSummary.value.trim();

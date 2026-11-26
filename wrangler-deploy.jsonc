@@ -5,6 +5,11 @@
   "compatibility_date": "2026-11-19",
   "ratelimits": [
     {
+      "name": "DRAFT_RATE_LIMIT",
+      "namespace_id": "2026112601",
+      "simple": { "limit": 60, "period": 60 }
+    },
+    {
       "name": "SUBMIT_RATE_LIMIT",
       "namespace_id": "2026111901",
       "simple": {

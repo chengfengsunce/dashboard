@@ -139,6 +139,9 @@ def repo_activity(repo: dict) -> list[dict]:
             metadata = {}
         item["project_full_name"] = metadata.get("project") if isinstance(metadata.get("project"), str) else repo["full_name"]
         item["submitter"] = metadata.get("submitter") if isinstance(metadata.get("submitter"), str) else item["actor"]
+        for field in ("completion_summary", "completion_draft", "completion_draft_updated_at"):
+            if isinstance(metadata.get(field), str):
+                item[field] = metadata[field]
         items.append(item)
 
     releases = api_get(
