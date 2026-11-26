@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T02:36:27Z",
+  "generated_at": "2026-11-26T11:22:59Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-26T02:36:17Z",
+      "updated_at": "2026-11-26T02:36:29Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "63f5a280d73e82a1ece320ad4e6f303469d77a7b",
+            "sha": "8c1160d36d4fd794f6d72885471a746e6ece7946",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -44,8 +44,8 @@
               },
               {
                 "path": "data.json",
-                "size": 30549,
-                "sha": "10d31a9cb5c797c77ecfe26be8441d67a7a74cd9",
+                "size": 32328,
+                "sha": "53f12b1d0af806486ccca8a9111a757e1fd31ca5",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -162,6 +162,48 @@
     }
   ],
   "items": [
+    {
+      "id": "issue:chengfengsunce/dashboard:7",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "终端用户手动录入体验优化：支持简称下拉、选中全称带出系统名",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/7",
+      "updated_at": "2026-11-26T03:33:38Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 7,
+      "created_at": "2026-11-20T01:22:52Z",
+      "project_full_name": "400来电调度",
+      "submitter": "杨家宁",
+      "completion_summary": "输入客户简称，就会列出可能的客户，打错一点也能帮着找。选中后，自动填好客户全名和对应系统，有多个系统时可以自己选，省得反复手填。已上线，去体验下吧",
+      "completion_draft": "输入客户简称或拼音，就会列出可能的客户，打错一点也能帮着找。选中后，自动填好客户全名和对应系统，有多个系统时可以自己选，省得反复手填。\n新版更新包已发布，等待正式机安装。",
+      "completion_draft_updated_at": "2026-11-26T03:33:37.827Z"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:6",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "来电关联执行中任务处理人 + 终端用户准确识别并带出所属服务站",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/6",
+      "updated_at": "2026-11-26T03:26:55Z",
+      "state": "closed",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 6,
+      "created_at": "2026-11-20T01:22:44Z",
+      "project_full_name": "400来电调度",
+      "submitter": "周娟娟",
+      "completion_summary": ""
+    },
     {
       "id": "commit:chengfengsunce/dashboard:63f5a280d73e",
       "kind": "commit",
@@ -788,44 +830,6 @@
       "created_at": "2026-11-20T01:22:58Z",
       "project_full_name": "400来电调度",
       "submitter": "杨家宁"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:7",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "终端用户手动录入体验优化：支持简称下拉、选中全称带出系统名",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/7",
-      "updated_at": "2026-11-20T02:39:26Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 7,
-      "created_at": "2026-11-20T01:22:52Z",
-      "project_full_name": "400来电调度",
-      "submitter": "杨家宁"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:6",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "来电关联执行中任务处理人 + 终端用户准确识别并带出所属服务站",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/6",
-      "updated_at": "2026-11-20T02:39:14Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 6,
-      "created_at": "2026-11-20T01:22:44Z",
-      "project_full_name": "400来电调度",
-      "submitter": "周娟娟"
     },
     {
       "id": "issue:chengfengsunce/dashboard:5",
