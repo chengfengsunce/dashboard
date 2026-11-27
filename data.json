@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T20:23:00Z",
+  "generated_at": "2026-11-27T01:30:58Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-26T11:23:00Z",
+      "updated_at": "2026-11-27T01:30:44Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "083c7d0ae9750217f0d36deee9a2d8aad4eeedaf",
+            "sha": "a04c3ff3295c3f6b5e8321f7f612f43447ea384b",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -32,8 +32,8 @@
               },
               {
                 "path": "DEPLOY_AUTO_SUBMIT.md",
-                "size": 10969,
-                "sha": "d6bd671366ff7f84d38380b4078cb06758009e21",
+                "size": 12433,
+                "sha": "51eb5ce4b45ba59628702291664686c98309e408",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/DEPLOY_AUTO_SUBMIT.md"
               },
               {
@@ -45,7 +45,7 @@
               {
                 "path": "data.json",
                 "size": 32964,
-                "sha": "a45cde8d8f2761fac6c12f46f0bf1bb0d5075886",
+                "sha": "279e2ac03ce691d4feae4aa7dfa4b9c98f4cbfac",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -61,9 +61,15 @@
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/docs/superpowers/plans/2026-11-26-completion-drafts.md"
               },
               {
+                "path": "docs/superpowers/plans/2026-11-27-edit-submitter.md",
+                "size": 2241,
+                "sha": "f610011db71ae8487bbc9e2701c7629b421134cc",
+                "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/docs/superpowers/plans/2026-11-27-edit-submitter.md"
+              },
+              {
                 "path": "index.html",
-                "size": 60801,
-                "sha": "5a7e32064aaa5390d90c0f932bc5133c62c863fe",
+                "size": 63919,
+                "sha": "ce10fe6b4d16387941ef2833c7bff9e3e2650c94",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/index.html"
               },
               {
@@ -79,6 +85,12 @@
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/scripts/sync_github.py"
               },
               {
+                "path": "submitter-editor.mjs",
+                "size": 5412,
+                "sha": "7b3dac80c9f516e3410f0ed3411097b32aa16631",
+                "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/submitter-editor.mjs"
+              },
+              {
                 "path": "worker/completion-drafts.mjs",
                 "size": 5007,
                 "sha": "4e1bc02e4a818b6f46b67eebacc1a9460009dc60",
@@ -91,9 +103,15 @@
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/notifications.mjs"
               },
               {
+                "path": "worker/submitter.mjs",
+                "size": 4867,
+                "sha": "e9aa2acee8d4cce8f85342bd814e7edf103af7c5",
+                "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/submitter.mjs"
+              },
+              {
                 "path": "worker/worker.mjs",
-                "size": 15694,
-                "sha": "a5bc319fb4724f9d3bce2e8c5b04242a3d92c790",
+                "size": 16069,
+                "sha": "3bb226bb8dde2004536fcb8c55992eeef9bb9282",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/worker/worker.mjs"
               },
               {
@@ -162,6 +180,17 @@
     }
   ],
   "items": [
+    {
+      "id": "commit:chengfengsunce/dashboard:a04c3ff3295c",
+      "kind": "commit",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "feat: 支持在需求列表修改提出人",
+      "html_url": "https://github.com/chengfengsunce/dashboard/commit/a04c3ff3295c3f6b5e8321f7f612f43447ea384b",
+      "updated_at": "2026-11-27T01:30:36Z",
+      "actor": "chengfengsunce"
+    },
     {
       "id": "issue:chengfengsunce/dashboard:7",
       "kind": "issue",
@@ -864,8 +893,8 @@
   ],
   "stats": {
     "repositories": 3,
-    "items": 38,
-    "commits": 3,
+    "items": 39,
+    "commits": 4,
     "issues": 35,
     "pull_requests": 0,
     "releases": 0
