@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T01:30:58Z",
+  "generated_at": "2026-11-27T02:15:24Z",
   "owner": "chengfengsunce",
   "sync_scope": "public-only",
   "skipped_repositories": [],
@@ -11,7 +11,7 @@
       "description": null,
       "language": "HTML",
       "stargazers_count": 0,
-      "updated_at": "2026-11-27T01:30:44Z",
+      "updated_at": "2026-11-27T01:30:59Z",
       "private": false,
       "default_branch": "main",
       "source": {
@@ -20,7 +20,7 @@
         "branches": [
           {
             "name": "main",
-            "sha": "a04c3ff3295c3f6b5e8321f7f612f43447ea384b",
+            "sha": "1e51d613818742bd70c3e8234bf8059318aaf3f2",
             "protected": false,
             "truncated": false,
             "entries": [
@@ -44,8 +44,8 @@
               },
               {
                 "path": "data.json",
-                "size": 32964,
-                "sha": "279e2ac03ce691d4feae4aa7dfa4b9c98f4cbfac",
+                "size": 34393,
+                "sha": "40ac939f82034e4f880fcbb19db50d58845198f9",
                 "raw_url": "https://raw.githubusercontent.com/chengfengsunce/dashboard/main/data.json"
               },
               {
@@ -181,6 +181,45 @@
   ],
   "items": [
     {
+      "id": "issue:chengfengsunce/dashboard:5",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "来电识别错误案例排查与匹配规则优化（煤矿误判非煤、定位误判排水/环网等5例）",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/5",
+      "updated_at": "2026-11-27T02:15:05Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "来电派单/400调度"
+      ],
+      "number": 5,
+      "created_at": "2026-11-20T01:22:38Z",
+      "project_full_name": "400来电调度",
+      "submitter": "周娟娟"
+    },
+    {
+      "id": "issue:chengfengsunce/dashboard:34",
+      "kind": "issue",
+      "repo": "dashboard",
+      "repo_full_name": "chengfengsunce/dashboard",
+      "repo_url": "https://github.com/chengfengsunce/dashboard",
+      "title": "行程信息减负：工程师只上报到矿/离矿，指挥大屏自动从CBMP拉取匹配填充任务信息",
+      "html_url": "https://github.com/chengfengsunce/dashboard/issues/34",
+      "updated_at": "2026-11-27T01:36:59Z",
+      "state": "open",
+      "actor": "chengfengsunce",
+      "labels": [
+        "售后指挥大屏",
+        "P1-本周"
+      ],
+      "number": 34,
+      "created_at": "2026-11-26T00:54:53Z",
+      "project_full_name": "售后指挥大屏",
+      "submitter": "王远帅"
+    },
+    {
       "id": "commit:chengfengsunce/dashboard:a04c3ff3295c",
       "kind": "commit",
       "repo": "dashboard",
@@ -302,26 +341,6 @@
       "created_at": "2026-11-26T00:54:55Z",
       "project_full_name": "硬件收敛数据验证",
       "submitter": "仲永康"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:34",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "行程信息减负：工程师只上报到矿/离矿，指挥大屏自动从CBMP拉取匹配填充任务信息",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/34",
-      "updated_at": "2026-11-26T00:54:53Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "售后指挥大屏",
-        "P1-本周"
-      ],
-      "number": 34,
-      "created_at": "2026-11-26T00:54:53Z",
-      "project_full_name": "售后指挥大屏",
-      "submitter": "王远帅（转达领导想法）"
     },
     {
       "id": "issue:chengfengsunce/dashboard:33",
@@ -859,25 +878,6 @@
       "created_at": "2026-11-20T01:22:58Z",
       "project_full_name": "400来电调度",
       "submitter": "杨家宁"
-    },
-    {
-      "id": "issue:chengfengsunce/dashboard:5",
-      "kind": "issue",
-      "repo": "dashboard",
-      "repo_full_name": "chengfengsunce/dashboard",
-      "repo_url": "https://github.com/chengfengsunce/dashboard",
-      "title": "来电识别错误案例排查与匹配规则优化（煤矿误判非煤、定位误判排水/环网等5例）",
-      "html_url": "https://github.com/chengfengsunce/dashboard/issues/5",
-      "updated_at": "2026-11-20T02:39:01Z",
-      "state": "open",
-      "actor": "chengfengsunce",
-      "labels": [
-        "来电派单/400调度"
-      ],
-      "number": 5,
-      "created_at": "2026-11-20T01:22:38Z",
-      "project_full_name": "400来电调度",
-      "submitter": "周娟娟"
     },
     {
       "id": "commit:chengfengsunce/free_time:5379c72be6b6",
