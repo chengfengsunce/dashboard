@@ -1,5 +1,6 @@
 import { sendCompletionNotifications } from './notifications.mjs';
 import { completionDraft } from './completion-drafts.mjs';
+import { editSubmitter } from './submitter.mjs';
 
 const repository = 'chengfengsunce/dashboard';
 const allowedOrigin = 'https://chengfengsunce.github.io';
@@ -268,7 +269,8 @@ export default {
     const url = new URL(request.url);
     const issueRoute = url.pathname.match(/^\/api\/issues\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_.-]+)\/([1-9][0-9]*)$/);
     const draftRoute = url.pathname.match(/^\/api\/issues\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_.-]+)\/([1-9][0-9]{0,9})\/completion-draft$/);
-    if (request.method === 'OPTIONS' && (url.pathname === '/api/issues' || url.pathname === '/api/issues/complete-batch' || issueRoute || draftRoute)) {
+    const submitterRoute = url.pathname.match(/^\/api\/issues\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_.-]+)\/([1-9][0-9]{0,9})\/submitter$/);
+    if (request.method === 'OPTIONS' && (url.pathname === '/api/issues' || url.pathname === '/api/issues/complete-batch' || issueRoute || draftRoute || submitterRoute)) {
       if (request.headers.get('Origin') !== allowedOrigin) return new Response(null, { status: 403 });
       return new Response(null, {
         status: 204,
@@ -295,6 +297,7 @@ export default {
       });
     }
     if (request.method === 'POST' && url.pathname === '/api/issues') return submitIssue(request, env);
+    if (submitterRoute && ['GET', 'PATCH'].includes(request.method)) return editSubmitter(request, env, submitterRoute[1] + '/' + submitterRoute[2], submitterRoute[3], json);
     if (draftRoute && ['GET', 'PUT'].includes(request.method)) return completionDraft(request, env, draftRoute[1] + '/' + draftRoute[2], draftRoute[3], json);
     if (request.method === 'POST' && url.pathname === '/api/issues/complete-batch') return completeBatch(request, env);
     if (request.method === 'PATCH' && issueRoute) return completeIssue(request, env, issueRoute[1] + '/' + issueRoute[2], issueRoute[3]);

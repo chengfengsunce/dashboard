@@ -85,6 +85,14 @@
     .completion-entry-title{font-size:13px;line-height:1.6;overflow-wrap:anywhere}
     .draft-save-status{min-height:18px;margin:6px 0 14px;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
     .draft-save-status button{padding:0;border:0;background:transparent;color:var(--blue);font:inherit;text-decoration:underline;cursor:pointer}
+    .edit-submitter{display:block;width:100%;min-height:28px;padding:0;border:0;background:transparent;color:var(--ink);font:inherit;text-align:left;text-decoration:underline;text-decoration-color:#b7c1d1;text-underline-offset:3px;overflow-wrap:anywhere;cursor:pointer}
+    .edit-submitter:hover{color:var(--blue);text-decoration-color:var(--blue)}
+    .edit-submitter:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:3px}
+    [data-reload-submitter][hidden]{display:none}
+    #submitter-dialog .compose-bottom{align-items:flex-start}
+    #submitter-dialog .form-note{line-height:1.6;overflow-wrap:anywhere}
+    #submitter-dialog .dialog-actions{flex:none}
+    @media(max-width:560px){.edit-submitter{min-height:40px}#submitter-dialog .compose-bottom{flex-wrap:wrap}#submitter-dialog .dialog-actions{margin-left:auto}}
     .completion-entry-meta,.batch-entry-result{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
     .batch-entry-result:empty{display:none}
     #complete-form .choice{margin-top:16px}
@@ -140,6 +148,15 @@
               <div class="compose-bottom"><span id="form-note" class="form-note" role="status"></span><button class="button primary" type="submit">提交需求</button></div>
             </form>
           </dialog>
+          <dialog id="submitter-dialog" class="compose-dialog" aria-labelledby="submitter-dialog-title">
+            <form class="compose">
+              <div class="compose-top"><span id="submitter-dialog-title" class="compose-title">修改提出人</span><button data-close-submitter class="dialog-close" type="button" aria-label="关闭提出人编辑">×</button></div>
+              <p data-submitter-title class="completion-note"></p>
+              <label class="field"><span>提出人</span><input id="edit-submitter-value" name="submitter" maxlength="60" required autocomplete="name" placeholder="填写提出人姓名"></label>
+              <p class="attach-note">保存后，完成通知会使用这个姓名。</p>
+              <div class="compose-bottom"><span class="form-note" role="status"></span><div class="dialog-actions"><button data-reload-submitter class="button" type="button" hidden>重新读取</button><button class="button primary" type="submit">保存</button></div></div>
+            </form>
+          </dialog>
           <dialog id="complete-dialog" class="compose-dialog" aria-labelledby="complete-dialog-title">
             <form id="complete-form" class="compose">
               <div class="compose-top"><span id="complete-dialog-title" class="compose-title">完成需求</span><button id="close-complete-dialog" class="dialog-close" type="button" aria-label="关闭完成确认">×</button></div>
@@ -156,6 +173,7 @@
   </main>
   <script type="module">
     import { createCompletionDraftStore } from './completion-drafts.mjs';
+    import { createSubmitterEditor } from './submitter-editor.mjs';
     const repository = 'chengfengsunce/dashboard';
     const issueList = document.getElementById('issue-list');
     const recentList = document.getElementById('recent-list');
@@ -205,6 +223,7 @@
 
     function normalizeIssue(issue) {
       const key = issueKey(issue);
+      const sourceUpdatedAt = issue.updated_at;
       const completedAt = pendingCompletions.get(key);
       if (completedAt) {
         const newer = Date.parse(issue.updated_at) > Date.parse(completedAt);
@@ -221,25 +240,36 @@
         try { metadata = JSON.parse(header.slice('<!-- dashboard-meta:'.length, -' -->'.length)); } catch {}
       }
       if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) metadata = {};
-      return {...issue,
+      return submitterEditor.normalize({...issue,
         project_full_name: issue.project_full_name || (typeof metadata.project === 'string' && metadata.project) || issue.repo_full_name || repository,
         submitter: issue.submitter || (typeof metadata.submitter === 'string' && metadata.submitter) || issue.actor || issue.user?.login || '未知',
         completion_summary: issue.completion_summary || (typeof metadata.completion_summary === 'string' ? metadata.completion_summary : ''),
         completion_draft: typeof issue.completion_draft === 'string' ? issue.completion_draft
           : typeof metadata.completion_draft === 'string' ? metadata.completion_draft : undefined,
-      };
+      }, key, sourceUpdatedAt);
     }
 
     function saveCompletions() {
       try { localStorage.setItem('dashboard-completed-issues', JSON.stringify([...pendingCompletions])); } catch {}
     }
 
+    let submitterStorage;
+    try { submitterStorage = localStorage; } catch {}
+    const submitterEditor = createSubmitterEditor({ dialog: document.getElementById('submitter-dialog'), apiBaseUrl: issueApiBaseUrl, storage: submitterStorage,
+      onSaved(key, result) {
+        allItems = allItems.map(issue => issue.kind === 'issue' && issueKey(issue) === key ? { ...issue, submitter: result.submitter, updated_at: result.updated_at } : issue);
+        applyProjectFilter(false);
+        render();
+        document.getElementById('sync-label').textContent = '提出人已保存';
+      },
+    });
+
     function renderIssue(issue, index) {
       const project = (issue.project_full_name || repository).split('/').pop();
       const action = issue.state === 'closed' ? '<span class="issue-completed">已完成</span>' : `<button class="complete-issue" type="button" data-complete-issue="${escapeHtml(issueKey(issue))}" aria-label="完成需求：${escapeHtml(issue.title)}">完成</button>`;
       const key = issueKey(issue);
       const selection = issue.state === 'closed' ? '' : `<input type="checkbox" data-select-issue="${escapeHtml(key)}" aria-label="选择需求：${escapeHtml(issue.title)}" ${selectedIssueKeys.has(key) ? 'checked' : selectedIssueKeys.size >= 10 ? 'disabled' : ''}>`;
-      return `<tr data-issue-key="${escapeHtml(key)}" data-selected="${selectedIssueKeys.has(key)}"><td class="issue-sequence">${selection}<span>${(currentPage - 1) * pageSize + index + 1}</span></td><td><a class="issue-title" href="${escapeHtml(issueUrl(issue))}" title="${escapeHtml(issue.title || '未命名需求')}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a></td><td title="${escapeHtml(issue.project_full_name)}">${escapeHtml(project)}</td><td title="${escapeHtml(issue.submitter)}">${escapeHtml(issue.submitter)}</td><td title="${escapeHtml(issue.created_at || '时间未知')}">${escapeHtml(formatDate(issue.created_at))}</td><td>${action}</td></tr>`;
+      return `<tr data-issue-key="${escapeHtml(key)}" data-selected="${selectedIssueKeys.has(key)}"><td class="issue-sequence">${selection}<span>${(currentPage - 1) * pageSize + index + 1}</span></td><td><a class="issue-title" href="${escapeHtml(issueUrl(issue))}" title="${escapeHtml(issue.title || '未命名需求')}" target="_blank" rel="noreferrer">${escapeHtml(issue.title || '未命名需求')}</a></td><td title="${escapeHtml(issue.project_full_name)}">${escapeHtml(project)}</td><td><button class="edit-submitter" type="button" data-edit-submitter="${escapeHtml(key)}" title="点击修改提出人" aria-label="修改提出人：${escapeHtml(issue.submitter)}">${escapeHtml(issue.submitter)}</button></td><td title="${escapeHtml(issue.created_at || '时间未知')}">${escapeHtml(formatDate(issue.created_at))}</td><td>${action}</td></tr>`;
     }
 
     function getIssueProjects() {
@@ -404,6 +434,12 @@
     });
 
     document.getElementById('close-requirement-dialog').addEventListener('click', () => requirementsDialog.close());
+    issueList.addEventListener('click', event => {
+      const button = event.target.closest('[data-edit-submitter]');
+      if (!button) return;
+      const issue = allItems.find(item => item.kind === 'issue' && issueKey(item) === button.dataset.editSubmitter);
+      if (issue) submitterEditor.open(issue);
+    });
     document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
       filter = button.dataset.filter;
       selectedIssueKeys.clear();
